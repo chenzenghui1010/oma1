@@ -1,6 +1,6 @@
 <template>
   <div class="invitationt">
-    <img src="../assets/wx-hardware-logo.jpg" />
+    <img src="../assets/wx-hardware-logo.jpg" /><span>提交成功</span>
     <p> 很抱歉你的访客申请未通过未通过审核的原因是:</p>
     <p>么有原因的原因</p>
   </div>

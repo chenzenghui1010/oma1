@@ -12,6 +12,8 @@ export default {
 
 <style>
 #app {
-
 }
+  .el-input--small .el-input__inner{
+    border: none;
+  }
 </style>
