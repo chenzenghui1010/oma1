@@ -8,7 +8,7 @@
       <p class="xia"> &nbsp 部门 :<input type="text" placeholder="请输入"></p>
     </div>
     <div class="footer">
-      <button @click="last1">上一步</button><button @click='next1'>下一步</button>
+      <button @click="last">上一步</button><button @click='next'>下一步</button>
     </div>
   </div>
 </template>
@@ -20,12 +20,12 @@
       }
     },
     methods: {
-      last1:function(){
+      last:function(){
         alert("000");
         history.go(-1);
       },
-      next1:function(){
-        this.$router.push({path:'makethree'})
+      next:function(){
+        this.$router.push({path:'excitedabouto'})
 
       }
     }

@@ -7,24 +7,41 @@ import makeo from '../components/makeo'
 import maket from '../components/makeT'
 import makethree from '../components/makeThree'
 import excitedabouto from '../components/excitedAbouto'
+import excitedaboutok from '../components/excitedAboutOk'
+import audito  from '../components/auditO'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'maket',
-      component: maket
+      name: 'makeo',
+      component: makeo
     },
     {
-      path:'/makeo',
-      name:'makeo',
+      path:'/maket',
+      name:'maket',
       component:maket,
     },
     {
       path:'/makethree',
       name:'makethree',
       component:makethree
+    },
+    {
+      path:'/excitedabouto',
+      name:'excitedabouto',
+      component:excitedabouto,
+    },
+    {
+      path:'/excitedaboutok',
+      name:'excitedaboutok',
+      component:excitedaboutok,
+    },
+    {
+      path:'/audito',
+      name:'audito',
+      component:audito
     },
   ]
 })

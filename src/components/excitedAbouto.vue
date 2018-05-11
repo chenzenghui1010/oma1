@@ -1,19 +1,19 @@
 <template>
   <div class="excitedo">
+    来访邀约
     <div class="company">
       <p class="title1"><span>{{title1}}</span></p>
       <ul>
-
         <li><small><span>*</span>姓名：</small><input type="text" placeholder="请输入"></li>
         <li><small><span>*</span>手机号： </small><input type="text" placeholder="请输入"></li>
-        <li class="zjhao" style="height: 72px;"><small><span>*</span>证件号：</small><select class="zj" name="" id="">
+        <li class="zjhao" style="height: 72.5px;"><small><span>*</span>证件号：</small><select class="zj" name="" id="">
           <option>居民身份证</option>
           <option>驾驶证</option>
         </select>
           <input type="text" placeholder="请输入">
         </li>
         <li><small>&nbsp 车牌号：</small>
-          <select class="cps" name="" id="">
+          <select class="cps" name="" >
             <option>湘</option>
             <option>京</option>
           </select>
@@ -46,7 +46,8 @@
       <p><span>{{title2}}</span></p>
       <ul>
         <li class="input"><small><span>*</span>姓名：</small><input type="text" placeholder="请输入"></li>
-        <li class="zjhao" style="height: 72px; border: none;"><small><span>*</span>证件号：</small><select class="zj" name="">
+        <li class="zjhao" style="height: 70px; border: none;"><small><span>*</span>证件号：</small>
+          <select class="zj" name="">
           <option>居民身份证</option>
           <option>驾驶证</option>
         </select>
@@ -55,8 +56,8 @@
       </ul>
     </div>
     <div class="add">
-     <p>添加随行人员</p>
-      <button>预览</button>
+     <p @click="add"> + 添加随行人员</p>
+      <button @click="excited">预 览</button>
     </div>
   </div>
 </template>
@@ -70,20 +71,31 @@
         dateavlue1: '',
         dateavlue2: '',
       }
+    },
+    methods:{
+      add:function(){
+        alert(0);
+      },
+      excited:function(){
+        this.$router.push({path:'excitedaboutok'})
+      }
     }
   }
 </script>
 <style scoped lang="less">
+  *{
+    padding: 0;
+    margin: 0;
+  }
   .excitedo  {
     .company, .suixing {
       p {
-        padding: 0 4%;
         width: 100%;
         height: 50px;
         background: #f0f7ff;
         span {
           display: inline-block;
-          margin: 14px 0 0 0;
+          margin: 14px 0 0 4%;
           color: #6f7180;
         }
       }
@@ -92,10 +104,10 @@
       ul {
         padding: 0 4%;
         li {
-          border-bottom: 1px solid gray;
+          border-bottom: 1px solid #f2f6fc;
           list-style: none;
-          height: 36px;
-          line-height: 36px;
+          height: 38px;
+          line-height: 38px;
           small {
             display: inline-block;
             width: 25%;
@@ -124,6 +136,7 @@
         }
         .zj, .cps {
           display: inline-block;
+          height: 38px;
           border: none;
           background-color: #fff;
           color: #8c939d;
@@ -135,10 +148,10 @@
       ul {
         padding: 0 4%;
         li {
-          border-bottom: 1px solid gray;
+          border-bottom: 1px solid floralwhite;
           list-style: none;
-          height: 35px;
-          line-height: 35px;
+          height: 38px;
+          line-height: 38px;
           .zj {
             display: inline-block;
             border: none;
@@ -153,7 +166,7 @@
           input {
             display: inline-block;
             width: 74%;
-            height: 28px;
+            height: 38px;
             float: right;
             border: none;
             outline: none;
@@ -168,7 +181,18 @@
       height: 100%;
       background: #f0f7ff;
       color: #1E90FF;
+      p{
+        margin: 10px 0 10px 0;
+      }
       button{
+        width: 92%;
+        height: 40px;
+        background-color: #1E90FF;
+        color: #FAFAFA;
+        border: none;
+        font-size: 16px;
+        border-radius: 4px;
+        outline: none;
       }
     }
   }
