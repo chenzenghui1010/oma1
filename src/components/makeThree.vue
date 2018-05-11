@@ -15,7 +15,7 @@
     },
     methods: {
       ok: function () {
-        this.$router.push({path:'audito'});
+        this.$router.push({path:'audit'});
       }
     }
   }

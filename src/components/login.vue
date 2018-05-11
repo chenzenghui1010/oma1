@@ -2,8 +2,8 @@
   <div class="hello">
     <form action="">
       <div><img src="../assets/logo.png"/><input type="text" placeholder="请输入手机号"></div>
-      <div><input type="text" placeholder="请输入验证码"> <span>获取验证码</span></div>
-      <button>登 录</button>
+      <div><input type="text" placeholder="请输入验证码"> <span @click="code">获取验证码</span></div>
+      <button @click="login">登 录</button>
     </form>
   </div>
 </template>
@@ -13,6 +13,14 @@
     name: 'login',
     data() {
       return {}
+    },
+    methods:{
+      code:function(){
+        alert(0)
+      },
+      login:function(){
+        this.$router.push({path:'makeo'})
+      }
     }
   }
 </script>
@@ -23,7 +31,7 @@
     width: 100%;
     position: fixed;
     height: 100%;
-    background: darkseagreen;
+    background: rgba(	176,196,222,.5);
     padding: 0px 10% 0 10%;
     div {
       width: 80%;
@@ -32,6 +40,7 @@
       background-color: #f0f2f5;
       line-height: 50px;
       border-radius: 5px;
+      background-color: #fff;
       img {
         vertical-align: text-top;
         width: 30px;
@@ -42,7 +51,7 @@
         width: 50%;
         height: 40px;
         border: none;
-        background-color: #f0f2f5;
+        background-color: #fff;
         outline: none;
         font-size: 20px;
       }
