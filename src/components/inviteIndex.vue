@@ -1,6 +1,5 @@
 <template>
   <div class="excitedo">
-      <mtitle/>
     <div class="company">
       <p class="title1"><span>{{title1}}</span></p>
       <x-input title=" <span>*</span> 姓名：" required="required" v-model="eName" placeholder="请输入" is-type="china-name">
@@ -12,7 +11,7 @@
       <popup-picker title=" <span>*</span> 证件号：" :data="list1" v-model="eLicense" maxlenth="18"></popup-picker>
       <x-input  id="none" title=" " required="required" placeholder="请输入" v-model="eLicenseNumber"> is-type="china-name"></x-input>
 
-      <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="eCar" maxlength="7"></popup-picker>
+      <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="eCar"></popup-picker>
       <x-input title=" " v-model="eCarNumber" placeholder="请输入"></x-input>
 
 
@@ -31,44 +30,41 @@
     </div>
     <div class="suixing">
       <p><span>{{title2}}</span></p>
-      <div class="adds" v-for=" (item,index) in follower">
+      <div class="adds" v-for=" (item,index) in addList">
         <div class="add-name">
-          <x-input title=" <span>*</span> 姓名：" required="required" v-model="item.fName" placeholder="请输入"
+          <x-input title=" <span>*</span> 姓名：" required="required" v-model="eName" placeholder="请输入"
                    is-type="china-name"></x-input>
           <i><img @click="delO(index)" src="../assets/delete.png"/></i>
           <div>
             <confirm v-model="item.shows" @on-cancel="onCancel"
                      @on-confirm="onConfirm">
-              <p style="text-align:center;">确定删除随行人员信息吗?</p>
+              <p style="text-align:center;">确定要删除吗?</p>
 
             </confirm>
           </div>
         </div>
         <div>
-          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model="item.fLicense"></popup-picker>
-          <x-input title=" " v-model="item.fLicenseNumber" placeholder="请输入"></x-input>
+          <popup-picker title=" <span>*</span>  证件号：" :data="list1" v-model="eLicense"></popup-picker>
+          <x-input title=" " placeholder="请选择"></x-input>
         </div>
         <div class="addk">
+
         </div>
       </div>
 
 
     </div>
     <div class="add">
-      <ul  @click="add">
-        <li><img class="addimg" src="../assets/添加@2x.png" alt=""></li>
+      <ul>
+        <li @click="add"><img class="addimg" src="../assets/添加@2x.png" alt=""></li>
         <li>添加随行人员</li>
       </ul>
-      <div class="footer">
-        <button @click="last">上一步</button>
-        <button @click="excited">预 览</button>
-      </div>
+      <button @click="excited">预 览</button>
     </div>
   </div>
 </template>
 <script>
   import {
-    AlertModule,
     Confirm,
     TransferDomDirective,
     TransferDom,
@@ -90,7 +86,7 @@
     components: {
       Confirm, TransferDomDirective, TransferDom,
       Datetime, PopupPicker, Picker, Divider, XSwitch,
-      mtitle,AlertModule,
+      mtitle,
       XInput,
       XButton,
       Group,
@@ -99,53 +95,32 @@
     },
     data() {
       return {
-        follower:[{fName:'',fLicense:['身份证'],fLicenseNumber:'', title:[['身份证']],shows:false}],
+        addList:[{shows: false}],
 
-        list1: [['身份证']],
+        list1: [['驾驶证', '身份证', '军人证']],
         Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼']],
         title1: '来访人信息',
         title2: '随行人员信息',
         eName: this.$store.state.eName,
         ePoints: this.$store.state.ePoints,
         eLicense: [this.$store.state.eLicense],
-        eLicense2:[],
         eLicenseNumber: this.$store.state.eLicenseNumber,
-
         eCar: [this.$store.state.eCar],
         eCarNumber: this.$store.state.eCarNumber,
         eCompany: this.$store.state.eCompany,
         eStart: this.$store.state.eStart,
         eEnd: this.$store.state.eEnd,
         eCause: this.$store.state.eCause,
-
-        eList:[],
-
         showExcitedO: true,
       }
     },
     computed: {},
-    created(){
-
-    },
     methods: {
 
       add: function () {
-
-        this.follower.push({fName:'',fLicense:['身份证'],fLicenseNumber:'', title:[['身份证']],shows:false})
+        this.addList.push({shows:false})
       },
-
-      //上一步
-      last:function(){
-
-        history.go(-1);
-      },
-      //预 览
       excited: function () {
-
-        // for(let i=0;i<this.follower.length;i++){
-        //   alert(this.follower[i].fName)
-        //
-        // }
         this.$store.commit('eName', this.eName);
         this.$store.commit('ePoints', this.ePoints);
         this.$store.commit('eLicense', this.eLicense.toString());
@@ -156,48 +131,17 @@
         this.$store.commit('eStart', this.eStart);
         this.$store.commit('eEnd', this.eEnd);
         this.$store.commit('eCause', this.eCause);
-        this.$store.commit('follower',);
-
-        // this.$router.push({path: 'excitedaboutok'})
-        if(this.eName == '' || this.ePoints == '' || this.eLicense == '' || this.eLicenseNumber == '' ||
-
-          this.eCompany == '' || this.eStart == '' ||this.eEnd == '' || this.eCause == ''){
-
-          AlertModule.show({title:'请填写完整信息'})
-
-          return false
-        }
-        let url=this.HOST + '/mv/visit/reserve'
-       this.$axios.post(url,{
-         name:this.eName,
-         phone:this.ePoints,
-         identityNo:this.eLicenseNumber,
-         identityType:this.eLicense,
-         company:this.eCompany,
-         scheduledInTime:this.eStart,
-         scheduledOutTime:this.eEnd,
-         subject:this.eCause,
-         follower:{'name':'你好','identityNo':'431102198912258414','identityType':'身份证'}
-        })
-         .then(res =>{
-            this.$router.push({path: 'excitedaboutok'})
-         })
-         .catch(error =>{
-           console.log(error)
-        })
-
-
-        // this.$router.push({path: 'excitedaboutok'})
+        this.$router.push({path: 'excitedaboutok'})
       },
       delO: function (index) {
-          this.follower[index].shows=true;
+        this.addList[index].shows=true;
       },
       //取消
       onCancel: function () {
       },
       //确定
       onConfirm: function () {
-          this.follower.splice(this.follower.length-1, 1)
+        this.addList.splice(this.addList.length-1, 1)
       },
     }
   }
@@ -207,8 +151,6 @@
     padding: 0;
     margin: 0;
   }
-
-
 
   span {
     margin: 8px 10px 0 15px;
@@ -225,14 +167,14 @@
     height: 20px;
     padding: 10px 15px;
   }
-.addk{
-  width: 100%;
-  height: 10px;
-  background: #edf1f3;
+  .addk{
+    width: 100%;
+    height: 10px;
+    background: #edf1f3;
 
-}
+  }
   .excitedo {
-
+    position: center;
     height: 100px;
     .company, .suixing {
       p {
@@ -296,25 +238,24 @@
 
     .add-name {
       display: flex;
-      position: revert;
       justify-content: space-between;
       i {
-        display: inline-block;
+        position: absolute;
+        margin-left: 92%;
+        /*display: inline-block;*/
         /*border: 1px solid red;*/
-        margin-right: 3%;
         img {
-          display: inline-block;
-          height: 20px;
-          width: 20px;
+          /*display: inline-block;*/
+          /*height: 20px;*/
+          /*width: 20px;*/
           margin-top: 10px;
         }
       }
 
     }
 
-
     .add {
-      padding-bottom: 30px;
+      padding: 0px  4% 20px 4%;
       width: 100%;
       height: 100%;
       background: #edf1f3;
@@ -324,9 +265,8 @@
         display: flex;
         justify-content: center;
         margin-bottom: 30px;
-        margin-top: 0;
+       padding-top: 10px;
         li {
-          margin-top: 20px;
           height: 24px;
           color: #5aa0ce;
           img {
@@ -336,25 +276,15 @@
           }
         }
       }
-      .footer {
-        display: flex;
-        justify-content: space-around;
-        button {
-          justify-content: center;
-          width: 40%;
-          height: 45px;
-          background-color: #1d83c5;
-          color: #FAFAFA;
-          border: none;
-          font-size: 16px;
-          border-radius: 4px;
-          outline: none;
-        }
-      }
-      button:nth-child(1){
-        background: #fff;
-        color: #1d83c5;
-
+      button {
+        width: 92%;
+        height: 50px;
+        background-color: #1d83c5;
+        color: #FAFAFA;
+        border: none;
+        font-size: 16px;
+        border-radius: 4px;
+        outline: none;
       }
     }
   }

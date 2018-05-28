@@ -5,25 +5,70 @@
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  export default {
+    name: 'App'
+  }
 </script>
 
-<style>
-#app {
-}
-  .el-input--small .el-input__inner{
+<style lang="less">
+  @import '~vux/src/styles/reset.less';
+
+  html{
+    height: 100%;
+  }
+  .weui-dialog__btn_primary{
+    color:#1d83c5!important;
+  }
+
+
+  .vux-popup-picker-select, .weui-cell__ft{
+    color: #999 !important;
+  }
+  //title
+  .weui-label{
+    width: 7rem !important;
+    span{
+      color: red;
+    }
+  }
+  input::-webkit-input-placeholder {
+    color: #d7d7d7;
+  }
+  .weui-input{
+    color: #d7d7d7 !important;
+    font-size: 18px !important;
+  }
+  .vux-label-desc{
+    margin-left: 10px !important;
+    width: 6.3rem !important;
+    display: inline-block;
+    font-size: 16px !important;
+    color: black !important;
+  }
+    //下拉
+  .vux-popup-picker-select,.weui-cell__ft{
+    text-align: left !important;
+    color: #d7d7d7;
+    font-size: 16px!important;
+  }
+  .el-checkbox__label{
+    color:#999;
+  }
+  .el-input--small .el-input__inner {
     border: none;
   }
-  input,button,textarea{
+
+  input, button, textarea {
+    border: 0;
     outline: none;
   }
-  *{
+
+  * {
     margin: 0;
     padding: 0;
   }
-  ul>li{
+
+  ul > li {
     list-style: none;
   }
 </style>

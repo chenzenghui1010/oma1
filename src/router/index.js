@@ -11,10 +11,25 @@ import excitedaboutok from '../components/excitedAboutOk'
 import audito from '../components/auditO'
 import audit from '../components/audit'
 
+
+
+import inviteindex from '../components/inviteIndex'
+import invierpar from '../components/invitePar'
+
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    // {
+    //   path:'/',
+    //   name:'inviteindex',
+    //   component:inviteindex
+    // },
+    {
+      path:'/invierpar',
+      name:'invierpar',
+      component:invierpar
+    },
     {
       path:'/',
       name:'login',

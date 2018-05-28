@@ -17,17 +17,22 @@
         <li><span>来访事由：</span>洽谈项目</li>
       </ul>
       <ul>
-        <li>来访人</li>
+        <li class="title"><span>来访人</span></li>
         <li><span>姓名：</span>李四</li>
         <li><span>手机号：</span>138888888888</li>
         <li><span>证件号：</span>身份证 555782225455</li>
         <li><span>公司：</span>上海雅丰</li>
       </ul>
       <ul>
-        <li>随行人1</li>
+        <li class="title"> <span>随行人1</span></li>
         <li><span>姓名：</span>李四</li>
         <li style="border: none;"><span>证据号：</span>身份证 5634532453543</li>
       </ul>
+      <!--<ul>-->
+        <!--<li>随行人1</li>-->
+        <!--<li><span>姓名：</span>李四</li>-->
+        <!--<li style="border: none;"><span>证据号：</span>身份证 5634532453543</li>-->
+      <!--</ul>-->
     </div>
     <footer>
       <button @click="on">拒绝</button>
@@ -79,30 +84,35 @@
   }
 </script>
 <style scoped lang="less">
+
   .audito {
-    background-color: #f0f7ff;
+    background-color: #edf1f3;
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: relative;
     .shou, .lai {
       padding-left: 10px;
       background-color: #fff;
       P {
+        color: #333;
         width: 100%;
         height: 40px;
         display: flow;
-        border-bottom: 1px solid gray;
+        border-bottom: 1px solid #ededed;
         line-height: 40PX;
         margin-bottom: 20px;
         span {
           display: inline-block;
+          font-size: 18px;
+          color: #333;
         }
       }
       ul {
         background-color: #fff;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+        height: 100%;
         li {
-          height: 30px;
+          height: 40px;
           color: #8c939d;
           span {
             display: inline-block;
@@ -111,33 +121,53 @@
           }
         }
       }
+      ul:last-child{
+        /*margin: 10px 0;*/
+        /*border-top: 1px solid #8c939d;*/
+      }
+
     }
     .lai {
+      margin-bottom: 50px;
       ul {
         li:last-child {
-          border-bottom: 1px solid gray;
+        }
+        .title{
+          margin-bottom: 10px;
+          height: 36px;
+          span{
+            width: 4.5rem;
+            display: inline-block;
+            line-height: 36px;
+            text-align: center;
+            background: #e4edf4;
+            border-radius: 18px;
+            color: #1d83c5;
+          }
         }
       }
     }
     footer {
-      background-color: #fff;
+      background-color: #edf1f3;
       width: 100%;
       height: 50px;
-      position: fixed;
+      /*position: absolute;*/
       bottom: 0;
       button {
         border: none;
         width: 50%;
         height: 100%;
         background-color: #fff;
-        color: #8c939d;
+        color: #999;
+        font-size: 20px;
       }
       button:nth-child(2) {
         float: right;
-        border-left: 1px solid gainsboro;
+        border-left: 1px solid #ededed;
         color: #1E90FF;
       }
     }
+
     .shade {
       z-index: 9;
       position: absolute;
@@ -157,15 +187,19 @@
       height: 200px;
       background: #fff;
       p:nth-child(1) {
-        margin: 10px 0;
+        margin: 15px 0 19px 0 ;
+        font-size: 16px;
+        color: #333;
       }
       textarea {
-        padding: 5px 0 0 5px;
-        font-size: 16px;
-        color: #8c939d;
+        padding: 11px 0 0 10px;
+        font-size: 14px;
+        color: #d7d7d7;
+        border: 1px solid #d9d9d9;
+        margin-bottom:20px;
       }
       .btn {
-        margin-top: 10px;
+        /*margin-top: 20px;*/
         width: 100%;
         height: 29%;
         border-top: 1px solid gainsboro;
@@ -177,6 +211,7 @@
           float: left;
           background: #fff;
           color: gray;
+          font-size: 20px;
         }
         button:nth-child(2) {
           float: right;

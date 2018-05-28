@@ -4,17 +4,19 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve (dir) {
+
+
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
 
-
-module.exports = {
+var originalConfig = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
   },
+
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -29,6 +31,8 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+
+
   module: {
     rules: [
       {
@@ -84,3 +88,9 @@ module.exports = {
     child_process: 'empty'
   }
 }
+const vuxLoader = require('vux-loader')
+const webpackConfig = originalConfig
+
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: ['vux-ui']
+})

@@ -1,117 +1,212 @@
 <template>
   <div class="excitedaboutok">
+
+    <div class="title1">
+      <ul class="title1-ul1">
+        <li>✓</li>
+        <strong>
+          <p/>
+        </strong>
+        <li>✓</li>
+        <strong>
+        <p/>
+        </strong>
+        <li>✓</li>
+      </ul>
+
+      <ul class="title2-ul2">
+        <li>阅读须知</li>
+        <li>填写信息</li>
+        <li>确定信息</li>
+      </ul>
+
+    </div>
+
+
+
     <div class="d1">
-      <p> <span>受访人信息</span> </p>
+      <p><span>受访人信息</span></p>
       <ul>
-        <li><span>姓名：</span>张三</li>
-        <li><span>手机号：</span>138888888888</li>
-        <li><span>公司：</span>雅丰</li>
-        <li><span>部门：</span>开发部</li>
+        <li><span>姓名：</span>{{ this.$store.state.mName }}</li>
+        <li><span>手机号：</span>{{ this.$store.state.mPoints }}</li>
+        <li><span>公司：</span>{{ this.$store.state.mCompany }}</li>
+        <li><span>部门：</span>{{  this.$store.state.mDepartment }}</li>
       </ul>
     </div>
     <div class="d2">
-      <p><span>来访人信息</span> </p>
+      <p><span>来访人信息</span></p>
       <ul>
-        <li><span>姓名：</span>李四</li>
-        <li><span>手机号：</span>138888888888</li>
-        <li><span>证件号：</span>186546548722151</li>
-        <li><span>车牌号：</span>粤A88888</li>
-        <li><span>公司：</span>上海雅丰</li>
-        <li><span>来访时间：</span>2018/5/11 10:00</li>
-        <li><span>预计离开：</span>2018/5/11 11:00</li>
-        <li><span>来访事由：</span>洽谈项目</li>
+        <li><span>姓名：</span>{{ this.$store.state.eName }}</li>
+        <li><span>手机号：</span>{{ this.$store.state.ePoints }}</li>
+        <li><span>证件号：</span>{{ this.$store.state.eLicense}} {{ this.$store.state.eLicenseNumber}}</li>
+        <li><span>车牌号：</span>{{ this.$store.state.eCar}} {{ this.$store.state.eCarNumber}}</li>
+        <li><span>公司：</span>{{ this.$store.state.eCompany }}</li>
+        <li><span>来访时间：</span>{{ this.$store.state.eStart }}</li>
+        <li><span>预计离开：</span>{{ this.$store.state.eEnd}}</li>
+        <li><span>来访事由：</span>{{ this.$store.state.eCause }}</li>
       </ul>
     </div>
     <div class="d3">
-      <p> <span>随行人信息</span> </p>
-        <ul>
-          <li><span>姓名：</span>李四</li>
-          <li><span>证件号：</span>身份证 186546548722151</li>
-        </ul>
+      <p><span>随行人信息</span></p>
+      <ul>
+        <li><span>姓名：</span>李四</li>
+        <li><span>证件号：</span>身份证 186546548722151</li>
+      </ul>
     </div>
 
     <div class="footer">
       <p>*在提交访客上去信息前，请确保信息准确无误</p>
       <p>
         <button @click="last">上一步</button>
-        <button @click="ok">确定提交</button>
+        <button @click="submit">确定提交</button>
       </p>
     </div>
   </div>
 </template>
 <script>
-  export default{
-    name:'excitedaboutpok',
-    data(){
-        return{
-        }
+  export default {
+    name: 'excitedaboutpok',
+    data() {
+      return {}
     },
-    methods:{
-      last:function(){
-        history.go(-1);
+    methods: {
+      last() {
+        // history.go(-1) ;
+          history.back()
+
       },
-      ok:function(){
-       this.$router.push({path:'makethree'})
+      submit() {
+        this.$router.push({path: 'makethree'});
+      }
+    },
+
+    computed: {
+      eCaeS:function(){
+       return  this.$store.state.eCar.slice(2,1)
       }
     }
+
   }
 </script>
-<style  scoped lang="less">
-  *{
+<style scoped lang="less">
+  * {
     padding: 0;
     margin: 0;
   }
-  .excitedaboutok{
-    .d1,.d2,.d3 {
+  strong {
+     width: 30%;
+     height: 40px;
+
+     text-align: center;
+     font-size: 20px;
+    p {
+       display: inline-block;
+       width: 90%;
+       background: #67cd57;
+       vertical-align: middle;
+       height: 3px;
+     }
+   }
+
+  .title1 {
+    padding-top: 10px;
+    width: 100%;
+    height: 80px;
+    background: #fff;
+    .title1-ul1 {
+      width: 80%;
+      margin: 0 auto 0 auto;
+      display: flex;
+      justify-content: space-between;
+
+      li {
+        text-align: center;
+        line-height: 40px;
+        width: 40px;
+        height: 40px;
+        background: #67cd57;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 28px;
+      }
+    }
+    .title2-ul2 {
+      width: 87%;
+      margin: 5px auto;
+      display: flex;
+      justify-content: space-between;
+      color: #67cd57;
+    }
+  }
+
+
+
+
+
+
+
+  .excitedaboutok {
+    height: 100%;
+    .d1, .d2, .d3 {
       P {
         width: 100%;
-        height: 40px;
-        background-color: #f0f7ff;
-        span{
+        height: 43px;
+        background-color: #edf1f3;
+        span {
           display: inline-block;
-          margin: 10px 0 0 10px;
+          margin: 12px 0 0 10px;
+          color: #999;
         }
       }
-      ul{
+      ul {
         background-color: #fff;
-        li{
-          padding: 0 0 0 10px;
+        margin-top: 20px;
+        li {
+          padding: 0 0 0 20px;
           color: #8c939d;
-          span{
+          margin-bottom: 18px;
+          span {
             display: inline-block;
             width: 100px;
-            height: 35px;
-            color: #000;
+            height: 30px;
+            color: #333;
           }
         }
       }
     }
-    .footer{
+    .footer {
       text-align: center;
       width: 100%;
-      position: fixed;
-      height: 100%;
-      background: #f0f7ff;
-      P{
+      background: #edf1f3 ;
+      position: absolute;
+      background: #edf1f3;
+      P {
         margin-top: 20px;
-        color: red;
+        color: #ea6f6f;
         font-size: 10px;
         padding: 0 10px;
-        button{
+
+        button {
           font-size: 16px;
-          background-color: #1E90FF;
+          background-color: #1d83c5;
           color: #fff;
           width: 45%;
-          height: 40px;
+          height: 45px;
           float: right;
-          border:none;
+          border: none;
           border-radius: 4px;
+          display: inline-block;
+          margin-bottom:30px;
         }
-        button:nth-child(1){
+        button:nth-child(1) {
           background-color: #fff;
-          float:left;
-          color: #1E90FF;
+          float: left;
+          color: #1d83c5;
         }
+      }
+      P:nth-child(1){
+        float: left;
+        margin-bottom: 30px;
       }
     }
   }
