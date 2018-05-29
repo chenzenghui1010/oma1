@@ -1,7 +1,8 @@
 <template>
   <div class="audit">
-    <div v-for=" (item,index)  in dataList" class="con">
-      <p>{{item.createTime}}</p>
+    <div v-for=" (item,index)  in dataList"  class="con">
+
+      <p></p>
       <ul>
         <li><strong>受访人：{{ item.intervieweeName}}</strong><span @click="xiangq(visitId)">详情</span></li>
         <li>来访人：<span>{{ item.visitorName}}</span></li>
@@ -21,59 +22,40 @@
     name: 'audit',
     data() {
       return {
-         dataList: [],
-
-           //[{
-        //   date: '5月11日 下午4：00',
-        //   shou: '赵四',
-        //   lai: '王麻子1',
-        //   laidate: '2018/5/10 14:00',
-        //   rennum: '4人',
-        //   shiyou: '详谈',
-        // },
-        //   {
-        //     date: '5月11日 下午8：00',
-        //     shou: '赵五',
-        //     lai: '王麻子2',
-        //     laidate: '2018/5/10 11:00',
-        //     rennum: '4人',
-        //     shiyou: '详谈',
-        //   }
-        //   ,
-        //   {
-        //     date: '5月11日 下午8：00',
-        //     shou: '赵五',
-        //     lai: '王麻子3',
-        //     laidate: '2018/5/10 11:00',
-        //     rennum: '4人',
-        //     shiyou: '详谈',
-        //   }
-        // ],
+        dataList: [],
+        visitInfoList:[],
       }
     },
 
-    created(){
-      let url= this.HOST +  '/mv/visit/visitInfoListForManager'
-      this.$axios.post(url,{
+    created() {
+      let url = this.HOST + '/mv/visit/visitInfoListForInterviewee'
+      this.$axios.post(url, {})
+        .then(res => {
+          this.dataList = res.data
+          console.log(res.data.resultCode)
+          console.log(res.data.message)
+          console.log(res.data)
 
-      }).then(res =>{
-
-        //this.dataList=res.data
-        console.log(res.data.resultCode)
-        console.log(res.data.message)
-        console.log(res.data.data)
-      })
+        })
     },
     methods: {
       xiangq: function (visitId) {
         alert(this.dataList[visitId].intervieweeName)
-        this.$router.push({path: 'audito',query:{}})
+        this.$router.push({path: 'audito', query: {}})
       },
-      no(){
+      no() {
         alert(0);
       }
     },
-    computed:{}
+    computed: {
+
+      List: function () {
+        for ( let i=0; i<this.dataList.length;i++) {
+          this.List= this.dataList[i].visitInfoList
+        }
+
+      }
+    }
 
   }
 </script>

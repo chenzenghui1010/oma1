@@ -1,14 +1,13 @@
-
 <template>
   <div class="hello">
     <div><img src="../assets/poents.png"/>
       <input type="number" pattern="\d*" ref="input" v-model='points' maxlength="11"
              placeholder="请输入手机号">
     </div>
-    <div><input type="text"  maxlength="6" v-model="verification" placeholder="请输入验证码"> <span
-                                                                            @click="send">{{verNum}}</span>
+    <div><input type="text" maxlength="6" v-model="verification" placeholder="请输入验证码"> <span
+      @click="send">{{verNum}}</span>
     </div>
-    <button  @click="login">登 录</button>
+    <button @click="login">登 录</button>
   </div>
 </template>
 <script>
@@ -24,11 +23,11 @@
       return {
         points: '',
         verification: '',
-        verNum:'获取验证码'
+        verNum: '获取验证码'
       }
     },
 
-    created(){
+    created() {
 
     },
 
@@ -40,12 +39,12 @@
 
       login() {
         if (!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.points))) {
-              AlertModule.show({
-                title: '手机号码格式不正确',
-              })
+          AlertModule.show({
+            title: '手机号码格式不正确',
+          })
           return false
-            }
-        if(!(/^\d{6}$/.test(this.verification))){
+        }
+        if (!(/^\d{6}$/.test(this.verification))) {
           AlertModule.show({
             title: '验证码格式不正确',
           })
@@ -53,49 +52,46 @@
         }
 
         let url = this.HOST + '/mv/user/phoneLogin'
-        this.$axios.post(url,{
-             phone:this.points,
-            verifyCode:this.verification
+        this.$axios.post(url, {
+          phone: this.points,
+          verifyCode: this.verification
           // params:{
           //   phone:this.points,
           //   verifyCode:this.verification
           // }
-        }).then(res =>{
-          if(res.data.resultCode == '0') {
+        }).then(res => {
+          if (res.data.resultCode == '0') {
+            this.$store.dispatch('phone', this.points)
             console.log(res.data.message)
-  +          this.$router.push({path: 'makeo'})
-          }else{
+            this.$router.push({path: 'makeo'})
+          } else {
             AlertModule.show({
               title: '验证码不正确',
             })
           }
         })
-          .catch( error =>{
+          .catch(error => {
             console.log(error)
           })
       },
-      send(){
+      send() {
         if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(this.points))) {
           AlertModule.show({
             title: '手机号码格式不正确',
           })
           return false;
         }
-        let url=this.HOST + '/mv/user/askForSms';
-        this.$axios.post(url,{
-          phone:this.points
-          // params:{
-          //   phone:this.points
-          // }
+        let url = this.HOST + '/mv/user/askForSms';
+        this.$axios.post(url, {
+          phone: this.points
+
         })
           .then(res => {
-            // console.log(res.data.message)
-            if(res.data.resultCode == '0'){
-                  // this.verNum='已发送...'
+            if (res.data.resultCode == '0') {
             }
 
           })
-          .catch(error =>{
+          .catch(error => {
             console.log(error)
           })
       }
@@ -106,9 +102,9 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 
-  input{
+  input {
     border: 0 !important;
-     -webkit-appearance: none !important;
+    -webkit-appearance: none !important;
   }
 
   .weui-cell {

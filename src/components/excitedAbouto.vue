@@ -6,7 +6,7 @@
       <x-input title=" <span>*</span> 姓名：" required="required" v-model="eName" placeholder="请输入"
                is-type="china-name">
         <span>*</span></x-input>
-      <x-input title=" <span>*</span> 手机号：" required="required" mask="999 9999 9999" v-model="ePoints"
+      <x-input title=" <span>*</span> 手机号：" required="required" mask="99999999999" v-model="ePoints"
                placeholder="请输入"
                :max="13"
                is-type="china-mobile"></x-input>
@@ -37,7 +37,7 @@
       <p><span>{{title2}}</span></p>
       <div class="adds" v-for=" (item,index) in follower">
         <div class="add-name">
-          <x-input title=" <span>*</span> 姓名：" required="required" v-model="item.fName" placeholder="请输入"
+          <x-input title=" <span>*</span> 姓名：" required="required" v-model="item.name" placeholder="请输入"
                    is-type="china-name"></x-input>
           <i><img @click="delO(index)" src="../assets/delete.png"/></i>
           <div>
@@ -49,8 +49,8 @@
           </div>
         </div>
         <div>
-          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model="item.fLicense"></popup-picker>
-          <x-input title=" " v-model="item.fLicenseNumber" placeholder="请输入"></x-input>
+          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model="item.identityType"></popup-picker>
+          <x-input title=" " v-model="item.identityNo" placeholder="请输入"></x-input>
         </div>
         <div class="addk">
         </div>
@@ -102,51 +102,41 @@
     },
     data() {
       return {
-        follower: [{
-          fName: '1111',
-          fLicense: ['身份证'],
-          fLicenseNumber: this.$store.state.follower.fLicenseNumber,
-          title: [['身份证']],
-          shows: false
-        }],
-        // fName: this.$store.state.fName,
-        // fLicense: [this.$store.state.fLicense],
-        // fLicenseNumber: this.$store.state.fLicenseNumber,
-
-        list1: [['身份证']],
-        Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼']],
+        follower: [],
+        list1: [['身份证类型','一代身份证', '二代身份证']],
+        Car: [['京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼']],
         title1: '来访人信息',
         title2: '随行人员信息',
 
         eName: this.$store.state.eName,
         ePoints: this.$store.state.ePoints,
-        eLicense: [this.$store.state.eLicense],
-        eLicense2: [],
+        eLicense: [this.$store.state.eLicense.toString()],
         eLicenseNumber: this.$store.state.eLicenseNumber,
-        eCar: [this.$store.state.eCar],
+        eCar: [this.$store.state.eCar.toString()],
         eCarNumber: this.$store.state.eCarNumber,
         eCompany: this.$store.state.eCompany,
         eStart: this.$store.state.eStart,
         eEnd: this.$store.state.eEnd,
         eCause: this.$store.state.eCause,
-        eList: [],
-
         showExcitedO: true,
       }
     },
-    computed: {},
     created() {
+      this.follower = this.$store.state.follower;
+    },
+    computed: {
 
     },
+
     methods: {
 
       add: function () {
 
         this.follower.push({
-          'fName':this.$store.state.fName,
-          'fLicense': ['身份证'],
-          'fLicenseNumber': this.$store.state.fLicenseNumber,
-          'title': [['身份证']],
+          'name': this.$store.state.follower.name,
+          'identityNo': this.$store.state.follower.identityNo,
+          'identityType': ['身份证类型'],
+          'title': [['身份证类型','一代身份证', '二代身份证']],
           'shows': false
         })
       },
@@ -159,58 +149,34 @@
       //预 览
       excited: function () {
         let _this = this.$store.dispatch
-
         _this('eName', this.eName),
-        _this('ePoints', this.ePoints),
-        _this('eLicense', this.eLicense.toString()),
-        _this('eLicenseNumber', this.eLicenseNumber),
-        _this('eCar', this.eCar.toString()),
-        _this('eCarNumber', this.eCarNumber),
-        _this('eCompany', this.eCompany),
-        _this('eStart', this.eStart),
-        _this('eEnd', this.eEnd),
-        _this('eCause', this.eCause);
-        //随行人
+          _this('ePoints', this.ePoints),
+          _this('eLicense', this.eLicense.toString()),
+          _this('eLicenseNumber', this.eLicenseNumber),
+          _this('eCar', this.eCar.toString()),
+          _this('eCarNumber', this.eCarNumber),
+          _this('eCompany', this.eCompany),
+          _this('eStart', this.eStart),
+          _this('eEnd', this.eEnd),
+          _this('eCause', this.eCause),
 
-
-        //_this('follower', [{'fName':this.follower.fName ,'fLicense':[this.follower.fLicense],'fLicenseNumber':this.follower.fLicenseNumber}]);
-        // alert(this.$store.dispatch('follower',this.follower.fName))
-        // for (let i = 0; i < this.$store.state.follower.length; i++) {
-        //
-        //   alert(this.$store.state.follower[i].fName)
-        // }
-
+          //随行人
+          _this('follower', this.follower);
 
         // this.$router.push({path: 'excitedaboutok'})
-        // if(this.eName == '' || this.ePoints == '' || this.eLicense == '' || this.eLicenseNumber == '' ||
+        // if (this.eName == '' || this.ePoints == '' || this.eLicense == '身份证类型' || this.eLicenseNumber == '' ||
         //
-        //   this.eCompany == '' || this.eStart == '' ||this.eEnd == '' || this.eCause == ''){
+        //   this.eCompany == '' || this.eStart == '' || this.eEnd == '' || this.eCause == ''
         //
-        //   AlertModule.show({title:'请填写完整信息'})
+        //
+        // ) {
+        //
+        //   AlertModule.show({title: '请填写完整信息'})
         //
         //   return false
         // }
-        let url = this.HOST + '/mv/visit/reserve'
-        this.$axios.post(url, {
-          name: this.eName,
-          phone: this.ePoints,
-          identityNo: this.eLicenseNumber,
-          identityType: this.eLicense,
-          company: this.eCompany,
-          scheduledInTime: this.eStart,
-          scheduledOutTime: this.eEnd,
-          subject: this.eCause,
-          follower: {'name': '你好', 'identityNo': '431102198912258414', 'identityType': '身份证'}
-        })
-          .then(res => {
-            this.$router.push({path: 'excitedaboutok'})
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        this.$router.push({path: 'excitedaboutok'})
 
-
-        // this.$router.push({path: 'excitedaboutok'})
       },
       delO: function (index) {
         this.follower[index].shows = true;

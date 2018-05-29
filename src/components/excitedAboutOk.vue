@@ -9,7 +9,7 @@
         </strong>
         <li>✓</li>
         <strong>
-        <p/>
+          <p/>
         </strong>
         <li>✓</li>
       </ul>
@@ -23,14 +23,13 @@
     </div>
 
 
-
     <div class="d1">
       <p><span>受访人信息</span></p>
       <ul>
         <li><span>姓名：</span>{{ this.$store.state.mName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.mPoints }}</li>
         <li><span>公司：</span>{{ this.$store.state.mCompany }}</li>
-        <li><span>部门：</span>{{  this.$store.state.mDepartment }}</li>
+        <li><span>部门：</span>{{ this.$store.state.mDepartment }}</li>
       </ul>
     </div>
     <div class="d2">
@@ -43,14 +42,14 @@
         <li><span>公司：</span>{{ this.$store.state.eCompany }}</li>
         <li><span>来访时间：</span>{{ this.$store.state.eStart }}</li>
         <li><span>预计离开：</span>{{ this.$store.state.eEnd}}</li>
-        <li><span>来访事由：</span>{{ this.$store.state.eCause }}</li>
+        <li><span>来访事由：</span>{{ this.$store.state.eCause }}:{{ this.$store.state.phone }}</li>
       </ul>
     </div>
     <div class="d3">
-      <p><span>随行人信息</span></p>
-      <ul>
-        <li><span>姓名：</span>李四</li>
-        <li><span>证件号：</span>身份证 186546548722151</li>
+      <ul v-for=" (item, index)  in  followers  ">
+        <p><span>随行人{{ index +1}}信息</span></p>
+        <li><span>姓名：</span>{{ item.name}}</li>
+        <li><span>证件号：</span>居民身份证 {{ item.identityNo.toString()}}</li>
       </ul>
     </div>
 
@@ -67,22 +66,70 @@
   export default {
     name: 'excitedaboutpok',
     data() {
-      return {}
+      return {
+        followers: [],
+
+      }
     },
+    created() {
+      this.followers = this.$store.state.follower;
+      // console.log( typeof  this.$store.state.eStart)
+    },
+    computed: {},
     methods: {
       last() {
         // history.go(-1) ;
-          history.back()
+        history.back()
 
       },
       submit() {
-        this.$router.push({path: 'makethree'});
+        for (let i = 0; i < this.followers.length; i++) {
+          if (this.followers[i].identityType == '一代身份证') {
+            this.followers[i].identityType = '1'
+          } else if (this.followers[i].identityType == '二代身份证') {
+           this.followers[i].identityType = '2'
+          }
+        }
+
+        // alert(JSON.stringify(this.followers))
+        let url = this.HOST + '/mv/visit/reserve'
+        this.$axios.post(url, {
+          phone: this.$store.state.phone,
+          name: this.$store.state.eName,
+          identityNo: this.$store.state.eLicenseNumber,
+          identityType: this.identityNo,
+          company: this.$store.state.eCompany,
+          scheduledInTime: this.$store.state.eStart,
+          scheduledOutTime: this.$store.state.eEnd,
+          subject: this.$store.state.eCause,
+          follower:JSON.stringify(this.$store.state.follower),
+          //follower:[{'name':'你好','identityNo':'431102198912258414','identityType':'身份证'}]
+
+        })
+          .then(res => {
+            console.log(this.follower)
+            console.log(res.data);
+            this.$router.push({path: 'makethree'});
+          })
+          .catch(error => {
+            console.log(error)
+          })
       }
     },
 
     computed: {
-      eCaeS:function(){
-       return  this.$store.state.eCar.slice(2,1)
+      identityNo: function () {
+        if (this.$store.state.eLicense == '一代身份证') {
+          return '1'
+        } else if (this.$store.state.eLicense == '二代身份证') {
+          return '2'
+        } else {
+          return '身份证类型错误'
+        }
+      },
+
+      eCaeS: function () {
+        return this.$store.state.eCar.slice(2, 1)
       }
     }
 
@@ -93,20 +140,21 @@
     padding: 0;
     margin: 0;
   }
-  strong {
-     width: 30%;
-     height: 40px;
 
-     text-align: center;
-     font-size: 20px;
+  strong {
+    width: 30%;
+    height: 40px;
+
+    text-align: center;
+    font-size: 20px;
     p {
-       display: inline-block;
-       width: 90%;
-       background: #67cd57;
-       vertical-align: middle;
-       height: 3px;
-     }
-   }
+      display: inline-block;
+      width: 90%;
+      background: #67cd57;
+      vertical-align: middle;
+      height: 3px;
+    }
+  }
 
   .title1 {
     padding-top: 10px;
@@ -138,12 +186,6 @@
       color: #67cd57;
     }
   }
-
-
-
-
-
-
 
   .excitedaboutok {
     height: 100%;
@@ -177,7 +219,7 @@
     .footer {
       text-align: center;
       width: 100%;
-      background: #edf1f3 ;
+      background: #edf1f3;
       position: absolute;
       background: #edf1f3;
       P {
@@ -196,7 +238,7 @@
           border: none;
           border-radius: 4px;
           display: inline-block;
-          margin-bottom:30px;
+          margin-bottom: 30px;
         }
         button:nth-child(1) {
           background-color: #fff;
@@ -204,7 +246,7 @@
           color: #1d83c5;
         }
       }
-      P:nth-child(1){
+      P:nth-child(1) {
         float: left;
         margin-bottom: 30px;
       }

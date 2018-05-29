@@ -4,7 +4,14 @@ import vuex from 'vuex'
 Vue.use(vuex);
 
 export default new vuex.Store({
+
+
+
+
   state: {
+
+    phone:'',
+
     // 受访人信息
     mName: '',
     mPoints: '',
@@ -15,7 +22,7 @@ export default new vuex.Store({
 
     eName: '',
     ePoints: '',
-    eLicense: '身份证',
+    eLicense: '居民身份证',
     eLicenseNumber: '',
     eCar: '请选择',
     eCarNumber: '',
@@ -25,16 +32,6 @@ export default new vuex.Store({
     eCause: '',
 
 
-    // eName: '',
-    // ePoints: '',
-    // eLicense: '身份证',
-    // eLicenseNumber: '',
-    // eCar: '请选择',
-    // eCarNumber: '',
-    // eCompany: '',
-    // eStart: '',
-    // eEnd: '',
-    // eCause: '',
 
     //来访邀约
 
@@ -51,13 +48,16 @@ export default new vuex.Store({
 
     //随行人
 
-    // follower: [{'fName': '', 'fLicense': ['身份证'], 'fLicenseNumber': '', 'title': '身份证'}],
-    follower: [],
-    fName: '',
-    fLicense: ['身份证'],
-    fLicenseNumber: '',
+    follower: [{'name': '', 'identityNo': '', 'identityType': ['居民身份证'], title: [['居民身份证','一代身份证','二代身份证']]}],
+
   },
   mutations: {
+    //
+    PHONE( state , phone){
+          state.phone = phone;
+    },
+
+
     mName: (state, name) => {
       state.mName = name;
     },
@@ -149,6 +149,11 @@ export default new vuex.Store({
   },
 
   actions: {
+
+    phone({commit},phone){
+
+      commit('PHONE' , phone)
+    },
 
     follower({commit}, foll) {
       return new Promise(resolve => {
