@@ -1,19 +1,20 @@
 <template>
   <div class="audit">
-    <div v-for=" (item,index)  in dataList"  class="con">
-
-      <p></p>
-      <ul>
-        <li><strong>受访人：{{ item.intervieweeName}}</strong><span @click="xiangq(visitId)">详情</span></li>
-        <li>来访人：<span>{{ item.visitorName}}</span></li>
-        <li>来访时间：<span>{{ item.scheduledInTime}}</span></li>
-        <li>随行人：<span></span></li>
-        <li>来访事由：<span>{{ item.subject}}</span></li>
-      </ul>
-      <p>
-        <button @click="no">拒绝</button>
-        <button>同意</button>
-      </p>
+    <div v-for=" (item,index)  in dataList.visitInfoList" class="con">
+      <div>
+        <p>{{item.intervieweeName}}</p>
+        <ul>
+          <li><strong>受访人：{{ item.intervieweeName}}</strong><span @click="xiangq(visitId)">详情</span></li>
+          <li>来访人：<span>{{ item.visitorName}}</span></li>
+          <li>来访时间：<span>{{ item.scheduledInTime}}</span></li>
+          <li>随行人：<span></span></li>
+          <li>来访事由：<span>{{ item.subject}}</span></li>
+        </ul>
+        <p>
+          <button @click="no">拒绝</button>
+          <button>同意</button>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -23,7 +24,7 @@
     data() {
       return {
         dataList: [],
-        visitInfoList:[],
+        visitInfoList: [],
       }
     },
 
@@ -35,10 +36,10 @@
           console.log(res.data.resultCode)
           console.log(res.data.message)
           console.log(res.data)
-
         })
     },
     methods: {
+
       xiangq: function (visitId) {
         alert(this.dataList[visitId].intervieweeName)
         this.$router.push({path: 'audito', query: {}})
@@ -50,8 +51,8 @@
     computed: {
 
       List: function () {
-        for ( let i=0; i<this.dataList.length;i++) {
-          this.List= this.dataList[i].visitInfoList
+        for (let i = 0; i < this.dataList.length; i++) {
+          this.List = this.dataList[i].visitInfoList
         }
 
       }

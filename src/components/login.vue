@@ -61,9 +61,10 @@
           // }
         }).then(res => {
           if (res.data.resultCode == '0') {
+            //存入登录手机号
             this.$store.dispatch('phone', this.points)
             console.log(res.data.message)
-            this.$router.push({path: 'makeo'})
+            this.$router.push({path: 'audit'})
           } else {
             AlertModule.show({
               title: '验证码不正确',

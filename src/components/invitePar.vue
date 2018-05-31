@@ -38,7 +38,7 @@
     },
     methods: {
       last() {
-        // history.go(-1) ;
+
         history.back()
 
       },

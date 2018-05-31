@@ -149,7 +149,7 @@
       //预 览
       excited: function () {
         let _this = this.$store.dispatch
-        _this('eName', this.eName),
+          _this('eName', this.eName),
           _this('ePoints', this.ePoints),
           _this('eLicense', this.eLicense.toString()),
           _this('eLicenseNumber', this.eLicenseNumber),

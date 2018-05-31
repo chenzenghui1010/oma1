@@ -73,12 +73,13 @@
     },
     created() {
       this.followers = this.$store.state.follower;
-      // console.log( typeof  this.$store.state.eStart)
+
     },
     computed: {},
+
     methods: {
       last() {
-        // history.go(-1) ;
+
         history.back()
 
       },
@@ -91,7 +92,7 @@
           }
         }
 
-        // alert(JSON.stringify(this.followers))
+
         let url = this.HOST + '/mv/visit/reserve'
         this.$axios.post(url, {
           phone: this.$store.state.phone,
@@ -103,7 +104,6 @@
           scheduledOutTime: this.$store.state.eEnd,
           subject: this.$store.state.eCause,
           follower:JSON.stringify(this.$store.state.follower),
-          //follower:[{'name':'你好','identityNo':'431102198912258414','identityType':'身份证'}]
 
         })
           .then(res => {

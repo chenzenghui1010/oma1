@@ -9,12 +9,7 @@ import router from './router'
 import Axios from 'axios'
 import qs from 'qs'
 
-
 Vue.prototype.$axios=Axios;
-
-// 服务器地址
-// http://zwvisit.indoorun.com
-
 
 // Axios.defaults.baseURL='http://zwvisit.indoorun.com';
 Vue.prototype.HOST = '/api';
