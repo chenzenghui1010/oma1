@@ -16,6 +16,8 @@
 </template>
 <script>
 
+  import { askForSms ,phoneLogin } from "../parking";
+
   import {AlertModule} from 'vux';
 
   export default {
@@ -61,19 +63,22 @@
             this.canClick = true  //这里重新开启
           }
         }, 1000)
-        let url = '/mv/user/askForSms';
-        this.$axios.post(url, {
-          phone: this.points
+        askForSms({phone: this.points})
+          .then(res=>{
 
-        })
-          .then(res => {
-            if (res.data.resultCode == '0') {
-              console.log(res.data)
-            }
           })
-          .catch(error => {
-            console.log(error)
-          })
+        // this.$axios.post(url, {
+        //   phone: this.points
+        //
+        // })
+        //   .then(res => {
+        //     if (res.data.resultCode == '0') {
+        //       console.log(res.data)
+        //     }
+        //   })
+        //   .catch(error => {
+        //     console.log(error)
+        //   })
       },
 
 
@@ -97,49 +102,36 @@
           return
         }
 
-        let url ='/mv/user/phoneLogin'
-        //存入登录手机号
-        this.$store.dispatch('phone', this.points)
-        this.$axios.post(url, {
-          phone: this.points,
-          verifyCode: this.verification
-          // params:{
-          //   phone:this.points,
-          //   verifyCode:this.verification
-          // }
-        }).then(res => {
-          if (res.data.resultCode == '0') {
+        // let url ='/mv/user/phoneLogin'
+        // //存入登录手机号
+        // this.$store.dispatch('phone', this.points)
+        phoneLogin({phone:this.points,verifyCode:this.verification})
+        // this.$axios.post(url, {
+        //   phone: this.points,
+        //   verifyCode: this.verification
+        // })
+          .then(data => {
 
-            console.log(res.data)
+            if (data.redirectUrl != '') {
 
-            if (res.data.data.redirectUrl != '') {
-
-              window.location.href = res.data.data.redirectUrl
+              window.location.href = data.redirectUrl
               return;
             }
 
-            if (res.data.data.roleType == 1) {
+            if (data.roleType == 1) {
 
               this.$router.push({path: 'makeo'})
 
             }
-            if (res.data.data.roleType == 2) {
+            if (data.roleType == 2) {
 
               this.$router.push({path: 'audit', query: {userType: '0'}})
 
             }
-            if (res.data.data.roleType == 3) {
+            if (data.roleType == 3) {
 
               this.$router.push({path: 'audit', query: {userType: '1'}})
             }
-
-          } else {
-
-            AlertModule.show({
-              title: '验证码不正确',
-
-            })
-          }
         })
           .catch(error => {
             console.log(error)

@@ -29,6 +29,8 @@
 </template>
 <script>
   import moment from 'moment'
+  import {visitInfoListForInterviewee} from '../parking'
+
 
   export default {
 
@@ -42,31 +44,30 @@
         reason: '',
         userType: this.$route.query.userType,
         requestUser: '',
-        noData:false
+        noData: false
 
       }
     },
 
     created() {
-
-      let url =  '/mv/visit/visitInfoListForInterviewee'
-      this.$axios.post(url, {
-        status: this.userType
-      })
-        .then(res => {
-          if (res.data.resultCode == 0) {
-            this.dataList = res.data.data.visitInfoList
-            console.log(this.dataList);
-            console.log(res.data.resultCode)
-            console.log(res.data.message)
-          }
+      alert(this.userType)
+      visitInfoListForInterviewee({status: this.userType})
+      // let url =  '/mv
+      // /visit/visitInfoListForInterviewee'
+      // this.$axios.post(url, {
+      //   status: this.userType
+      // })
+        .then(data => {
+          this.dataList = data.data.visitInfoList
+          console.log(this.dataList);
+          console.log(data.resultCode)
+          console.log(data.message)
         }).catch(error => {
         console.log(error)
       })
-
-        if (this.dataList.length <= 0){
-          this.noData = true
-        }
+      if (this.dataList.length <= 0) {
+        this.noData = true
+      }
     },
     mounted() {
     },
