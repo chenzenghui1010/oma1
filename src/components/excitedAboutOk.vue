@@ -37,12 +37,12 @@
       <ul>
         <li><span>姓名：</span>{{ this.$store.state.eName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.ePoints }}</li>
-        <li><span>证件号：</span>{{ this.$store.state.eLicense}} {{ this.$store.state.eLicenseNumber}}</li>
+        <li><span>证件号：</span>居民身份证 {{ this.$store.state.eLicenseNumber}}</li>
         <li><span>车牌号：</span>{{ this.$store.state.eCar}} {{ this.$store.state.eCarNumber}}</li>
         <li><span>公司：</span>{{ this.$store.state.eCompany }}</li>
         <li><span>来访时间：</span>{{ this.$store.state.eStart }}</li>
         <li><span>预计离开：</span>{{ this.$store.state.eEnd}}</li>
-        <li><span>来访事由：</span>{{ this.$store.state.eCause }}:{{ this.$store.state.phone }}</li>
+        <li><span>来访事由：</span>{{ this.$store.state.eCause }}</li>
       </ul>
     </div>
     <div class="d3">
@@ -63,11 +63,14 @@
   </div>
 </template>
 <script>
+  import { AlertModule} from  'vux'
   export default {
     name: 'excitedaboutpok',
+    components:{AlertModule},
     data() {
       return {
         followers: [],
+        alert:'',
 
       }
     },
@@ -84,16 +87,15 @@
 
       },
       submit() {
+        alert(this.$store.state.phone)
         for (let i = 0; i < this.followers.length; i++) {
           if (this.followers[i].identityType == '一代身份证') {
             this.followers[i].identityType = '1'
           } else if (this.followers[i].identityType == '二代身份证') {
-           this.followers[i].identityType = '2'
+            this.followers[i].identityType = '2'
           }
         }
-
-
-        let url = this.HOST + '/mv/visit/reserve'
+        let url = '/mv/visit/reserve'
         this.$axios.post(url, {
           phone: this.$store.state.phone,
           name: this.$store.state.eName,
@@ -103,13 +105,18 @@
           scheduledInTime: this.$store.state.eStart,
           scheduledOutTime: this.$store.state.eEnd,
           subject: this.$store.state.eCause,
-          follower:JSON.stringify(this.$store.state.follower),
-
+          follower: JSON.stringify(this.$store.state.follower),
         })
           .then(res => {
-            console.log(this.follower)
-            console.log(res.data);
-            this.$router.push({path: 'makethree'});
+
+            if (res.data.resultCode == '0') {
+              this.$router.push({path: 'makethree', query: {makethree: '您的来访预约申请已提交成功，我们会尽快审核,请耐心等候'}});
+            }else if (res.data.resultCode == '1001'){
+              AlertModule.show({title: this.alert = '系统异常'})
+              setTimeout(()=>{
+                this.$router.push({path:'/'})
+              },1000)
+            }
           })
           .catch(error => {
             console.log(error)
@@ -127,12 +134,7 @@
           return '身份证类型错误'
         }
       },
-
-      eCaeS: function () {
-        return this.$store.state.eCar.slice(2, 1)
-      }
     }
-
   }
 </script>
 <style scoped lang="less">
@@ -209,7 +211,7 @@
           margin-bottom: 18px;
           span {
             display: inline-block;
-            width: 100px;
+            width: 25%;
             height: 30px;
             color: #333;
           }

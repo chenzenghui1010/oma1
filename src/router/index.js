@@ -14,21 +14,21 @@ import audit from '../components/audit'
 
 
 import inviteindex from '../components/inviteIndex'
-import invierpar from '../components/invitePar'
+import invitepar from '../components/invitePar'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //   path:'/',
-    //   name:'inviteindex',
-    //   component:inviteindex
-    // },
     {
-      path:'/invierpar',
-      name:'invierpar',
-      component:invierpar
+      path:'/inviteindex',
+      name:'inviteindex',
+      component:inviteindex
+    },
+    {
+      path:'/invitepar',
+      name:'invitepar',
+      component:invitepar
     },
     {
       path:'/',
@@ -72,7 +72,7 @@ export default new Router({
     },
     {
       path: '/audito',
-      name: 'audito',
+      // name: 'audito',
       component: audito
     },
     {
@@ -80,5 +80,5 @@ export default new Router({
       name:'audit',
       component:audit
     },
-  ]
+   ]//,mode:'history'
 })

@@ -19,7 +19,6 @@ export default new vuex.Store({
     mDepartment: '',
 
     // 来访人信息
-
     eName: '',
     ePoints: '',
     eLicense: '居民身份证',
@@ -34,12 +33,11 @@ export default new vuex.Store({
 
 
     //来访邀约
-
     iName: '',
     iPoints: '',
-    iLicense: '',
+    iLicense: '居民身份证',
     iLicenseNumber: '',
-    iCar: '',
+    iCar: '请选择',
     iCarNumber: '',
     iCompany: '',
     iStart: '',
@@ -47,13 +45,12 @@ export default new vuex.Store({
     iCause: '',
 
     //随行人
-
     follower: [{'name': '', 'identityNo': '', 'identityType': ['居民身份证'], title: [['居民身份证','一代身份证','二代身份证']]}],
-
+    ifollower:[{'name': '', 'identityNo': '', 'identityType': ['居民身份证'], title: [['居民身份证','一代身份证','二代身份证']]}],
   },
   mutations: {
     //
-    PHONE( state , phone){
+    phone( state , phone){
           state.phone = phone;
     },
 
@@ -146,18 +143,27 @@ export default new vuex.Store({
       state.follower = follower
     },
 
+    ifollower(state, ifollower) {
+      state.ifollower = ifollower
+    },
+
   },
 
   actions: {
-
     phone({commit},phone){
 
-      commit('PHONE' , phone)
+      commit('phone' , phone)
     },
 
     follower({commit}, foll) {
       return new Promise(resolve => {
         commit('follower', foll)
+        resolve();
+      })
+    },
+    ifollower({commit}, ifoll) {
+      return new Promise(resolve => {
+        commit('ifollower', ifoll)
         resolve();
       })
     },
@@ -196,6 +202,39 @@ export default new vuex.Store({
     },
     eCause({commit}, eCause) {
       commit('eCause', eCause)
+    },
+
+
+    //邀约
+    iName({commit}, iName) {
+      commit('iName', iName)
+    },
+    iPoints({commit}, iPoints) {
+      commit('iPoints', iPoints)
+    },
+    iLicense({commit}, iLicense) {
+      commit('iLicense', iLicense)
+    },
+    iLicenseNumber({commit}, iLicenseNumber) {
+      commit('iLicenseNumber', iLicenseNumber)
+    },
+    iCar({commit}, iCar) {
+      commit('iCar', iCar)
+    },
+    iCarNumber({commit}, iCarNumber) {
+      commit('iCarNumber', iCarNumber)
+    },
+    iCompany({commit}, iCompany) {
+      commit('iCompany', iCompany)
+    },
+    iStart({commit}, iStart) {
+      commit('iStart', iStart)
+    },
+    iEnd({commit}, iEnd) {
+      commit('iEnd', iEnd)
+    },
+    iCause({commit}, iCause) {
+      commit('iCause', iCause)
     },
 
   },

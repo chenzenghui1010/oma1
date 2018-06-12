@@ -2,7 +2,7 @@
   <div class="invitationt">
     <img src="../assets/未通过@3x.png"/><span></span>
     <p> 很抱歉你的访客申请未通过未通过审核的原因是:</p>
-    <p>{{ this.$route.query.names }}</p>
+    <p>{{ this.$route.query.reason }}</p>
   </div>
 </template>
 

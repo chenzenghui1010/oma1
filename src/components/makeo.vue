@@ -22,7 +22,7 @@
     </div>
     <div class="con">
       <div class="ss">
-        <span class="left">《深圳市公安局警保来访预约协议》</span><span @click="chakan" class="right">点击查看</span>
+        <span class="left">《深圳市公安局警保来访预约协议》</span><span  class="right">点击查看</span>
       </div>
       <el-checkbox v-model="checkbox">{{chevalue}}</el-checkbox>
       <button @click="next">下一步</button>
@@ -49,9 +49,6 @@
       }
     },
     methods: {
-      chakan: function () {
-        alert("木有文件")
-      },
       next: function () {
         this.checkbox !== true ?  AlertModule.show({
           title: '请认真阅读协议和须知',
@@ -151,6 +148,7 @@
         color: #FAFAFA;
         background-color: #1d83c5;
         outline: none;
+        font-size: 20px;
       }
     }
   }

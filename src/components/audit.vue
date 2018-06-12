@@ -1,67 +1,209 @@
 <template>
   <div class="audit">
-    <div v-for=" (item,index)  in dataList.visitInfoList" class="con">
-      <div>
-        <p>{{item.intervieweeName}}</p>
-        <ul>
-          <li><strong>受访人：{{ item.intervieweeName}}</strong><span @click="xiangq(visitId)">详情</span></li>
-          <li>来访人：<span>{{ item.visitorName}}</span></li>
-          <li>来访时间：<span>{{ item.scheduledInTime}}</span></li>
-          <li>随行人：<span></span></li>
-          <li>来访事由：<span>{{ item.subject}}</span></li>
-        </ul>
-        <p>
-          <button @click="no">拒绝</button>
-          <button>同意</button>
-        </p>
-      </div>
+    <div v-if="noData"><p>没有你要审核的数据</p></div>
+    <div :class="{shade:shade}"></div>
+    <div v-for=" item  in  dataList" class="con">
+      <p>{{item.createTime | dateFrm }}</p>
+      <ul>
+        <li><strong>受访人：{{ item.intervieweeName}}</strong><span @click="details(item.id)">详情</span></li>
+        <li>来访人：<span>{{ item.name}}</span></li>
+        <li>来访时间：<span>{{ item.startTime | dateFrm}}</span></li>
+        <li>随行人：<span>{{ item.follower.length }}</span></li>
+        <li>来访事由：<span>{{ item.subject}}</span></li>
+      </ul>
+      <p>
+        <button @click="repulse(item.id)">拒绝</button>
+        <button @click="consent(item.id)">同意</button>
+      </p>
+    </div>
+    <div class="alert" v-if="shade">
+      <p>填写拒绝原因</p>
+      <textarea v-model="reason" cols="37" rows="5" placeholder="请输入 不可以为空">
+      </textarea>
+      <p class="btn">
+        <button class="button" @click="cancel">取消</button>
+        <button class="button" @click="confirm">确定</button>
+      </p>
     </div>
   </div>
 </template>
 <script>
+  import moment from 'moment'
+
   export default {
+
     name: 'audit',
+
     data() {
       return {
         dataList: [],
-        visitInfoList: [],
+        status: 0,
+        shade: false,
+        reason: '',
+        userType: this.$route.query.userType,
+        requestUser: '',
+        noData:false
+
       }
     },
 
     created() {
-      let url = this.HOST + '/mv/visit/visitInfoListForInterviewee'
-      this.$axios.post(url, {})
+
+      let url =  '/mv/visit/visitInfoListForInterviewee'
+      this.$axios.post(url, {
+        status: this.userType
+      })
         .then(res => {
-          this.dataList = res.data
-          console.log(res.data.resultCode)
-          console.log(res.data.message)
-          console.log(res.data)
-        })
+          if (res.data.resultCode == 0) {
+            this.dataList = res.data.data.visitInfoList
+            console.log(this.dataList);
+            console.log(res.data.resultCode)
+            console.log(res.data.message)
+          }
+        }).catch(error => {
+        console.log(error)
+      })
+
+        if (this.dataList.length <= 0){
+          this.noData = true
+        }
+    },
+    mounted() {
     },
     methods: {
 
-      xiangq: function (visitId) {
-        alert(this.dataList[visitId].intervieweeName)
-        this.$router.push({path: 'audito', query: {}})
+      //详情
+      details(index) {
+        this.$router.push({path: 'audito', query: {visitid: index}})
       },
-      no() {
-        alert(0);
+      //拒绝
+      repulse(index) {
+        this.index = index;
+        this.shade = true
+      },
+      //同意
+      consent(index) {
+        alert(this.submit)
+        let url = this.HOST + this.submit
+        alert(url)
+        this.$axios.post(url, {
+
+          visitId: index.toString(),
+          auditValue: 1
+
+        }).then(res => {
+
+          console.log(res.data)
+          if (res.data.resultCode == 0) {
+            let ok = '你已审核通过来访申请，请耐心等候来访'
+            this.$router.push({path: 'makethree', query: {makethree: ok}})
+          } else if (res.data.resultCode == 3010) {
+
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+
+      },
+      // 取消
+      cancel() {
+        this.shade = false
+      },
+      //确定
+      confirm() {
+        let url = this.HOST + this.submit
+        this.$axios.post(url, {
+          visitId: this.index.toString(),
+          auditValue: 0
+        }).then(res => {
+
+          this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+
+        })
       }
     },
     computed: {
+      submit() {
+        if (this.userType == '0') {
+          return this.requestUser = '/mv/visit/auditVisitReserveByInterviewee'
+        } else if (this.userType == '1') {
+          return this.requestUser = '/mv/visit/auditVisitReserveByManager'
 
-      List: function () {
-        for (let i = 0; i < this.dataList.length; i++) {
-          this.List = this.dataList[i].visitInfoList
         }
+      }
 
+    },
+    filters: {
+      dateFrm: function (el) {
+        return moment(el).format('YYYY-MM-DD HH:mm:ss')
       }
     }
 
   }
 </script>
 <style scoped lang="less">
+
+  .shade {
+    z-index: 9;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    bottom: 0;
+    background-color: rgba(7, 17, 27, 0.5);
+  }
+
+  .alert {
+    text-align: center;
+    position: fixed;
+    z-index: 999;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 90%;
+    height: 200px;
+    background: #fff;
+    p:nth-child(1) {
+      margin: 15px 0 19px 0;
+      font-size: 16px;
+      color: #333;
+    }
+    textarea {
+      padding: 11px 0 0 10px;
+      font-size: 14px;
+      color: #d7d7d7;
+      border: 1px solid #d9d9d9;
+      margin-bottom: 20px;
+    }
+    .btn {
+      /*margin-top: 20px;*/
+      width: 100%;
+      height: 29%;
+      border-top: 1px solid gainsboro;
+      margin-top: -15px;
+      button {
+        height: 100%;
+        width: 50%;
+        bottom: 0;
+        border: none;
+        float: left;
+        background: #fff;
+        color: gray;
+        font-size: 20px;
+      }
+      button:nth-child(2) {
+        float: right;
+        border-left: 1px solid gainsboro;
+        color: #1E90FF;
+      }
+    }
+  }
+
   .audit {
+    position: relative;
     background-color: #edf1f3;
     width: 100%;
     p:nth-child(1) {

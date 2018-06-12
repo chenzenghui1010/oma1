@@ -9,16 +9,16 @@ import router from './router'
 import Axios from 'axios'
 import qs from 'qs'
 
+
 Vue.prototype.$axios=Axios;
 
-// Axios.defaults.baseURL='http://zwvisit.indoorun.com';
-Vue.prototype.HOST = '/api';
+// Vue.prototype.HOST = '/api';
 
 //请求拦截器
 Axios.interceptors.request.use(function(config){
-  if(config.method === 'post'){
-    config.data =  qs.stringify(config.data)
-  }
+  // if(config.method === 'post'){
+  //   config.data =  qs.stringify(config.data)
+  // }
   return config;
   },function(error){
        return Promise.reject(error);

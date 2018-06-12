@@ -12,8 +12,6 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        // http://zwvisit.indoorun.com
-        //http://jsonplaceholder.typicode.com
         target:'http://zwvisit.indoorun.com',
         changeOrigin:true,
         pathRewrite:{
@@ -53,7 +51,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

@@ -2,7 +2,7 @@
   <div class="excitedo">
     <mtitle/>
     <div class="company">
-      <p class="title1"><span>{{title1}}</span></p>
+      <p class="title1"><span>来访人信息</span></p>
       <x-input title=" <span>*</span> 姓名：" required="required" v-model="eName" placeholder="请输入"
                is-type="china-name">
         <span>*</span></x-input>
@@ -11,7 +11,8 @@
                :max="13"
                is-type="china-mobile"></x-input>
 
-      <popup-picker title=" <span>*</span> 证件号：" :data="list1" v-model="eLicense" maxlenth="18"></popup-picker>
+      <popup-picker title=" <span>*</span> 证件号：" :data="list1" v-model="eLicense" maxlenth="18"
+                    required="required"></popup-picker>
       <x-input id="none" title=" " required="required" placeholder="请输入" v-model="eLicenseNumber">
         is-type="china-name">
       </x-input>
@@ -34,12 +35,12 @@
 
     </div>
     <div class="suixing">
-      <p><span>{{title2}}</span></p>
+      <p><span>随行人员信息</span></p>
       <div class="adds" v-for=" (item,index) in follower">
         <div class="add-name">
           <x-input title=" <span>*</span> 姓名：" required="required" v-model="item.name" placeholder="请输入"
                    is-type="china-name"></x-input>
-          <i><img @click="delO(index)" src="../assets/delete.png"/></i>
+          <i><img @click="deletefollower(index)" src="../assets/delete.png"/></i>
           <div>
             <confirm v-model="item.shows" @on-cancel="onCancel"
                      @on-confirm="onConfirm">
@@ -58,7 +59,7 @@
     </div>
 
     <div class="add">
-      <ul @click="add">
+      <ul @click="addfollower">
         <li><img class="addimg" src="../assets/添加@2x.png" alt=""></li>
         <li>添加随行人员</li>
       </ul>
@@ -103,11 +104,8 @@
     data() {
       return {
         follower: [],
-        list1: [['身份证类型','一代身份证', '二代身份证']],
-        Car: [['京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼']],
-        title1: '来访人信息',
-        title2: '随行人员信息',
-
+        list1: [['居民身份证', '一代身份证', '二代身份证']],
+        Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼']],
         eName: this.$store.state.eName,
         ePoints: this.$store.state.ePoints,
         eLicense: [this.$store.state.eLicense.toString()],
@@ -119,24 +117,24 @@
         eEnd: this.$store.state.eEnd,
         eCause: this.$store.state.eCause,
         showExcitedO: true,
+
+        alert: '',
       }
     },
     created() {
       this.follower = this.$store.state.follower;
     },
-    computed: {
-
-    },
+    computed: {},
 
     methods: {
 
-      add: function () {
+      addfollower: function () {
 
         this.follower.push({
           'name': this.$store.state.follower.name,
           'identityNo': this.$store.state.follower.identityNo,
-          'identityType': ['身份证类型'],
-          'title': [['身份证类型','一代身份证', '二代身份证']],
+          'identityType': ['居民身份证'],
+          'title': [['居民身份证', '一代身份证', '二代身份证']],
           'shows': false
         })
       },
@@ -163,22 +161,107 @@
           //随行人
           _this('follower', this.follower);
 
-        // this.$router.push({path: 'excitedaboutok'})
-        // if (this.eName == '' || this.ePoints == '' || this.eLicense == '身份证类型' || this.eLicenseNumber == '' ||
-        //
-        //   this.eCompany == '' || this.eStart == '' || this.eEnd == '' || this.eCause == ''
-        //
-        //
-        // ) {
-        //
-        //   AlertModule.show({title: '请填写完整信息'})
-        //
-        //   return false
-        // }
-        this.$router.push({path: 'excitedaboutok'})
+        if (this.eName == '') {
+          AlertModule.show({title: this.alert = '请填写姓名'})
+          return
+        }
 
+        if (this.ePoints == '') {
+          AlertModule.show({title: this.alert = '请填写手机号'})
+          return
+        }
+
+        if (this.eLicense == '居民身份证') {
+          AlertModule.show({title: this.alert = '请填写居民身份证'})
+          return
+        }
+
+        if (this.eLicense == '一代身份证') {
+          let isIDCard1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/
+          if (!(isIDCard1.test(this.eLicenseNumber))) {
+            AlertModule.show({title: this.alert = '一代身份证不正确'})
+            return
+          }
+        }
+
+        if (this.eLicense == '二代身份证') {
+          let isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+          if (!(isIDCard2.test(this.eLicenseNumber))) {
+            AlertModule.show({title: this.alert = '二代身份证不正确'})
+            return
+          }
+        }
+        if(this.eCompany == ''){
+          AlertModule.show({title: this.alert = '请填写公司'})
+          return
+        }
+
+        if(this.eStart == ''){
+          AlertModule.show({title: this.alert = '请填写来访时间'})
+          return
+        }
+        let start = this.eStart.replace(/-/g, '/')
+        let startTimes = new Date(start).getTime()/1000
+
+
+
+        if(this.eEnd == ''){
+          AlertModule.show({title: this.alert = '请填写离开时间'})
+          return
+        }
+        let end = this.eEnd.replace(/-/g, '/')
+        let endTimes = new Date(end).getTime()/1000
+
+
+        if(endTimes < startTimes ){
+          AlertModule.show({title: this.alert = '填写的时间不合格'})
+          return
+        }
+
+
+        if(endTimes < startTimes ){
+          AlertModule.show({title: this.alert = '填写的时间不合格'})
+          return
+        }
+
+        if(this.eCause == ''){
+          AlertModule.show({title: this.alert = '请填写来访事由'})
+          return
+        }
+
+        if (this.follower.length > 0) {
+
+          for (let i = 0; i < this.follower.length; i++) {
+
+            if (this.follower[i].name == '' || this.follower[i].name == undefined) {
+              AlertModule.show({title: this.alert = '请填写随行人姓名'})
+              return
+            }
+            if (this.follower[i].identityType == '居民身份证') {
+              AlertModule.show({title: this.alert = '请填写随行人居民身份证'})
+              return
+            }
+
+            if (this.follower[i].identityType == '一代身份证') {
+              let isIDCard1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/
+              if (!(isIDCard1.test(this.follower[i].identityNo))) {
+                AlertModule.show({title: this.alert = '随行人一代身份证不正确'})
+                return
+              }
+            }
+
+            if (this.follower[i].identityType == '二代身份证') {
+              let isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+              if (!(isIDCard2.test(this.follower[i].identityNo))) {
+                AlertModule.show({title: this.alert = '随行人二代身份证不正确'})
+                return
+              }
+            }
+          }
+        }
+        this.$router.push({path: 'excitedaboutok'})
       },
-      delO: function (index) {
+      deletefollower: function (index) {
         this.follower[index].shows = true;
       },
       //取消
@@ -320,7 +403,6 @@
           img {
             margin-right: 8px;
             display: inline-block;
-
           }
         }
       }

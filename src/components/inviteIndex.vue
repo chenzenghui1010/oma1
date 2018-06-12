@@ -1,40 +1,40 @@
 <template>
   <div class="excitedo">
     <div class="company">
-      <p class="title1"><span>{{title1}}</span></p>
-      <x-input title=" <span>*</span> 姓名：" required="required" v-model="eName" placeholder="请输入" is-type="china-name">
+      <p class="title1"><span>来访人信息</span></p>
+      <x-input title=" <span>*</span> 姓名：" required="required" v-model="iName" placeholder="请输入" is-type="china-name">
         <span>*</span></x-input>
-      <x-input title=" <span>*</span> 手机号：" required="required" mask="999 9999 9999" v-model="ePoints" placeholder="请输入"
-               :max="13"
+      <x-input title=" <span>*</span> 手机号：" required="required" mask="99999999999" v-model="iPoints" placeholder="请输入"
+               :max="11"
                is-type="china-mobile"></x-input>
 
-      <popup-picker title=" <span>*</span> 证件号：" :data="list1" v-model="eLicense" maxlenth="18"></popup-picker>
-      <x-input  id="none" title=" " required="required" placeholder="请输入" v-model="eLicenseNumber"> is-type="china-name"></x-input>
+      <popup-picker title=" <span>*</span> 证件号：" :data="list1" v-model="iLicense" maxlenth="18"></popup-picker>
+      <x-input  id="none" title=" " required="required" placeholder="请输入" v-model="iLicenseNumber"> is-type="china-name"></x-input>
 
-      <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="eCar"></popup-picker>
-      <x-input title=" " v-model="eCarNumber" placeholder="请输入"></x-input>
+      <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>
+      <x-input title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
 
 
-      <x-input title=" <span>*</span> 公司：" required="required" v-model="eCompany" placeholder="请输入"
+      <x-input title=" <span>*</span> 公司：" required="required" v-model="iCompany" placeholder="请输入"
                ></x-input>
 
       <span>*</span>
-      <datetime v-model="eStart" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc=' 来访时间：'
+      <datetime v-model="iStart" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc=' 来访时间：'
                 placeholder="2018-05-10 10:00"></datetime>
 
       <span>*</span>
-      <datetime v-model="eEnd" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc='预计离开：'
+      <datetime v-model="iEnd" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc='预计离开：'
                 placeholder="2018-05-10 10:00"></datetime>
-      <x-input title=" <span>*</span> 来访事由：" required="required" v-model="eCause" placeholder="请输入"></x-input>
+      <x-input title=" <span>*</span> 来访事由：" required="required" v-model="iCause" placeholder="请输入"></x-input>
 
     </div>
     <div class="suixing">
-      <p><span>{{title2}}</span></p>
-      <div class="adds" v-for=" (item,index) in addList">
+      <p><span>随行人员信息</span></p>
+      <div class="adds" v-for=" (item,index) in ifollower">
         <div class="add-name">
-          <x-input title=" <span>*</span> 姓名：" required="required" v-model="eName" placeholder="请输入"
+          <x-input title=" <span>*</span> 姓名：" required="required" v-model="item.name" placeholder="请输入"
                    is-type="china-name"></x-input>
-          <i><img @click="delO(index)" src="../assets/delete.png"/></i>
+          <i><img @click="deletefollower(index)" src="../assets/delete.png"/></i>
           <div>
             <confirm v-model="item.shows" @on-cancel="onCancel"
                      @on-confirm="onConfirm">
@@ -44,19 +44,17 @@
           </div>
         </div>
         <div>
-          <popup-picker title=" <span>*</span>  证件号：" :data="list1" v-model="eLicense"></popup-picker>
-          <x-input title=" " placeholder="请选择"></x-input>
+          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model="item.identityType"></popup-picker>
+          <x-input title=" "v-model="item.identityNo" placeholder="请输入"></x-input>
         </div>
         <div class="addk">
-
         </div>
       </div>
-
 
     </div>
     <div class="add">
       <ul>
-        <li @click="add"><img class="addimg" src="../assets/添加@2x.png" alt=""></li>
+        <li @click="addfollower"><img class="addimg" src="../assets/添加@2x.png" alt=""></li>
         <li>添加随行人员</li>
       </ul>
       <button @click="excited">预 览</button>
@@ -77,16 +75,16 @@
     PopupPicker,
     Picker,
     Divider,
-    XSwitch
+    XSwitch,AlertModule
   } from 'vux'
   import mtitle from './mTitle'
 
   export default {
-    name: 'excitedabouto',
+    name: 'inviteindex',
     components: {
       Confirm, TransferDomDirective, TransferDom,
       Datetime, PopupPicker, Picker, Divider, XSwitch,
-      mtitle,
+      mtitle,AlertModule,
       XInput,
       XButton,
       Group,
@@ -95,53 +93,170 @@
     },
     data() {
       return {
+        ifollower: [],
         addList:[{shows: false}],
-
-        list1: [['驾驶证', '身份证', '军人证']],
+        list1: [['居民身份证','一代身份证', '二代身份证']],
         Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼']],
-        title1: '来访人信息',
-        title2: '随行人员信息',
-        eName: this.$store.state.eName,
-        ePoints: this.$store.state.ePoints,
-        eLicense: [this.$store.state.eLicense],
-        eLicenseNumber: this.$store.state.eLicenseNumber,
-        eCar: [this.$store.state.eCar],
-        eCarNumber: this.$store.state.eCarNumber,
-        eCompany: this.$store.state.eCompany,
-        eStart: this.$store.state.eStart,
-        eEnd: this.$store.state.eEnd,
-        eCause: this.$store.state.eCause,
+        iName: this.$store.state.iName,
+        iPoints: this.$store.state.iPoints,
+        iLicense: [this.$store.state.iLicense],
+        iLicenseNumber: this.$store.state.iLicenseNumber,
+        iCar: [this.$store.state.iCar],
+        iCarNumber: this.$store.state.iCarNumber,
+        iCompany: this.$store.state.iCompany,
+        iStart: this.$store.state.iStart,
+        iEnd: this.$store.state.iEnd,
+        iCause: this.$store.state.iCause,
         showExcitedO: true,
+
+        alert:'',
       }
     },
-    computed: {},
-    methods: {
+    created() {
+      this.ifollower = this.$store.state.ifollower;
 
-      add: function () {
-        this.addList.push({shows:false})
+    },
+    computed: {},
+
+    methods: {
+      addfollower: function () {
+        this.ifollower.push({
+          'name': this.$store.state.ifollower.name,
+          'identityNo': this.$store.state.ifollower.identityNo,
+          'identityType': ['居民身份证'],
+          'title': [['身份证类型','一代身份证', '二代身份证']],
+          'shows': false
+        })
       },
       excited: function () {
-        this.$store.commit('eName', this.eName);
-        this.$store.commit('ePoints', this.ePoints);
-        this.$store.commit('eLicense', this.eLicense.toString());
-        this.$store.commit('eLicenseNumber', this.eLicenseNumber);
-        this.$store.commit('eCar', this.eCar.toString());
-        this.$store.commit('eCarNumber', this.eCarNumber);
-        this.$store.commit('eCompany', this.eCompany);
-        this.$store.commit('eStart', this.eStart);
-        this.$store.commit('eEnd', this.eEnd);
-        this.$store.commit('eCause', this.eCause);
-        this.$router.push({path: 'excitedaboutok'})
+        let _this = this.$store.dispatch
+          _this('iName', this.iName),
+          _this('iPoints', this.iPoints),
+          _this('iLicense', this.iLicense.toString()),
+          _this('iLicenseNumber', this.iLicenseNumber),
+          _this('iCar', this.iCar.toString()),
+          _this('iCarNumber', this.iCarNumber),
+          _this('iCompany', this.iCompany),
+          _this('iStart', this.iStart),
+          _this('iEnd', this.iEnd),
+          _this('iCause', this.iCause),
+
+          //随行人
+          _this('ifollower', this.ifollower);
+
+
+
+        if (this.iName == '') {
+          AlertModule.show({title: this.alert = '请填写姓名'})
+          return
+        }
+
+        if (this.iPoints == '') {
+          AlertModule.show({title: this.alert = '请填写手机号'})
+          return
+        }
+
+        if (this.iLicense == '居民身份证') {
+          AlertModule.show({title: this.alert = '请填写居民身份证'})
+          return
+        }
+
+        if (this.iLicense == '一代身份证') {
+          let isIDCard1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/
+          if (!(isIDCard1.test(this.iLicenseNumber))) {
+            AlertModule.show({title: this.alert = '一代身份证不正确'})
+            return
+          }
+        }
+
+        if (this.iLicense == '二代身份证') {
+          let isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+          if (!(isIDCard2.test(this.iLicenseNumber))) {
+            AlertModule.show({title: this.alert = '二代身份证不正确'})
+            return
+          }
+        }
+        if(this.iCompany == ''){
+          AlertModule.show({title: this.alert = '请填写公司'})
+          return
+        }
+
+        if(this.iStart == ''){
+          AlertModule.show({title: this.alert = '请填写来访时间'})
+          return
+        }
+        let start = this.iStart.replace(/-/g, '/')
+        let startTimes = new Date(start).getTime()/1000
+
+
+
+
+        if(this.iEnd == ''){
+          AlertModule.show({title: this.alert = '请填写离开时间'})
+          return
+        }
+        let end = this.iEnd.replace(/-/g, '/')
+        let endTimes = new Date(end).getTime()/1000
+
+
+        if(endTimes < startTimes ){
+          AlertModule.show({title: this.alert = '填写的时间不合格'})
+          return
+        }
+
+
+        if(endTimes < startTimes ){
+          AlertModule.show({title: this.alert = '填写的时间不合格'})
+          return
+        }
+
+        if(this.iCause == ''){
+          AlertModule.show({title: this.alert = '请填写来访事由'})
+          return
+        }
+
+        if (this.ifollower.length > 0) {
+
+
+          for (let i = 0; i < this.ifollower.length; i++) {
+           alert( this.ifollower.length)
+            if (this.ifollower[i].name == '' || this.ifollower[i].name == undefined) {
+              AlertModule.show({title: this.alert = '请填写随行人姓名'})
+              return
+            }
+            if (this.ifollower[i].identityType == '居民身份证') {
+              AlertModule.show({title: this.alert = '请填写随行人居民身份证'})
+              return
+            }
+
+            if (this.ifollower[i].identityType == '一代身份证') {
+              let isIDCard1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/
+              if (!(isIDCard1.test(this.ifollower[i].identityNo))) {
+                AlertModule.show({title: this.alert = '随行人一代身份证不正确'})
+                return
+              }
+            }
+
+            if (this.ifollower[i].identityType == '二代身份证') {
+              let isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+              if (!(isIDCard2.test(this.ifollower[i].identityNo))) {
+                AlertModule.show({title: this.alert = '随行人二代身份证不正确'})
+                return
+              }
+            }
+          }
+        }
+        this.$router.push({path: 'invitepar'})
       },
-      delO: function (index) {
-        this.addList[index].shows=true;
+      deletefollower: function (index) {
+        this.ifollower[index].shows=true;
       },
       //取消
       onCancel: function () {
       },
       //确定
       onConfirm: function () {
-        this.addList.splice(this.addList.length-1, 1)
+        this.ifollower.splice(this.ifollower.length-1, 1)
       },
     }
   }
@@ -174,7 +289,7 @@
 
   }
   .excitedo {
-    position: center;
+    /*position: center;*/
     height: 100px;
     .company, .suixing {
       p {
