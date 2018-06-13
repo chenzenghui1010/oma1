@@ -16,9 +16,9 @@ Vue.prototype.$axios=Axios;
 
 //请求拦截器
 Axios.interceptors.request.use(function(config){
-  // if(config.method === 'post'){
-  //   config.data =  qs.stringify(config.data)
-  // }
+  if (config.method === 'post') {
+    config.data = qs.stringify(config.data)
+  }
   return config;
   },function(error){
        return Promise.reject(error);

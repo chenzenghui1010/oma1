@@ -87,7 +87,8 @@
 
       },
       submit() {
-        alert(this.$store.state.phone)
+        let  phone = localStorage.getItem('phone')
+
         for (let i = 0; i < this.followers.length; i++) {
           if (this.followers[i].identityType == '一代身份证') {
             this.followers[i].identityType = '1'
@@ -96,8 +97,9 @@
           }
         }
         let url = '/mv/visit/reserve'
+
         this.$axios.post(url, {
-          phone: this.$store.state.phone,
+          phone: this.$store.state.ePoints,
           name: this.$store.state.eName,
           identityNo: this.$store.state.eLicenseNumber,
           identityType: this.identityNo,

@@ -99,7 +99,8 @@
 
         let url ='/mv/user/phoneLogin'
         //存入登录手机号
-        this.$store.dispatch('phone', this.points)
+         this.$store.dispatch('phone', this.points)
+
         this.$axios.post(url, {
           phone: this.points,
           verifyCode: this.verification

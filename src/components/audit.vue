@@ -1,6 +1,6 @@
 <template>
   <div class="audit">
-    <div v-if="noData"><p>没有你要审核的数据</p></div>
+    <!--<div v-if="noData"><p>没有你要审核的数据</p></div>-->
     <div :class="{shade:shade}"></div>
     <div v-for=" item  in  dataList" class="con">
       <p>{{item.createTime | dateFrm }}</p>
@@ -40,18 +40,22 @@
         status: 0,
         shade: false,
         reason: '',
-        userType: this.$route.query.userType,
+        userType: '',
         requestUser: '',
-        noData:false
+        // noData:false
 
       }
     },
 
     created() {
 
-      let url =  '/mv/visit/visitInfoListForInterviewee'
+
+      // this.userType=this.$route.query.userType
+      // let url =  this.submit
+      let url = this.$route.query.userType == '0' ? '/mv/visit/visitInfoListForInterviewee' : '/mv/visit/visitInfoListForManager'
+      let userType = this.$route.query.userType
       this.$axios.post(url, {
-        status: this.userType
+        status: userType
       })
         .then(res => {
           if (res.data.resultCode == 0) {
@@ -64,9 +68,9 @@
         console.log(error)
       })
 
-        if (this.dataList.length <= 0){
-          this.noData = true
-        }
+      // if (this.dataList.length <= 0){
+      //   this.noData = true
+      // }
     },
     mounted() {
     },
@@ -83,13 +87,11 @@
       },
       //同意
       consent(index) {
-        alert(this.submit)
-        let url = this.HOST + this.submit
-        alert(url)
+        let  url = this.$route.query.userType == '0' ?'/mv/visit/auditVisitReserveByInterviewee':'/mv/visit/auditVisitReserveByManager'
         this.$axios.post(url, {
 
           visitId: index.toString(),
-          auditValue: 1
+          auditValue: this.$route.query.userType
 
         }).then(res => {
 
@@ -111,7 +113,7 @@
       },
       //确定
       confirm() {
-        let url = this.HOST + this.submit
+        let url = this.submit
         this.$axios.post(url, {
           visitId: this.index.toString(),
           auditValue: 0
@@ -122,15 +124,17 @@
         })
       }
     },
-    computed: {
-      submit() {
-        if (this.userType == '0') {
-          return this.requestUser = '/mv/visit/auditVisitReserveByInterviewee'
-        } else if (this.userType == '1') {
-          return this.requestUser = '/mv/visit/auditVisitReserveByManager'
 
-        }
-      }
+    computed: {
+      // submit() {
+      //   if (this.userType == '0') {
+      //     return  '/mv/visit/visitInfoListForInterviewee'
+      //
+      //   } else if (this.userType == '1') {
+      //     return '/mv/visit/auditVisitReserveByManager'
+      ///mv/visit/visitInfoListForManager
+      //   }
+      // }
 
     },
     filters: {

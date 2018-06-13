@@ -62,7 +62,7 @@
 
     created() {
       let id = this.visitid
-      let url = this.HOST + '/mv/visit/getVisitInfoById'
+      let url = '/mv/visit/getVisitInfoById'
       this.$axios.post(url, {
         visitId: id
       })
@@ -76,6 +76,7 @@
 
       //同意
       repulse: function () {
+
         let url = '/mv/visit/auditVisitReserveByInterviewee'
         this.$axios.post(url, {
           visitId: this.visitid.toString(),
@@ -108,7 +109,7 @@
 
       //确定
       confirm: function () {
-        let url = this.HOST + '/mv/visit/auditVisitReserveByInterviewee'
+        let url ='/mv/visit/auditVisitReserveByInterviewee'
         this.$axios.post(url, {
           visitId: this.visitid.toString(),
           auditValue: 0,
