@@ -88,7 +88,10 @@
           department: this.mDepartment,
         })
           .then(res => {
-
+            if(res.data.resultCode != '0'){
+              AlertModule.show({title: res.data.message})
+              return
+            }
             if (res.data.resultCode == '0') {
               this.$router.push({path: 'excitedabouto'})
             } else {

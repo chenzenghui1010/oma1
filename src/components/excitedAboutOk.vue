@@ -63,14 +63,15 @@
   </div>
 </template>
 <script>
-  import { AlertModule} from  'vux'
+  import {AlertModule} from 'vux'
+
   export default {
     name: 'excitedaboutpok',
-    components:{AlertModule},
+    components: {AlertModule},
     data() {
       return {
         followers: [],
-        alert:'',
+        alert: '',
 
       }
     },
@@ -87,7 +88,7 @@
 
       },
       submit() {
-        let  phone = localStorage.getItem('phone')
+        let phone = localStorage.getItem('phone')
 
         for (let i = 0; i < this.followers.length; i++) {
           if (this.followers[i].identityType == '一代身份证') {
@@ -111,13 +112,18 @@
         })
           .then(res => {
 
+            if(res.data.resultCode != '0'){
+              AlertModule.show({title: this.alert=res.data.message})
+              return
+            }
+
             if (res.data.resultCode == '0') {
               this.$router.push({path: 'makethree', query: {makethree: '您的来访预约申请已提交成功，我们会尽快审核,请耐心等候'}});
-            }else if (res.data.resultCode == '1001'){
+            } else if (res.data.resultCode == '1001') {
               AlertModule.show({title: this.alert = '系统异常'})
-              setTimeout(()=>{
-                this.$router.push({path:'/'})
-              },1000)
+              setTimeout(() => {
+                this.$router.push({path: '/'})
+              }, 1000)
             }
           })
           .catch(error => {

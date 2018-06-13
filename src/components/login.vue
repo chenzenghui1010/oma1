@@ -69,6 +69,10 @@
           .then(res => {
             if (res.data.resultCode == '0') {
               console.log(res.data)
+            }else{
+              AlertModule.show({
+                title: res.data.message,
+              })
             }
           })
           .catch(error => {
@@ -109,6 +113,14 @@
           //   verifyCode:this.verification
           // }
         }).then(res => {
+          if(res.data.resultCode != '0'){
+
+            AlertModule.show({
+              title: res.data.message,
+
+            })
+            return
+          }
           if (res.data.resultCode == '0') {
 
             console.log(res.data)
@@ -134,7 +146,7 @@
               this.$router.push({path: 'audit', query: {userType: '1'}})
             }
 
-          } else {
+          }  else {
 
             AlertModule.show({
               title: '验证码不正确',

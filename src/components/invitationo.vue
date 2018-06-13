@@ -9,8 +9,10 @@
 </template>
 <script>
   import  moment from 'moment'
+  import {AlertModule} from 'vux'
   export default {
     name: 'invitationo',
+    components:{AlertModule},
     data() {
       return {
         passCode: '',
@@ -26,6 +28,10 @@
       this.$axios.post(url, {
         visitId:this.visitId0
       }).then(res => {
+        if(res.data.resultCode != '0'){
+          AlertModule.show({title: res.data.message})
+          return
+        }
         if (res.data.resultCode == 0) {
           console.log(res.data.data.passCode)
           this.passCode = res.data.data.passCode// 二维码图片地址

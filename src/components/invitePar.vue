@@ -73,6 +73,11 @@
           follower: JSON.stringify(this.$store.state.ifollower)
         })
           .then(res => {
+
+            if(res.data.resultCode != '0'){
+              AlertModule.show({title: res.data.message})
+              return
+            }
             if (res.data.resultCode == '0') {
               this.$router.push({path: 'makethree', query: {'makethree': '你已通过来访申请，请耐心等候来访'}});
             } else if(res.data.resultCode == '2101'){
@@ -84,8 +89,6 @@
             // alert(res.data.message)
           })
           .catch(error => {
-
-            alert(res.resultCode)
             console.log(error)
           })
 

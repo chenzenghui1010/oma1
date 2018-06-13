@@ -29,9 +29,10 @@
 </template>
 <script>
   import moment from 'moment'
+  import { AlertModule} from  'vux'
 
   export default {
-
+    components:{AlertModule},
     name: 'audit',
 
     data() {
@@ -58,6 +59,10 @@
         status: userType
       })
         .then(res => {
+          if(res.data.resultCode != '0'){
+            AlertModule.show({title: res.data.message})
+            return
+          }
           if (res.data.resultCode == 0) {
             this.dataList = res.data.data.visitInfoList
             console.log(this.dataList);
@@ -94,7 +99,10 @@
           auditValue: this.$route.query.userType
 
         }).then(res => {
-
+          if(res.data.resultCode != '0'){
+            AlertModule.show({title: res.data.message})
+            return
+          }
           console.log(res.data)
           if (res.data.resultCode == 0) {
             let ok = '你已审核通过来访申请，请耐心等候来访'
@@ -119,6 +127,10 @@
           auditValue: 0
         }).then(res => {
 
+          if(res.data.resultCode != '0'){
+            AlertModule.show({title: res.data.message})
+            return
+          }
           this.$router.push({path: 'invitationt', query: {reason: this.reason}})
 
         })
@@ -126,15 +138,6 @@
     },
 
     computed: {
-      // submit() {
-      //   if (this.userType == '0') {
-      //     return  '/mv/visit/visitInfoListForInterviewee'
-      //
-      //   } else if (this.userType == '1') {
-      //     return '/mv/visit/auditVisitReserveByManager'
-      ///mv/visit/visitInfoListForManager
-      //   }
-      // }
 
     },
     filters: {
