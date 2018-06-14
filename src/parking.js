@@ -4,7 +4,6 @@ import request from './request'
 
 
 export function askForSms(data) {
-
   return request({
     url:'/mv/user/askForSms',
     method: 'post',
@@ -42,14 +41,50 @@ export function reserve( data) {
 
 
 
+//被访者
 export function visitInfoListForInterviewee(data){
   return request({
     url:'/mv/visit/visitInfoListForInterviewee',
+    method:'post',
+    data:data
+  })
+}
+export function auditVisitReserveByInterviewee(data){
+  return request({
+    url:'/mv/visit/auditVisitReserveByInterviewee',
+    method:'post',
+    data:data
+  })
+}
+
+
+//管理员
+export function visitInfoListForManager(data){
+  return request({
+    url:'/mv/visit/visitInfoListForManager',
     method:'post',
     params:data
   })
 }
 
+
+export function auditVisitReserveByManager(data){
+  return request({
+    url:'/mv/visit/auditVisitReserveByManager',
+    method:'post',
+    data:data
+  })
+}
+
+
+//详情
+export function getVisitInfoById(data){
+  return request({
+    url:'/mv/visit/getVisitInfoById',
+    method:'post',
+    data:data
+  })
+}
 
 
 

@@ -29,55 +29,85 @@
 </template>
 <script>
   import moment from 'moment'
-  import {visitInfoListForInterviewee} from '../parking'
+
+  import {AlertModule} from 'vux'
+  import {
+    visitInfoListForInterviewee,
+    auditVisitReserveByInterviewee,
+    visitInfoListForManager,
+    auditVisitReserveByManager
+  } from '../parking'
 
 
   export default {
 
     name: 'audit',
+    components: {
+      AlertModule,
+    },
+
 
     data() {
       return {
         dataList: [],
-        status: 0,
         shade: false,
         reason: '',
-        userType: '',
+        index: '',
         requestUser: '',
-        noData:''
+        noData: false
 
       }
     },
 
     created() {
+      sessionStorage.setItem('usertype',this.$route.query.userType)
+      let userType = this.$route.query.userType
+      alert(userType)
+      if (userType == '0') {
+        visitInfoListForInterviewee({status: userType})
+          .then(data => {
+            this.dataList = data.data.visitInfoList
+            alert(this.dataList[0].intervieweeName)
+            console.log(this.dataList);
+            console.log(data.resultCode)
+            console.log(data.message)
+          })
+          .catch(message => {
+            AlertModule.show({title: message})
+          })
+      } else if (userType == '1') {
+        visitInfoListForManager({status: userType})
+          .then(data => {
+            this.dataList = data.data.visitInfoList
+            console.log(this.dataList);
+            console.log(data.resultCode)
+            console.log(data.message)
+          })
+          .catch(message => {
+            AlertModule.show({
+              title: message,
+            })
+            if (message == '没有权限') {
+              this.$router.push({path: '/'})
+            }
+          })
+      }
 
-      alert(this.userType)
-      visitInfoListForInterviewee({status: this.userType})
-      // let url =  '/mv
-      // /visit/visitInfoListForInterviewee'
-      // this.$axios.post(url, {
-      //   status: this.userType
-      // })
-        .then(data => {
-          this.dataList = data.data.visitInfoList
-          console.log(this.dataList);
-          console.log(data.resultCode)
-          console.log(data.message)
-        }).catch(error => {
-        console.log(error)
-      })
-      if (this.dataList.length <= 0) {
+
+      if (this.dataList.length != 0) {
         this.noData = true
       }
 
     },
     mounted() {
+
+
     },
     methods: {
 
       //详情
       details(index) {
-        this.$router.push({path: 'audito', query: {visitid: index}})
+        this.$router.push({path: 'audito', query: {visitid: index,userType:this.$route.query.userType}})
       },
       //拒绝
       repulse(index) {
@@ -86,44 +116,86 @@
       },
       //同意
       consent(index) {
-         this.$route.query.userType == '0' ? auditVisitReserveByInterviewee({
-           visitId: index.toString(),
-           auditValue: this.$route.query.userType
-        }):'/mv/visit/auditVisitReserveByManager'
-       .then(res => {
+        let type = this.$route.query.userType
+        if (type == '0') {
+          auditVisitReserveByInterviewee({
+            visitId: index.toString(),
+            auditValue: 1
+          })
+            .then(data => {
 
-          console.log(res.data)
-          if (res.data.resultCode == 0) {
-            let ok = '你已审核通过来访申请，请耐心等候来访'
-            this.$router.push({path: 'makethree', query: {makethree: ok}})
-          } else if (res.data.resultCode == 3010) {
+              console.log(data.data)
 
-          }
-        }).catch(error => {
-          console.log(error)
-        })
+              let ok = '你已审核通过来访申请，请耐心等候来访'
+              this.$router.push({path: 'makethree', query: {makethree: ok}})
+
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
+        else if (type == '1') {
+          auditVisitReserveByManager({
+            visitId: index.toString(),
+            auditValue: 1
+          })
+            .then(data => {
+
+              console.log(data.data)
+
+              let ok = '你已审核通过来访申请，请耐心等候来访'
+              this.$router.push({path: 'makethree', query: {makethree: ok}})
+
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
 
       },
+
       // 取消
       cancel() {
         this.shade = false
       },
+
       //确定
       confirm() {
-        let url = this.submit
-        this.$axios.post(url, {
-          visitId: this.index.toString(),
-          auditValue: 0
-        }).then(res => {
+        let type = this.$route.query.userType
+        if (type == '0') {
+          auditVisitReserveByInterviewee({
+            visitId: this.index.toString(),
+            auditValue: 1
+          })
+            .then(data => {
 
-          this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+              console.log(data.data)
 
-        })
+              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
+        else if (type == '1') {
+          auditVisitReserveByManager({
+            visitId: this.index.toString(),
+            auditValue: 1
+          })
+            .then(data => {
+
+              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
       }
     },
 
-    computed: {
-    },
+
+    computed: {},
     filters: {
       dateFrm: function (el) {
         return moment(el).format('YYYY-MM-DD HH:mm:ss')

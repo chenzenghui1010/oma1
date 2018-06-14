@@ -111,7 +111,9 @@
             }
           })
           .catch(message => {
-            alert(message)
+            AlertModule.show({
+              title: message,
+            })
           })
       },
       sendMessage() {

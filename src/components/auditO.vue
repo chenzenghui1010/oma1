@@ -31,7 +31,7 @@
     </div>
     <footer>
       <button @click="consent">拒绝</button>
-      <button  @click="repulse ">同意</button>
+      <button @click="repulse ">同意</button>
     </footer>
     <div class="alert" v-if="shade">
       <p>填写拒绝原因</p>
@@ -46,29 +46,34 @@
 </template>
 <script>
   import moment from 'moment'
+  import {AlertModule} from 'vux'
+  import {getVisitInfoById, auditVisitReserveByInterviewee, auditVisitReserveByManager} from "../parking";
 
 
   export default {
     name: 'audito',
+    components: {AlertModule},
     data() {
       return {
         dataList: {},
         shade: false,
         reason: '',
-        visitid: this.$route.query.visitid,
+        detailsId: this.$route.query.visitid.toString(),
+        userType: this.$route.query.userType
 
       }
     },
 
     created() {
-      let id = this.visitid
-      let url = '/mv/visit/getVisitInfoById'
-      this.$axios.post(url, {
-        visitId: id
+      getVisitInfoById({
+        visitId: this.detailsId
       })
-        .then(res => {
-          this.dataList = res.data.data
+        .then(data => {
+          this.dataList = data.data
           console.log(this.dataList)
+        })
+        .catch(messge => {
+
         })
     },
 
@@ -76,23 +81,40 @@
 
       //同意
       repulse: function () {
+        if (this.userType == '0') {
+          auditVisitReserveByInterviewee({
+            visitId: this.detailsId,
+            auditValue: 1
+          })
+            .then(data => {
 
-        let url = '/mv/visit/auditVisitReserveByInterviewee'
-        this.$axios.post(url, {
-          visitId: this.visitid.toString(),
-          auditValue: 1
-        })
-          .then(res => {
-            console.log(res.data)
-            if (res.data.resultCode == 0) {
+              console.log(data.data)
+
               let ok = '你已审核通过来访申请，请耐心等候来访'
               this.$router.push({path: 'makethree', query: {makethree: ok}})
-            } else if (res.data.resultCode == 3010) {
-            }
+
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
+        else if (this.userType == '1') {
+          auditVisitReserveByManager({
+            visitId: this.detailsId,
+            auditValue: 1
           })
-          .catch(error => {
-            console.log(error)
-          })
+            .then(data => {
+
+              console.log(data.data)
+
+              let ok = '你已审核通过来访申请，请耐心等候来访'
+              this.$router.push({path: 'makethree', query: {makethree: ok}})
+
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
       },
 
 
@@ -109,25 +131,37 @@
 
       //确定
       confirm: function () {
-        let url ='/mv/visit/auditVisitReserveByInterviewee'
-        this.$axios.post(url, {
-          visitId: this.visitid.toString(),
-          auditValue: 0,
-        })
-          .then(res => {
-            this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+
+        if (this.userType == '0') {
+          auditVisitReserveByInterviewee({
+            visitId: this.detailsId,
+            auditValue: 1
           })
-          .catch(error => {
-            console.log(error)
+            .then(data => {
+
+              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
+        else if (this.userType == '1') {
+          auditVisitReserveByManager({
+            visitId: this.detailsId,
+            auditValue: 1
           })
+            .then(data => {
+              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+            })
+            .catch(message => {
+              AlertModule.show({title: message})
+            })
+        }
       }
     },
 
 
-    computed: {
-
-
-    },
+    computed: {},
 
     //转换时间插件
     filters: {

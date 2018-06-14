@@ -1,5 +1,5 @@
 <template>
-  <div class="makethree">
+  <div class="visitorSubmitSucceed">
     <div class="img">
       <img src="../assets/成功@3x.png"/>
       <p class="add">提交成功</p>
@@ -10,19 +10,19 @@
 </template>
 <script>
   export default {
-    name: 'makethree',
+    name: 'visitorSubmitSucceed',
     data() {
       return {}
     },
     methods: {
       ok: function () {
-       this.$router.push({path:'audit',query:{userType:sessionStorage.getItem('usertype')}})
+        this.$router.push({path:'makeo'})
       }
     }
   }
 </script>
 <style scoped lang="less">
-  .makethree {
+  .visitorSubmitSucceed {
     height: 100%;
     width: 100%;
     position: fixed;

@@ -114,7 +114,7 @@
 
           .then(data => {
 
-            this.$router.push({path: 'makethree', query: {makethree: '您的来访预约申请已提交成功，我们会尽快审核,请耐心等候'}});
+            this.$router.push({path: 'visitorSubmitSucceed', query: {makethree: '您的来访预约申请已提交成功，我们会尽快审核,请耐心等候'}});
           })
           .catch(message => {
             AlertModule.show({title: this.alert = message})
