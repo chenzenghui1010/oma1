@@ -29,6 +29,7 @@
 <script>
   import {XInput, Group, XButton, Cell, Flexbox, AlertModule} from 'vux'
   import mtitle from './mTitle'
+  import {reserveForInterviewee} from "../parking";
 
   export default {
 
@@ -80,25 +81,19 @@
           return
         }
 
-        let url =  '/mv/visit/reserveForInterviewee'
-        this.$axios.post(url, {
+        reserveForInterviewee({
           intervieweeName: this.mName,
           intervieweeTel: this.mPoints,
           company: this.mCompany,
-          department: this.mDepartment,
+          department: this.mDepartment
         })
-          .then(res => {
 
-            if (res.data.resultCode == '0') {
-              this.$router.push({path: 'excitedabouto'})
-            } else {
-              AlertModule.show({
-                title: '你输入的受访人信息有误',
-              })
-            }
+          .then(data => {
+            console.log(data)
+            this.$router.push({path: 'excitedabouto'})
           })
-          .catch(error => {
-            console.log(error)
+          .catch(message => {
+            AlertModule.show({title: this.alert = message})
           })
       }
     }

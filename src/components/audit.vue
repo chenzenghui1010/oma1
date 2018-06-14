@@ -1,6 +1,6 @@
 <template>
   <div class="audit">
-    <!--<div v-if="noData"><p>没有你要审核的数据</p></div>-->
+    <div v-if="noData"><p>没有你要审核的数据</p></div>
     <div :class="{shade:shade}"></div>
     <div v-for=" item  in  dataList" class="con">
       <p>{{item.createTime | dateFrm }}</p>
@@ -44,6 +44,7 @@
         reason: '',
         userType: '',
         requestUser: '',
+        noData:''
 
       }
     },
@@ -85,13 +86,11 @@
       },
       //同意
       consent(index) {
-        let  url = this.$route.query.userType == '0' ?'/mv/visit/auditVisitReserveByInterviewee':'/mv/visit/auditVisitReserveByManager'
-        this.$axios.post(url, {
-
-          visitId: index.toString(),
-          auditValue: this.$route.query.userType
-
-        }).then(res => {
+         this.$route.query.userType == '0' ? auditVisitReserveByInterviewee({
+           visitId: index.toString(),
+           auditValue: this.$route.query.userType
+        }):'/mv/visit/auditVisitReserveByManager'
+       .then(res => {
 
           console.log(res.data)
           if (res.data.resultCode == 0) {
@@ -124,16 +123,6 @@
     },
 
     computed: {
-      // submit() {
-      //   if (this.userType == '0') {
-      //     return  '/mv/visit/visitInfoListForInterviewee'
-      //
-      //   } else if (this.userType == '1') {
-      //     return '/mv/visit/auditVisitReserveByManager'
-      ///mv/visit/visitInfoListForManager
-      //   }
-      // }
-
     },
     filters: {
       dateFrm: function (el) {

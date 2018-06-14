@@ -19,8 +19,27 @@ export function phoneLogin(data){
     method:'post',
     params:data
   })
-
 }
+// 来访者预约查询被访者
+export function reserveForInterviewee(data){
+  return request({
+    url:'/mv/visit/reserveForInterviewee',
+    method:'post',
+    data: data
+  })
+}
+
+
+//来访人提交信息
+export function reserve( data) {
+   return  request({
+     url:'/mv/visit/reserve',
+     method:'post',
+     data:data
+   })
+}
+
+
 
 
 export function visitInfoListForInterviewee(data){

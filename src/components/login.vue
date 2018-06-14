@@ -16,7 +16,7 @@
 </template>
 <script>
 
-  import { askForSms ,phoneLogin } from "../parking";
+  import {askForSms, phoneLogin} from "../parking";
 
   import {AlertModule} from 'vux';
 
@@ -64,21 +64,12 @@
           }
         }, 1000)
         askForSms({phone: this.points})
-          .then(res=>{
+          .then(data => {
+          })
+          .catch(error => {
 
           })
-        // this.$axios.post(url, {
-        //   phone: this.points
-        //
-        // })
-        //   .then(res => {
-        //     if (res.data.resultCode == '0') {
-        //       console.log(res.data)
-        //     }
-        //   })
-        //   .catch(error => {
-        //     console.log(error)
-        //   })
+
       },
 
 
@@ -102,40 +93,25 @@
           return
         }
 
+        phoneLogin({phone: this.points, verifyCode: this.verification})
 
-        // let url ='/mv/user/phoneLogin'
-        // //存入登录手机号
-        // this.$store.dispatch('phone', this.points)
-        phoneLogin({phone:this.points,verifyCode:this.verification})
-        // this.$axios.post(url, {
-        //   phone: this.points,
-        //   verifyCode: this.verification
-        // })
           .then(data => {
 
-            if (data.redirectUrl != '') {
-
-              window.location.href = data.redirectUrl
-              return;
-            }
-
-            if (data.roleType == 1) {
-
+            if (data.data.roleType == 1) {
               this.$router.push({path: 'makeo'})
-
             }
-            if (data.roleType == 2) {
+            if (data.data.roleType == 2) {
 
               this.$router.push({path: 'audit', query: {userType: '0'}})
 
             }
-            if (data.roleType == 3) {
+            if (data.data.roleType == 3) {
 
               this.$router.push({path: 'audit', query: {userType: '1'}})
             }
-        })
-          .catch(error => {
-            console.log(error)
+          })
+          .catch(message => {
+            alert(message)
           })
       },
       sendMessage() {

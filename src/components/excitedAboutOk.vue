@@ -63,14 +63,16 @@
   </div>
 </template>
 <script>
-  import { AlertModule} from  'vux'
+  import {AlertModule} from 'vux'
+  import {reserve} from "../parking";
+
   export default {
     name: 'excitedaboutpok',
-    components:{AlertModule},
+    components: {AlertModule},
     data() {
       return {
         followers: [],
-        alert:'',
+        alert: '',
 
       }
     },
@@ -87,7 +89,7 @@
 
       },
       submit() {
-        let  phone = localStorage.getItem('phone')
+        let phone = localStorage.getItem('phone')
 
         for (let i = 0; i < this.followers.length; i++) {
           if (this.followers[i].identityType == '一代身份证') {
@@ -96,9 +98,9 @@
             this.followers[i].identityType = '2'
           }
         }
-        let url = '/mv/visit/reserve'
 
-        this.$axios.post(url, {
+
+        reserve({
           phone: this.$store.state.ePoints,
           name: this.$store.state.eName,
           identityNo: this.$store.state.eLicenseNumber,
@@ -109,19 +111,13 @@
           subject: this.$store.state.eCause,
           follower: JSON.stringify(this.$store.state.follower),
         })
-          .then(res => {
 
-            if (res.data.resultCode == '0') {
-              this.$router.push({path: 'makethree', query: {makethree: '您的来访预约申请已提交成功，我们会尽快审核,请耐心等候'}});
-            }else if (res.data.resultCode == '1001'){
-              AlertModule.show({title: this.alert = '系统异常'})
-              setTimeout(()=>{
-                this.$router.push({path:'/'})
-              },1000)
-            }
+          .then(data => {
+
+            this.$router.push({path: 'makethree', query: {makethree: '您的来访预约申请已提交成功，我们会尽快审核,请耐心等候'}});
           })
-          .catch(error => {
-            console.log(error)
+          .catch(message => {
+            AlertModule.show({title: this.alert = message})
           })
       }
     },
