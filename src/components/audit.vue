@@ -1,6 +1,6 @@
 <template>
   <div class="audit">
-    <div v-if="noData"><p>没有你要审核的数据</p></div>
+    <div v-if="dataList.length == 0"><p>没有你要审核的数据</p></div>
     <div :class="{shade:shade}"></div>
     <div v-for=" item  in  dataList" class="con">
       <p>{{item.createTime | dateFrm }}</p>
@@ -54,23 +54,23 @@
         reason: '',
         index: '',
         requestUser: '',
-        noData: false
+        title: '来访审核'
 
       }
     },
 
     created() {
-      sessionStorage.setItem('usertype',this.$route.query.userType)
+      document.getElementById('titleId').innerHTML = this.title
+
+      sessionStorage.setItem('usertype', this.$route.query.userType)
       let userType = this.$route.query.userType
-      alert(userType)
       if (userType == '0') {
         visitInfoListForInterviewee({status: userType})
           .then(data => {
             this.dataList = data.data.visitInfoList
-            alert(this.dataList[0].intervieweeName)
-            console.log(this.dataList);
-            console.log(data.resultCode)
-            console.log(data.message)
+            // console.log(this.dataList);
+            // console.log(data.resultCode)
+            // console.log(data.message)
           })
           .catch(message => {
             AlertModule.show({title: message})
@@ -87,15 +87,8 @@
             AlertModule.show({
               title: message,
             })
-            if (message == '没有权限') {
-              this.$router.push({path: '/'})
-            }
+            if (message == '没有权限') {this.$router.push({path: '/'})}
           })
-      }
-
-
-      if (this.dataList.length != 0) {
-        this.noData = true
       }
 
     },
@@ -107,11 +100,11 @@
 
       //详情
       details(index) {
-        this.$router.push({path: 'audito', query: {visitid: index,userType:this.$route.query.userType}})
+        this.$router.push({path: 'audito', query: {visitid: index, userType: this.$route.query.userType}})
       },
       //拒绝
       repulse(index) {
-        this.index = index;
+        this.index = index.toString();
         this.shade = true
       },
       //同意
@@ -126,8 +119,8 @@
 
               console.log(data.data)
 
-              let ok = '你已审核通过来访申请，请耐心等候来访'
-              this.$router.push({path: 'makethree', query: {makethree: ok}})
+
+              this.$router.push({path: 'makethree', query: {auditResult: 1}})
 
             })
             .catch(message => {
@@ -143,8 +136,8 @@
 
               console.log(data.data)
 
-              let ok = '你已审核通过来访申请，请耐心等候来访'
-              this.$router.push({path: 'makethree', query: {makethree: ok}})
+
+              this.$router.push({path: 'makethree', query: {auditResult: 1}})
 
             })
             .catch(message => {
@@ -164,14 +157,14 @@
         let type = this.$route.query.userType
         if (type == '0') {
           auditVisitReserveByInterviewee({
-            visitId: this.index.toString(),
+            visitId: this.index,
             auditValue: 1
           })
             .then(data => {
 
               console.log(data.data)
-
-              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+              // this.$router.push({path:'reject'})
+             this.$router.push({path: 'makethree', query: {auditResult: 0}})
             })
             .catch(message => {
               AlertModule.show({title: message})
@@ -179,12 +172,12 @@
         }
         else if (type == '1') {
           auditVisitReserveByManager({
-            visitId: this.index.toString(),
+            visitId: this.index,
             auditValue: 1
           })
             .then(data => {
 
-              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+              this.$router.push({path: 'makethree', query: {auditResult:0}})
 
             })
             .catch(message => {
@@ -232,7 +225,7 @@
     p:nth-child(1) {
       margin: 15px 0 19px 0;
       font-size: 16px;
-      color: #333;
+      color: #333 !important;
     }
     textarea {
       padding: 11px 0 0 10px;

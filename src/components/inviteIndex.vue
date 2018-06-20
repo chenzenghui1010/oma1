@@ -8,15 +8,20 @@
                :max="11"
                is-type="china-mobile"></x-input>
 
-      <popup-picker title=" <span>*</span> 证件号：" :data="list1" v-model="iLicense" maxlenth="18"></popup-picker>
-      <x-input  id="none" title=" " required="required" placeholder="请输入" v-model="iLicenseNumber"> is-type="china-name"></x-input>
+
+      <popup-picker title=" <span>*</span> 证件号：" :data="list" v-model="iLicense" maxlenth="18"
+                    required="required"></popup-picker>
+      <x-input  title=" " required="required" placeholder="请输入" v-model="iLicenseNumber">
+        is-type="china-name">
+      </x-input>
+
 
       <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>
-      <x-input title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
+      <x-input id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
 
 
       <x-input title=" <span>*</span> 公司：" required="required" v-model="iCompany" placeholder="请输入"
-               ></x-input>
+      ></x-input>
 
       <span>*</span>
       <datetime v-model="iStart" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc=' 来访时间：'
@@ -29,7 +34,7 @@
 
     </div>
     <div class="suixing">
-      <p><span>随行人员信息</span></p>
+      <p><span v-if="ifollower.length>0">随行人员信息</span></p>
       <div class="adds" v-for=" (item,index) in ifollower">
         <div class="add-name">
           <x-input title=" <span>*</span> 姓名：" required="required" v-model="item.name" placeholder="请输入"
@@ -44,8 +49,8 @@
           </div>
         </div>
         <div>
-          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model="item.identityType"></popup-picker>
-          <x-input title=" "v-model="item.identityNo" placeholder="请输入"></x-input>
+          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model='item.identityType'></popup-picker>
+          <x-input title=" " v-model="item.identityNo" placeholder="请输入"></x-input>
         </div>
         <div class="addk">
         </div>
@@ -75,7 +80,7 @@
     PopupPicker,
     Picker,
     Divider,
-    XSwitch,AlertModule
+    XSwitch, AlertModule
   } from 'vux'
   import mtitle from './mTitle'
 
@@ -84,7 +89,7 @@
     components: {
       Confirm, TransferDomDirective, TransferDom,
       Datetime, PopupPicker, Picker, Divider, XSwitch,
-      mtitle,AlertModule,
+      mtitle, AlertModule,
       XInput,
       XButton,
       Group,
@@ -94,25 +99,25 @@
     data() {
       return {
         ifollower: [],
-        addList:[{shows: false}],
-        list1: [['居民身份证','一代身份证', '二代身份证']],
-        Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼']],
-        iName: this.$store.state.iName,
-        iPoints: this.$store.state.iPoints,
-        iLicense: [this.$store.state.iLicense],
-        iLicenseNumber: this.$store.state.iLicenseNumber,
-        iCar: [this.$store.state.iCar],
-        iCarNumber: this.$store.state.iCarNumber,
-        iCompany: this.$store.state.iCompany,
-        iStart: this.$store.state.iStart,
-        iEnd: this.$store.state.iEnd,
-        iCause: this.$store.state.iCause,
+        list:[['证件类型', '二代身份证', '港澳通行证','驾驶证','军官证','护照','学生证','其他']],
+        Car:[['', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼','港','奥','新']],
+        iName: '',
+        iPoints: '',
+        iLicense: ['请选择'],
+        iLicenseNumber: '',
+        iCar: ['请选择'],
+        iCarNumber: '',
+        iCompany: '',
+        iStart: '',
+        iEnd:'',
+        iCause: '',
         showExcitedO: true,
 
-        alert:'',
+        alert: '',
       }
     },
     created() {
+     document.getElementById("titleId").innerHTML='来访邀请'
       this.ifollower = this.$store.state.ifollower;
 
     },
@@ -123,14 +128,14 @@
         this.ifollower.push({
           'name': this.$store.state.ifollower.name,
           'identityNo': this.$store.state.ifollower.identityNo,
-          'identityType': ['居民身份证'],
-          'title': [['身份证类型','一代身份证', '二代身份证']],
+          'identityType': ['证件类型'],
+          'title': [['证件类型', '二代身份证', '港澳通行证','驾驶证','军官证','护照','学生证','其他']],
           'shows': false
         })
       },
       excited: function () {
         let _this = this.$store.dispatch
-          _this('iName', this.iName),
+        _this('iName', this.iName),
           _this('iPoints', this.iPoints),
           _this('iLicense', this.iLicense.toString()),
           _this('iLicenseNumber', this.iLicenseNumber),
@@ -145,7 +150,6 @@
           _this('ifollower', this.ifollower);
 
 
-
         if (this.iName == '') {
           AlertModule.show({title: this.alert = '请填写姓名'})
           return
@@ -156,17 +160,10 @@
           return
         }
 
-        if (this.iLicense == '居民身份证') {
-          AlertModule.show({title: this.alert = '请填写居民身份证'})
-          return
-        }
 
-        if (this.iLicense == '一代身份证') {
-          let isIDCard1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/
-          if (!(isIDCard1.test(this.iLicenseNumber))) {
-            AlertModule.show({title: this.alert = '一代身份证不正确'})
-            return
-          }
+        if (this.iLicense == '证件类型') {
+          AlertModule.show({title: this.alert = '请填写证件类型'})
+          return
         }
 
         if (this.iLicense == '二代身份证') {
@@ -176,41 +173,92 @@
             return
           }
         }
-        if(this.iCompany == ''){
+
+        if(this.iLicense =='港澳通行证'){
+          let HKMAKAO = /^[HMhm]{1}([0-9]{10}|[0-9]{8})$/;
+          if( !(HKMAKAO .test(this.iLicenseNumber))){
+            AlertModule.show({title: this.alert = '港澳通行证不正确'})
+            return
+          }
+        }
+
+        if(this.iLicense =='护照'){
+          let PASSPORT= "/^[a-zA-Z0-9]{5,17}$/";
+          if(!(PASSPORT .test(this.iLicenseNumber))){
+            AlertModule.show({title: this.alert = '护照不正确'})
+            return
+          }
+        }
+
+        if(this.iLicense == '驾驶证'){
+          let  DRIVINGLICENCE=/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+          if(!(DRIVINGLICENCE .test(this.iLicenseNumber))){
+            AlertModule.show({title: this.alert = '驾驶证不正确'})
+            return
+          }
+        }
+
+
+        if(this.iLicense == '军官证'){
+          let WARDROOM=/^\d{7}$/
+          if(!(WARDROOM.test(this.iLicenseNumber))){
+            AlertModule.show({title: this.alert = '军官证不正确'})
+            return
+          }
+
+        }
+
+        if(this.iLicense == '学生证'){
+          if(this.eLicenseNumber.length <6){
+            AlertModule.show({title: this.alert = '学生证不正确'})
+            return
+          }
+        }
+
+
+
+
+
+
+        if (this.iCompany == '') {
           AlertModule.show({title: this.alert = '请填写公司'})
           return
         }
 
-        if(this.iStart == ''){
+        if (this.iStart == '') {
           AlertModule.show({title: this.alert = '请填写来访时间'})
           return
         }
         let start = this.iStart.replace(/-/g, '/')
-        let startTimes = new Date(start).getTime()/1000
+        let startTimes = new Date(start).getTime()
+
+
+        let timestamp =new Date().getTime()//当前时间
+        if(timestamp > startTimes ){
+          AlertModule.show({title: this.alert = '请填写来访时间要等于当前时间'})
+          return
+        }
 
 
 
 
-        if(this.iEnd == ''){
+        if (this.iEnd == '') {
           AlertModule.show({title: this.alert = '请填写离开时间'})
           return
         }
         let end = this.iEnd.replace(/-/g, '/')
-        let endTimes = new Date(end).getTime()/1000
+        let endTimes = new Date(end).getTime()
 
 
-        if(endTimes < startTimes ){
+
+
+        if (endTimes < startTimes) {
           AlertModule.show({title: this.alert = '填写的时间不合格'})
           return
         }
 
 
-        if(endTimes < startTimes ){
-          AlertModule.show({title: this.alert = '填写的时间不合格'})
-          return
-        }
-
-        if(this.iCause == ''){
+        if (this.iCause == '') {
           AlertModule.show({title: this.alert = '请填写来访事由'})
           return
         }
@@ -219,22 +267,9 @@
 
 
           for (let i = 0; i < this.ifollower.length; i++) {
-           alert( this.ifollower.length)
             if (this.ifollower[i].name == '' || this.ifollower[i].name == undefined) {
               AlertModule.show({title: this.alert = '请填写随行人姓名'})
               return
-            }
-            if (this.ifollower[i].identityType == '居民身份证') {
-              AlertModule.show({title: this.alert = '请填写随行人居民身份证'})
-              return
-            }
-
-            if (this.ifollower[i].identityType == '一代身份证') {
-              let isIDCard1 = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/
-              if (!(isIDCard1.test(this.ifollower[i].identityNo))) {
-                AlertModule.show({title: this.alert = '随行人一代身份证不正确'})
-                return
-              }
             }
 
             if (this.ifollower[i].identityType == '二代身份证') {
@@ -244,19 +279,63 @@
                 return
               }
             }
+
+
+            if(this.ifollower[i].identityType =='港澳通行证'){
+              let HKMAKAO = "/^[HMhm]{1}([0-9]{10}|[0-9]{8})$/";
+              if( !(HKMAKAO .test(this.ifollower[i].identityNo))){
+                AlertModule.show({title: this.alert = '随行人港澳通行证不正确'})
+                return
+              }
+            }
+
+            if(this.ifollower[i].identityType =='护照'){
+              let PASSPORT= "/^[a-zA-Z0-9]{5,17}$/";
+              if(!(PASSPORT .test(this.ifollower[i].identityNo))){
+                AlertModule.show({title: this.alert = '随行人护照不正确'})
+                return
+              }
+            }
+
+            if(this.ifollower[i].identityType == '驾驶证'){
+              let  DRIVINGLICENCE=/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+              if(!(DRIVINGLICENCE .test(this.ifollower[i].identityNo))){
+                AlertModule.show({title: this.alert = '随行人驾驶证不正确'})
+                return
+              }
+            }
+
+
+            if(this.ifollower[i].identityType == '军官证'){
+              let WARDROOM= /^\d{7}$/
+              if(!(WARDROOM .test(this.ifollower[i].identityNo))){
+                AlertModule.show({title: this.alert = '随行人军官证不正确'})
+                return
+              }
+
+            }
+
+            if(this.ifollower[i].identityType == '学生证'){
+              if(this.ifollower[i].identityNo.length <6){
+                AlertModule.show({title: this.alert = '随行人学生证不正确'})
+                return
+              }
+            }
+
           }
         }
+
         this.$router.push({path: 'invitepar'})
       },
       deletefollower: function (index) {
-        this.ifollower[index].shows=true;
+        this.ifollower[index].shows = true;
       },
       //取消
       onCancel: function () {
       },
       //确定
       onConfirm: function () {
-        this.ifollower.splice(this.ifollower.length-1, 1)
+        this.ifollower.splice(this.ifollower.length - 1, 1)
       },
     }
   }
@@ -282,26 +361,35 @@
     height: 20px;
     padding: 10px 15px;
   }
-  .addk{
+  #none{
+    margin-left: 15%;
+    position: absolute;
+    margin-top: -44px;
+    width: 50%;
+    background: rgba(0,0,0,0);
+  }
+  .addk {
     width: 100%;
     height: 10px;
     background: #edf1f3;
 
   }
+
   .excitedo {
-    /*position: center;*/
+    /*position: absolute;*/
     height: 100px;
     .company, .suixing {
       p {
         width: 100%;
         height: 43px;
+
         background: #edf1f3;
         span {
           display: inline-block;
           margin: 12px 0 0 4%;
           color: #999;
         }
-        .adds{
+        .adds {
         }
       }
     }
@@ -360,9 +448,7 @@
         /*display: inline-block;*/
         /*border: 1px solid red;*/
         img {
-          /*display: inline-block;*/
-          /*height: 20px;*/
-          /*width: 20px;*/
+
           margin-top: 10px;
         }
       }
@@ -370,9 +456,9 @@
     }
 
     .add {
-      padding: 0px  4% 20px 4%;
+      padding: 0px 4% 20% 4%;
       width: 100%;
-      height: 100%;
+      bottom: 0;
       background: #edf1f3;
       color: #1E90FF;
       ul {
@@ -380,7 +466,7 @@
         display: flex;
         justify-content: center;
         margin-bottom: 30px;
-       padding-top: 10px;
+        padding-top: 10px;
         li {
           height: 24px;
           color: #5aa0ce;

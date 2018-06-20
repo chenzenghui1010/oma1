@@ -35,8 +35,7 @@
     color: #d7d7d7;
   }
   .weui-input{
-    color: #d7d7d7 !important;
-    font-size: 18px !important;
+    font-size: 16px !important;
   }
   .vux-label-desc{
     margin-left: 10px !important;

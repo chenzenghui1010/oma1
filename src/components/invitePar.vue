@@ -5,7 +5,7 @@
       <ul>
         <li><span>姓名：</span>{{ this.$store.state.iName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.iPoints }}</li>
-        <li><span>证件号：</span>居民身份证 {{ this.$store.state.iLicenseNumber}}</li>
+        <li><span>证件号：</span> {{ this.$store.state.iLicense}} {{ this.$store.state.iLicenseNumber}}</li>
         <li><span>车牌号：</span>{{ this.$store.state.iCar}} {{ this.$store.state.iCarNumber}}</li>
         <li><span>公司：</span>{{ this.$store.state.iCompany }}</li>
         <li><span>来访时间：</span>{{ this.$store.state.iStart }}</li>
@@ -16,8 +16,8 @@
     <div class="d3">
       <p><span>随行人信息</span></p>
       <ul v-for=" item in ifollower ">
-        <li><span>姓名：</span>{{ item.iName}}</li>
-        <li><span>证件号：</span>居民身份证 {{ item.identityNo.toString() }}</li>
+        <li><span>姓名：</span>{{ item.name}}</li>
+        <li><span>证件号：</span>{{ item.identityType.toString()}} {{ item.identityNo.toString() }}</li>
       </ul>
     </div>
 
@@ -25,44 +25,55 @@
       <p>*在提交访客上去信息前，请确保信息准确无误</p>
       <p>
         <button @click="last">上一步</button>
-        <button @click="ok">确定提交</button>
+        <button @click="submit">确定提交</button>
       </p>
     </div>
   </div>
 </template>
 <script>
   import {AlertModule} from 'vux'
+  import {invite} from "../parking";
+
   export default {
     name: 'invierpar',
-    components:{AlertModule},
+    components: {AlertModule},
     data() {
       return {
-        ifollowers: [],
+        ifollower: [],
       }
     },
     created() {
       this.ifollower = this.$store.state.ifollower;
-
     },
 
     methods: {
       last() {
-
+        this.ifollower.length = 0
         history.back()
-
       },
-      ok() {
-        for (let i = 0; i < this.ifollowers.length; i++) {
-          if (this.ifollowers[i].identityType == '一代身份证') {
-            this.ifollowers[i].identityType = '1'
-          } else if (this.ifollowers[i].identityType == '二代身份证') {
-            this.ifollowers[i].identityType = '2'
+      submit() {
+
+        for (let i = 0; i < this.followers.length; i++) {
+          if (this.ifollower[i].identityType == '二代身份证') {
+            this.ifollower[i].identityType = '2'
+          } else if (this.ifollower[i].identityType == '港澳通行证') {
+            this.ifollower[i].identityType = '7'
+          } else if (this.ifollower[i].identityType == '驾驶证') {
+            this.ifollower[i].identityType = '9'
+          } else if (this.ifollower[i].identityType == '军官证') {
+            this.ifollower[i].identityType = '10'
+          } else if (this.ifollower[i].identityType == '护照') {
+            this.ifollower[i].identityType = '3'
+          } else if (this.ifollower[i].identityType == '学生证') {
+            this.ifollower[i].identityType = '11'
+          } else if (this.ifollower[i].identityType == '其他') {
+            this.ifollower[i].identityType = '12'
           }
         }
 
-        let url = '/mv/invite/invite'
-        this.$axios.post(url, {
-          visitorPhone: this.$store.state.phone,
+
+        invite({
+          visitorPhone: this.$store.state.iPoints,
           visitorName: this.$store.state.iName,
           identityNo: this.$store.state.iLicenseNumber,
           identityType: this.identityNo,
@@ -72,21 +83,16 @@
           subject: this.$store.state.iCause,
           follower: JSON.stringify(this.$store.state.ifollower)
         })
-          .then(res => {
-            if (res.data.resultCode == '0') {
-              this.$router.push({path: 'makethree', query: {'makethree': '你已通过来访申请，请耐心等候来访'}});
-            } else if(res.data.resultCode == '2101'){
-              AlertModule.show({title: this.alert = res.data.message})
-              this.$router.push({path:'/'})
-            }
-            // console.log(res.data)
-            // alert(res.data.resultCode)
-            // alert(res.data.message)
-          })
-          .catch(error => {
 
-            alert(res.resultCode)
-            console.log(error)
+          .then(data => {
+
+            this.$router.push({path: 'makethree', query: {'makethree': '你的访问申请已提交，请耐心等候来访人'}});
+          })
+          .catch(message => {
+            AlertModule.show({title: message})
+            if (message == '没有权限') {
+              this.$router.push({path: '/'})
+            }
           })
 
       }
@@ -94,16 +100,25 @@
 
     computed: {
       identityNo: function () {
-        if (this.$store.state.eLicense == '一代身份证') {
-          return '1'
-        } else if (this.$store.state.eLicense == '二代身份证') {
+        if (this.$store.state.iLicense == '二代身份证') {
           return '2'
+        } else if (this.$store.state.iLicense == '港澳通行证') {
+          return '7'
+        } else if (this.$store.state.iLicense == '驾驶证') {
+          return '9'
+        } else if (this.$store.state.iLicense == '军官证') {
+          return '10'
+        } else if (this.$store.state.iLicense == '护照') {
+          return '3'
+        } else if (this.$store.state.iLicense == '学生证') {
+          return '11'
+        } else if (this.$store.state.iLicense == '其他') {
+          return '12'
         } else {
           return '身份证类型错误'
         }
-      }
+      },
     }
-
   }
 </script>
 <style scoped lang="less">

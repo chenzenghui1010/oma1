@@ -27,6 +27,9 @@
       return:{
 
       }
+    },
+    created(){
+      document.getElementById('titleId').innerHTML='来访预约'
     }
   }
 </script>

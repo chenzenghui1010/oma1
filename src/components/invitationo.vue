@@ -9,6 +9,9 @@
 </template>
 <script>
   import  moment from 'moment'
+  import {AlertModule} from 'vux'
+  import { getVisitPassInfo} from "../parking";
+
   export default {
     name: 'invitationo',
     data() {
@@ -17,45 +20,34 @@
         validTimeBegin: '',
         passInfo: '',
         validTimeEnd: '',
-        visitId:this.getQueryVariable('visitId')
+        visitId:this.$route.query.visitId,
+
+
       }
     },
     created() {
-      let url =  '/mv/visit/getVisitPassInfo'
-      alert(this.getQueryVariable('visitId'))
-      this.$axios.post(url, {
-        visitId:this.visitId0
-      }).then(res => {
-        if (res.data.resultCode == 0) {
-          console.log(res.data.data.passCode)
-          this.passCode = res.data.data.passCode// 二维码图片地址
+     document.getElementById('titleId').innerHTML='访客邀请函'
 
-          this.passInfo = res.data.data.passInfo//通信信息
+      getVisitPassInfo({visitId:this.visitId})
+        .then(data => {
 
 
-          console.log('你'+res.data.data.validTimeBegin)//有效时间
-          this.validTimeBegin = res.data.data.validTimeBegin
+          this.passCode = data.data.passCode// 二维码图片地址
 
-          this.validTimeEnd = res.data.data.validTimeEnd //有效期结束时间
-        }
-      }).catch(error => {
-        console.log(error)
+          this.passInfo = data.data.passInfo//通信信息
+
+
+          // console.log('你'+res.data.data.validTimeBegin)//有效时间
+          this.validTimeBegin = data.data.validTimeBegin
+
+          this.validTimeEnd = data.data.validTimeEnd //有效期结束时间
+
+      }).catch(message => {
+         AlertModule.show({title: message})
       })
     },
 
-    methods:{
-      getQueryVariable: function (variable) {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-          var pair = vars[i].split("=");
-          if (pair[0] == variable) {
-            return pair[1];
-          }
-        }
-        return (false);
-      },
-    },
+
     filters: {
       dateFrm: function (el) {
         return moment(el).format('YYYY-MM-DD HH:mm:ss')
@@ -69,8 +61,8 @@
     text-align: center;
     width: 100%;
     img {
-      height: 45%;
-      width: 80%;
+      height: 40%;
+      width: 70%;
     }
     div {
       color: #8c939d;

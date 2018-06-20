@@ -21,9 +21,9 @@ export default new vuex.Store({
     // 来访人信息
     eName: '',
     ePoints: '',
-    eLicense: '居民身份证',
+    eLicense: '证件类型',
     eLicenseNumber: '',
-    eCar: '请选择',
+    eCar: '',
     eCarNumber: '',
     eCompany: '',
     eStart: '',
@@ -35,9 +35,9 @@ export default new vuex.Store({
     //来访邀约
     iName: '',
     iPoints: '',
-    iLicense: '居民身份证',
+    iLicense: '证件类型',
     iLicenseNumber: '',
-    iCar: '请选择',
+    iCar: '',
     iCarNumber: '',
     iCompany: '',
     iStart: '',
@@ -45,8 +45,8 @@ export default new vuex.Store({
     iCause: '',
 
     //随行人
-    follower: [{'name': '', 'identityNo': '', 'identityType': ['居民身份证'], title: [['居民身份证','一代身份证','二代身份证']]}],
-    ifollower:[{'name': '', 'identityNo': '', 'identityType': ['居民身份证'], title: [['居民身份证','一代身份证','二代身份证']]}],
+    follower: [],
+    ifollower:[],
   },
   mutations: {
     //

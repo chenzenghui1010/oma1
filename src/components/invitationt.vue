@@ -7,10 +7,22 @@
 </template>
 
 <script>
+  import {getVisitPassInfo} from "../parking";
+
   export default {
     name: 'invitationt',
     data() {
       return {}
+    },
+    created() {
+      document.getElementById('titleId').innerHTML = '访客邀请函'
+      getVisitPassInfo({visitId:this.$route.query.visitId})
+    .
+      then(data => {
+
+      })
+
+
     }
   }
 </script>

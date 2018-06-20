@@ -45,13 +45,16 @@
     data() {
       return {
         title: '受访人信息',
-        mName: this.$store.state.mName,
-        mPoints: this.$store.state.mPoints,
-        mCompany: this.$store.state.mCompany,
-        mDepartment: this.$store.state.mDepartment,
+        mName: '',
+        mPoints: '',
+        mCompany: '',
+        mDepartment: '',
 
         alert: '',
       }
+    },
+    created(){
+      document.getElementById('titleId').innerHTML='来访预约'
     },
 
     computed: {
@@ -61,6 +64,7 @@
     },
     methods: {
       last: function () {
+
         history.go(-1);
       },
       next: function () {

@@ -1,5 +1,5 @@
 <template>
-  <div class="makethree">
+  <div class="detailsAudit">
     <div class="img">
       <img src="../assets/成功@3x.png"/>
       <p class="add">提交成功</p>
@@ -10,7 +10,7 @@
 </template>
 <script>
   export default {
-    name: 'makethree',
+    name: 'detailsAudit',
     data() {
       return {
         auditResult:''
@@ -21,13 +21,13 @@
     },
     methods: {
       ok: function () {
-        history.go(-1)
+        history.go(-2)
       }
     }
   }
 </script>
 <style scoped lang="less">
-  .makethree {
+  .detailsAudit {
     height: 100%;
     width: 100%;
     position: fixed;

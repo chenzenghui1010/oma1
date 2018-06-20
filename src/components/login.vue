@@ -40,13 +40,15 @@
     },
 
     created() {
-
+      document.getElementById('titleId').innerHTML = '登录'
     },
 
     mounted() {
       //定焦点
       this.$refs['input'].focus();
     },
+
+
     methods: {
 
       countDown() {
@@ -69,18 +71,17 @@
           .catch(error => {
 
           })
-
       },
 
 
       login() {
-        if (this.points == '') {
+        if (this.points == '' || this.points == null) {
           AlertModule.show({
             title: '手机号码不可以为空',
           })
           return
         }
-        if (!(/^1[3|4|5|8][0-9]\d{8}$/.test(this.points))) {
+        if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(this.points))) {
           AlertModule.show({
             title: '手机号码格式不正确',
           })

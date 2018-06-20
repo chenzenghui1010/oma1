@@ -20,13 +20,13 @@
         <li class="title"><span>来访人</span></li>
         <li><span>姓名：</span>{{ dataList.name}}</li>
         <li><span>手机号：</span>{{ dataList.visitorPhone}}</li>
-        <li><span>证件号：</span>居民身份证 {{ dataList.identityNo}}</li>
+        <li><span>证件号：</span> {{ dataList.identityNo}}</li>
         <li><span>公司：</span>{{ dataList.company}}</li>
       </ul>
       <ul v-for=" ( item , index ) in  dataList.follower">
         <li class="title"><span>随行{{index +1}}</span></li>
         <li><span>姓名：</span>{{item.name}}</li>
-        <li style="border: none;"><span>证据号：</span>居民身份证 {{ item.identityNo}}</li>
+        <li style="border: none;"><span>证件号：</span>{{ item.identityNo}}</li>
       </ul>
     </div>
     <footer>
@@ -90,12 +90,13 @@
 
               console.log(data.data)
 
-              let ok = '你已审核通过来访申请，请耐心等候来访'
-              this.$router.push({path: 'makethree', query: {makethree: ok}})
+
+              this.$router.push({path: 'detailsAudit', query: {auditResult: 1}})
 
             })
             .catch(message => {
               AlertModule.show({title: message})
+              if(message == '没有权限'){this.$router.push({path:'/'})}
             })
         }
         else if (this.userType == '1') {
@@ -107,12 +108,12 @@
 
               console.log(data.data)
 
-              let ok = '你已审核通过来访申请，请耐心等候来访'
-              this.$router.push({path: 'makethree', query: {makethree: ok}})
+              this.$router.push({path: 'detailsAudit', query: {auditResult: 1}})
 
             })
             .catch(message => {
               AlertModule.show({title: message})
+              if(message == '没有权限'){this.$router.push({path:'/'})}
             })
         }
       },
@@ -138,11 +139,11 @@
             auditValue: 1
           })
             .then(data => {
-
-              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+              this.$router.push({path: 'detailsAudit',query:{auditResult:0}})
             })
             .catch(message => {
               AlertModule.show({title: message})
+              if(message == '没有权限'){this.$router.push({path:'/'})}
             })
         }
         else if (this.userType == '1') {
@@ -151,17 +152,23 @@
             auditValue: 1
           })
             .then(data => {
-              this.$router.push({path: 'invitationt', query: {reason: this.reason}})
+              this.$router.push({path: 'detailsAudit', query: {auditResult: 0}})
+
             })
             .catch(message => {
               AlertModule.show({title: message})
+              if(message == '没有权限'){this.$router.push({path:'/'})}
             })
         }
       }
     },
 
 
-    computed: {},
+    computed: {
+
+
+
+    },
 
     //转换时间插件
     filters: {

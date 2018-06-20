@@ -48,6 +48,7 @@
         chevalue: '我已阅读并同意预约协议和须知',
       }
     },
+    created(){document.getElementById('titleId').innerHTML='来访预约'},
     methods: {
       next: function () {
         this.checkbox !== true ?  AlertModule.show({

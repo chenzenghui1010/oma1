@@ -11,6 +11,7 @@ import excitedaboutok from '../components/excitedAboutOk'
 import audito from '../components/auditO'
 import audit from '../components/audit'
 import  visitorSubmitSucceed from '../components/visitorSubmitSucceed'
+import detailsAudit from '../components/detailsAudit'
 
 
 
@@ -85,6 +86,11 @@ export default new Router({
       path:'/visitorSubmitSucceed',
       name:'visitorSubmitSucceed',
       component:visitorSubmitSucceed
+    },
+    {
+      path:'/detailsAudit',
+      name:'detailsAudit',
+      component:detailsAudit
     }
    ]//,mode:'history'
 })

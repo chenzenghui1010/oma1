@@ -3,7 +3,7 @@
     <div class="img">
       <img src="../assets/成功@3x.png"/>
       <p class="add">提交成功</p>
-      <p class="left">{{this.$route.query.makethree}} &nbsp; &nbsp; </p>
+      <p class="left">您的来访预约申请已提交成功，我们会尽快审核,请耐心等候 &nbsp;  &nbsp;</p>
     </div>
     <button class="ok" @click="ok">确定</button>
   </div>
@@ -16,7 +16,8 @@
     },
     methods: {
       ok: function () {
-        this.$router.push({path:'makeo'})
+
+        wx.closeWindow()
       }
     }
   }

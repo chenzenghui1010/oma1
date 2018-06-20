@@ -37,7 +37,7 @@
       <ul>
         <li><span>姓名：</span>{{ this.$store.state.eName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.ePoints }}</li>
-        <li><span>证件号：</span>居民身份证 {{ this.$store.state.eLicenseNumber}}</li>
+        <li><span>证件号：</span>{{ this.$store.state.eLicense}} {{ this.$store.state.eLicenseNumber}}</li>
         <li><span>车牌号：</span>{{ this.$store.state.eCar}} {{ this.$store.state.eCarNumber}}</li>
         <li><span>公司：</span>{{ this.$store.state.eCompany }}</li>
         <li><span>来访时间：</span>{{ this.$store.state.eStart }}</li>
@@ -49,12 +49,12 @@
       <ul v-for=" (item, index)  in  followers  ">
         <p><span>随行人{{ index +1}}信息</span></p>
         <li><span>姓名：</span>{{ item.name}}</li>
-        <li><span>证件号：</span>居民身份证 {{ item.identityNo.toString()}}</li>
+        <li><span>证件号：</span>{{ item.identityType.toString()}} {{item.identityNo.toString()}}</li>
       </ul>
     </div>
 
     <div class="footer">
-      <p>*在提交访客上去信息前，请确保信息准确无误</p>
+      <p>*在提交访客申请信息前，请确保信息准确无误</p>
       <p>
         <button @click="last">上一步</button>
         <button @click="submit">确定提交</button>
@@ -73,7 +73,6 @@
       return {
         followers: [],
         alert: '',
-
       }
     },
     created() {
@@ -84,21 +83,31 @@
 
     methods: {
       last() {
-
+        this.followers.length = 0;
         history.back()
-
       },
+
+
       submit() {
-        let phone = localStorage.getItem('phone')
+
 
         for (let i = 0; i < this.followers.length; i++) {
-          if (this.followers[i].identityType == '一代身份证') {
-            this.followers[i].identityType = '1'
-          } else if (this.followers[i].identityType == '二代身份证') {
+          if (this.followers[i].identityType == '二代身份证') {
             this.followers[i].identityType = '2'
+          } else if (this.followers[i].identityType == '港澳通行证') {
+            this.followers[i].identityType = '7'
+          } else if (this.followers[i].identityType == '驾驶证') {
+            this.followers[i].identityType = '9'
+          } else if (this.followers[i].identityType == '军官证') {
+            this.followers[i].identityType = '10'
+          } else if (this.followers[i].identityType == '护照') {
+            this.followers[i].identityType = '3'
+          } else if (this.followers[i].identityType == '学生证') {
+            this.followers[i].identityType = '11'
+          } else if (this.followers[i].identityType == '其他') {
+            this.followers[i].identityType = '12'
           }
         }
-
 
         reserve({
           phone: this.$store.state.ePoints,
@@ -114,7 +123,7 @@
 
           .then(data => {
 
-            this.$router.push({path: 'visitorSubmitSucceed', query: {makethree: '您的来访预约申请已提交成功，我们会尽快审核,请耐心等候'}});
+            this.$router.push({path: 'visitorSubmitSucceed'});
           })
           .catch(message => {
             AlertModule.show({title: this.alert = message})
@@ -124,10 +133,20 @@
 
     computed: {
       identityNo: function () {
-        if (this.$store.state.eLicense == '一代身份证') {
-          return '1'
-        } else if (this.$store.state.eLicense == '二代身份证') {
+        if (this.$store.state.eLicense == '二代身份证') {
           return '2'
+        } else if (this.$store.state.eLicense == '港澳通行证') {
+          return '7'
+        } else if (this.$store.state.eLicense == '驾驶证') {
+          return '9'
+        } else if (this.$store.state.eLicense == '军官证') {
+          return '10'
+        } else if (this.$store.state.eLicense == '护照') {
+          return '3'
+        } else if (this.$store.state.eLicense == '学生证') {
+          return '11'
+        } else if (this.$store.state.eLicense == '其他') {
+          return '12'
         } else {
           return '身份证类型错误'
         }

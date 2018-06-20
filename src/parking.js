@@ -7,7 +7,7 @@ export function askForSms(data) {
   return request({
     url:'/mv/user/askForSms',
     method: 'post',
-    params:data
+    data:data
   })
 }
 
@@ -81,6 +81,27 @@ export function auditVisitReserveByManager(data){
 export function getVisitInfoById(data){
   return request({
     url:'/mv/visit/getVisitInfoById',
+    method:'post',
+    data:data
+  })
+}
+
+
+
+
+//被访者邀请来访者
+export function  invite(data){
+  return request({
+    url:'/mv/invite/invite',
+    method:'post',
+    data:data
+  })
+}
+
+//生成二维码
+export function getVisitPassInfo(data){
+  return request ({
+  url: '/mv/visit/getVisitPassInfo',
     method:'post',
     data:data
   })
