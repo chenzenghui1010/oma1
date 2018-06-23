@@ -93,19 +93,19 @@
 
         for (let i = 0; i < this.followers.length; i++) {
           if (this.followers[i].identityType == '二代身份证') {
-            this.followers[i].identityType = '2'
-          } else if (this.followers[i].identityType == '港澳通行证') {
-            this.followers[i].identityType = '7'
-          } else if (this.followers[i].identityType == '驾驶证') {
-            this.followers[i].identityType = '9'
-          } else if (this.followers[i].identityType == '军官证') {
-            this.followers[i].identityType = '10'
+            this.followers[i].identityType = '0'
           } else if (this.followers[i].identityType == '护照') {
+            this.followers[i].identityType = '1'
+          } else if (this.followers[i].identityType == '港澳通行证') {
+            this.followers[i].identityType = '2'
+          } else if (this.followers[i].identityType == '驾驶证') {
             this.followers[i].identityType = '3'
+          } else if (this.followers[i].identityType == '军官证') {
+            this.followers[i].identityType = '4'
           } else if (this.followers[i].identityType == '学生证') {
-            this.followers[i].identityType = '11'
+            this.followers[i].identityType = '5'
           } else if (this.followers[i].identityType == '其他') {
-            this.followers[i].identityType = '12'
+            this.followers[i].identityType = '6'
           }
         }
 
@@ -126,7 +126,8 @@
             this.$router.push({path: 'visitorSubmitSucceed'});
           })
           .catch(message => {
-            AlertModule.show({title: this.alert = message})
+            AlertModule.show({title: this.alert = '您填写的信息已过期请重新登录'})
+            this.$router.push({path:'/'})
           })
       }
     },
@@ -134,19 +135,19 @@
     computed: {
       identityNo: function () {
         if (this.$store.state.eLicense == '二代身份证') {
-          return '2'
-        } else if (this.$store.state.eLicense == '港澳通行证') {
-          return '7'
-        } else if (this.$store.state.eLicense == '驾驶证') {
-          return '9'
-        } else if (this.$store.state.eLicense == '军官证') {
-          return '10'
+          return '0'
         } else if (this.$store.state.eLicense == '护照') {
+          return '1'
+        } else if (this.$store.state.eLicense == '港澳通行证') {
+          return '2'
+        } else if (this.$store.state.eLicense == '驾驶证') {
           return '3'
+        } else if (this.$store.state.eLicense == '军官证') {
+          return '4'
         } else if (this.$store.state.eLicense == '学生证') {
-          return '11'
+          return '5'
         } else if (this.$store.state.eLicense == '其他') {
-          return '12'
+          return '6'
         } else {
           return '身份证类型错误'
         }

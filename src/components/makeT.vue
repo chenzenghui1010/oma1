@@ -54,7 +54,7 @@
       }
     },
     created(){
-      document.getElementById('titleId').innerHTML='来访预约'
+      document.title='来访预约'
     },
 
     computed: {

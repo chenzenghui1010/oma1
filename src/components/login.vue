@@ -40,8 +40,10 @@
     },
 
     created() {
-      document.getElementById('titleId').innerHTML = '登录'
+      document.title = '登录'
+
     },
+
 
     mounted() {
       //定焦点
@@ -53,10 +55,15 @@
 
       countDown() {
         if (!this.canClick) return  //改动的是这两行代码
+
         this.canClick = false
+
         this.content = '重新发送(' + this.totalTime + ')'
+
         let clock = window.setInterval(() => {
-          this.totalTime--
+
+          qthis.totalTime--
+
           this.content = '重新发送(' + this.totalTime + ')'
           if (this.totalTime < 0) {
             window.clearInterval(clock)
@@ -84,6 +91,12 @@
         if (!(/^1[3|4|5|7|8][0-9]\d{8}$/.test(this.points))) {
           AlertModule.show({
             title: '手机号码格式不正确',
+          })
+          return
+        }
+        if(this.verification.trim().length  < 1 ){
+          AlertModule.show({
+            title: '验证码信息不能为空',
           })
           return
         }

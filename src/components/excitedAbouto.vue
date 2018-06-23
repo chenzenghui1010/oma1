@@ -22,7 +22,7 @@
                placeholder="请输入"></x-input>
 
 
-      <x-input title=" <span>*</span> 公司：" required="required" v-model="eCompany" placeholder="请输入"
+      <x-input title=" <span>*</span> 公司："  v-model="eCompany" placeholder="请输入"
       ></x-input>
 
       <span>* </span>
@@ -30,7 +30,7 @@
                 placeholder="2018-05-10 10:00"></datetime>
 
       <span>* </span>
-      <datetime v-model="eEnd" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc=' 预计离开：'
+      <datetime v-model="eEnd" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc='离开时间：'
                 placeholder="2018-05-10 10:00"></datetime>
       <x-input title=" <span>*</span> 来访事由：" required="required" v-model="eCause" placeholder="请输入"></x-input>
 
@@ -144,7 +144,7 @@
           'name': this.$store.state.follower.name,
           'identityNo': this.$store.state.follower.identityNo,
           'identityType': ['证据类型'],
-          'title': [['证件类型', '二代身份证', '港澳通行证', '驾驶证', '军官证', '护照', '学生证', '其他']],
+          'title': [['证件类型', '二代身份证','护照', '港澳通行证', '驾驶证', '军官证',  '学生证', '其他']],
           'shows': false
         })
       },
@@ -403,7 +403,7 @@
   #none {
     margin-left: 15%;
     position: absolute;
-    margin-top: -44px;
+    margin-top: -41px;
     width: 55%;
     background: rgba(0, 0, 0, 0);
   }

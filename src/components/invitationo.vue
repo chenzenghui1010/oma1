@@ -36,8 +36,6 @@
 
           this.passInfo = data.data.passInfo//通信信息
 
-
-          // console.log('你'+res.data.data.validTimeBegin)//有效时间
           this.validTimeBegin = data.data.validTimeBegin
 
           this.validTimeEnd = data.data.validTimeEnd //有效期结束时间

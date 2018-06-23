@@ -38,7 +38,7 @@
       }
       .add {
         color: #32CD32;
-        margin: 20px auto 50px auto;
+        margin: 20px auto 10% auto;
         font-size: 28px;
       }
       .left {
@@ -47,7 +47,7 @@
       }
     }
     .ok {
-      margin-top: 88px;
+      margin-top: 20%;
       width: 90%;
       height: 60px;
       background-color: #1d83c5;

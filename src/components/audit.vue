@@ -18,11 +18,11 @@
     </div>
     <div class="alert" v-if="shade">
       <p>填写拒绝原因</p>
-      <textarea v-model="reason" cols="37" rows="5" placeholder="请输入 不可以为空">
+      <textarea v-model="reason" cols="37" rows="5" placeholder="30字以内">
       </textarea>
       <p class="btn">
         <button class="button" @click="cancel">取消</button>
-        <button class="button" @click="confirm">确定</button>
+        <button :disabled="disabled" :class="disabled ?  'disabled':'btn2' " @click="confirm">确定</button>
       </p>
     </div>
   </div>
@@ -54,14 +54,17 @@
         reason: '',
         index: '',
         requestUser: '',
-        title: '来访审核'
+        title: '来访审核',
+        disabled: true,
+        timeOut: '',
 
       }
     },
 
     created() {
-      document.getElementById('titleId').innerHTML = this.title
+      // this.isTimeOut();
 
+      document.getElementById('titleId').innerHTML = this.title
       sessionStorage.setItem('usertype', this.$route.query.userType)
       let userType = this.$route.query.userType
       if (userType == '0') {
@@ -87,20 +90,45 @@
             AlertModule.show({
               title: message,
             })
-            if (message == '没有权限') {this.$router.push({path: '/'})}
+            if (message == '没有权限') {
+              this.$router.push({path: '/'})
+            }
           })
       }
 
+    },
+    watch: {
+      reason: function (val) {
+
+        val.trim().length > 0 ? this.disabled = false : this.disabled = true;
+
+      }
     },
     mounted() {
 
 
     },
     methods: {
+      startTimer() {
+        clearTimeout(this.timeOut)
+        this.timeOut = setTimeout(() => {
+          AlertModule.show({title: '您太长时间没操作请重新登录'})
+          this.$router.push({path: '/'})
+
+        }, 5000)
+      },
+      isTimeOut() {
+        document.body.onclick = this.startTimer;
+        // document.body.onmouseup = this.startTimer();
+        // document.body.onmousemove = this.startTimer();
+        // document.body.onkeyup = this.startTimer();
+        // document.body.ontouchend = this.startTimer();
+      },
+
 
       //详情
       details(index) {
-        this.$router.push({path: 'audito', query: {visitid: index, userType: this.$route.query.userType}})
+        // this.$router.push({path: 'audito', query: {visitid: index, userType: this.$route.query.userType}})
       },
       //拒绝
       repulse(index) {
@@ -136,12 +164,13 @@
 
               console.log(data.data)
 
-
               this.$router.push({path: 'makethree', query: {auditResult: 1}})
 
             })
             .catch(message => {
+
               AlertModule.show({title: message})
+
             })
         }
 
@@ -158,13 +187,14 @@
         if (type == '0') {
           auditVisitReserveByInterviewee({
             visitId: this.index,
-            auditValue: 1
+            auditValue: 0,
+            reason: this.reason
           })
             .then(data => {
 
               console.log(data.data)
               // this.$router.push({path:'reject'})
-             this.$router.push({path: 'makethree', query: {auditResult: 0}})
+              this.$router.push({path: 'makethree', query: {auditResult: 0}})
             })
             .catch(message => {
               AlertModule.show({title: message})
@@ -173,11 +203,12 @@
         else if (type == '1') {
           auditVisitReserveByManager({
             visitId: this.index,
-            auditValue: 1
+            auditValue: 0,
+            reason: this.reason
           })
             .then(data => {
 
-              this.$router.push({path: 'makethree', query: {auditResult:0}})
+              this.$router.push({path: 'makethree', query: {auditResult: 0}})
 
             })
             .catch(message => {
@@ -230,7 +261,7 @@
     textarea {
       padding: 11px 0 0 10px;
       font-size: 14px;
-      color: #d7d7d7;
+      /*color: #d7d7d7;*/
       border: 1px solid #d9d9d9;
       margin-bottom: 20px;
     }
@@ -255,6 +286,7 @@
         border-left: 1px solid gainsboro;
         color: #1E90FF;
       }
+
     }
   }
 
@@ -306,10 +338,14 @@
           color: #8c939d;
           border-bottom: 1px solid #edf1f3;
         }
-        button:nth-child(2) {
+        .disabled {
+          color: #8c939d;
+        }
+        .btn2 {
           border-left: 1px solid #ededed;
           color: #1E90FF;
         }
+
       }
     }
   }

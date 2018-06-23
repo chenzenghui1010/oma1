@@ -32,7 +32,14 @@ export default new vuex.Store({
 
 
 
-    //来访邀约
+    //来访邀约 被访者
+    inName: '',
+    inPoints: '',
+    inCompany:'',
+    inDep:'',
+
+
+    //来访邀约 来访者
     iName: '',
     iPoints: '',
     iLicense: '证件类型',
@@ -105,7 +112,24 @@ export default new vuex.Store({
       state.eCause = eCause;
     },
 
-    //来访邀约
+
+    //来访邀约 被访者
+
+
+    inName(state, inName) {
+      state.inName = inName;
+    },
+    inPoints(state, inPoints) {
+      state.inPoints = inPoints;
+    },
+    inCompany(state, inCompany) {
+      state.inCompany = inCompany;
+    },
+    inDep(state, inDep) {
+      state.inDep = inDep;
+    },
+
+    //来访邀约 来访者
     iName(state, iName) {
       state.iName = iName;
     },
@@ -205,7 +229,23 @@ export default new vuex.Store({
     },
 
 
-    //邀约
+
+    //邀约 被访者
+
+    inName({commit}, inName) {
+      commit('inName', inName)
+    },
+    inPoints({commit}, inPoints) {
+      commit('inPoints', inPoints)
+    },
+    inCompany({commit}, inCompany) {
+      commit('inCompany', inCompany)
+    },
+    inDep({commit}, inDep) {
+      commit('inDep', inDep)
+    },
+
+    //邀约 来访者
     iName({commit}, iName) {
       commit('iName', iName)
     },

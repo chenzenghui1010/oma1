@@ -35,11 +35,11 @@
     </footer>
     <div class="alert" v-if="shade">
       <p>填写拒绝原因</p>
-      <textarea v-model="reason" cols="37" rows="5" placeholder="请输入 不可以为空">
+      <textarea v-model="reason" cols="37" rows="5" placeholder="30字以内">
       </textarea>
       <p class="btn">
         <button @click="cancel">取消</button>
-        <button @click="confirm">确定</button>
+        <button :disabled="disabled"  :class="disabled ?  'disabled':'btn2' " @click="confirm">确定</button>
       </p>
     </div>
   </div>
@@ -59,7 +59,8 @@
         shade: false,
         reason: '',
         detailsId: this.$route.query.visitid.toString(),
-        userType: this.$route.query.userType
+        userType: this.$route.query.userType,
+        disabled: true,
 
       }
     },
@@ -72,11 +73,17 @@
           this.dataList = data.data
           console.log(this.dataList)
         })
-        .catch(messge => {
+        .catch(message => {
+          AlertModule.show({title: message})
 
         })
     },
 
+    watch:{
+      reason:function(){
+        this.reason.trim().length > 0 ? this.disabled=false : this.disabled = true
+      }
+    },
     methods: {
 
       //同意
@@ -136,7 +143,8 @@
         if (this.userType == '0') {
           auditVisitReserveByInterviewee({
             visitId: this.detailsId,
-            auditValue: 1
+            auditValue: 0,
+            reason:this.reason
           })
             .then(data => {
               this.$router.push({path: 'detailsAudit',query:{auditResult:0}})
@@ -149,7 +157,8 @@
         else if (this.userType == '1') {
           auditVisitReserveByManager({
             visitId: this.detailsId,
-            auditValue: 1
+            auditValue: 0,
+            reason:this.reason
           })
             .then(data => {
               this.$router.push({path: 'detailsAudit', query: {auditResult: 0}})
@@ -289,7 +298,6 @@
       textarea {
         padding: 11px 0 0 10px;
         font-size: 14px;
-        color: #d7d7d7;
         border: 1px solid #d9d9d9;
         margin-bottom: 20px;
       }
@@ -308,9 +316,11 @@
           color: gray;
           font-size: 20px;
         }
-        button:nth-child(2) {
-          float: right;
-          border-left: 1px solid gainsboro;
+        .disabled {
+          color: #8c939d;
+        }
+        .btn2 {
+          border-left: 1px solid #ededed;
           color: #1E90FF;
         }
       }

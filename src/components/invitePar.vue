@@ -1,5 +1,37 @@
 <template>
   <div class="excitedaboutok">
+    <div class="maket">
+      <div class="title1">
+        <ul class="title1-ul1">
+          <li class="titleo">✓</li>
+          <strong>
+            <p class="titleo"/>
+          </strong>
+          <li class="titleo">✓</li>
+          <strong>
+            <p/>
+          </strong>
+          <li class="titleo">3</li>
+        </ul>
+
+        <ul class="title2-ul2">
+          <li class="titleo">受访人信息</li>
+          <li class="titleo">来访人信息</li>
+          <li class="titleo">确定信息</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d1">
+      <p><span>受访人信息</span></p>
+      <ul>
+        <li><span>姓名：</span>{{ this.$store.state.inName}}</li>
+        <li><span>手机号：</span>{{ this.$store.state.inPoints}}</li>
+        <li><span>公司：</span>{{ this.$store.state.inCompany}}</li>
+        <li><span>部门：</span>{{ this.$store.state.inDep}}</li>
+      </ul>
+    </div>
+
     <div class="d2">
       <p><span>来访人信息</span></p>
       <ul>
@@ -35,7 +67,7 @@
   import {invite} from "../parking";
 
   export default {
-    name: 'invierpar',
+    name: 'invitepar',
     components: {AlertModule},
     data() {
       return {
@@ -53,21 +85,21 @@
       },
       submit() {
 
-        for (let i = 0; i < this.followers.length; i++) {
+        for (let i = 0; i < this.ifollower.length; i++) {
           if (this.ifollower[i].identityType == '二代身份证') {
-            this.ifollower[i].identityType = '2'
+            this.ifollower[i].identityType = '0'
+          }else if (this.ifollower[i].identityType == '护照') {
+            this.ifollower[i].identityType = '1'
           } else if (this.ifollower[i].identityType == '港澳通行证') {
-            this.ifollower[i].identityType = '7'
+            this.ifollower[i].identityType = '2'
           } else if (this.ifollower[i].identityType == '驾驶证') {
-            this.ifollower[i].identityType = '9'
-          } else if (this.ifollower[i].identityType == '军官证') {
-            this.ifollower[i].identityType = '10'
-          } else if (this.ifollower[i].identityType == '护照') {
             this.ifollower[i].identityType = '3'
-          } else if (this.ifollower[i].identityType == '学生证') {
-            this.ifollower[i].identityType = '11'
+          } else if (this.ifollower[i].identityType == '军官证') {
+            this.ifollower[i].identityType = '4'
+          }  else if (this.ifollower[i].identityType == '学生证') {
+            this.ifollower[i].identityType = '5'
           } else if (this.ifollower[i].identityType == '其他') {
-            this.ifollower[i].identityType = '12'
+            this.ifollower[i].identityType = '6'
           }
         }
 
@@ -86,13 +118,16 @@
 
           .then(data => {
 
-            this.$router.push({path: 'makethree', query: {'makethree': '你的访问申请已提交，请耐心等候来访人'}});
+            this.$router.push({path: 'visitorSubmitSucceed'});
           })
           .catch(message => {
-            AlertModule.show({title: message})
+
             if (message == '没有权限') {
               this.$router.push({path: '/'})
+              return
             }
+            AlertModule.show({title: this.alert = '您填写的信息已过期请重新登录'})
+            this.$router.push({path:'/'})
           })
 
       }
@@ -101,19 +136,19 @@
     computed: {
       identityNo: function () {
         if (this.$store.state.iLicense == '二代身份证') {
+          return '0'
+        }else if (this.$store.state.iLicense == '护照') {
+          return '1'
+        }  else if (this.$store.state.iLicense == '港澳通行证') {
           return '2'
-        } else if (this.$store.state.iLicense == '港澳通行证') {
-          return '7'
         } else if (this.$store.state.iLicense == '驾驶证') {
-          return '9'
-        } else if (this.$store.state.iLicense == '军官证') {
-          return '10'
-        } else if (this.$store.state.iLicense == '护照') {
           return '3'
+        } else if (this.$store.state.iLicense == '军官证') {
+          return '4'
         } else if (this.$store.state.iLicense == '学生证') {
-          return '11'
+          return '5'
         } else if (this.$store.state.iLicense == '其他') {
-          return '12'
+          return '6'
         } else {
           return '身份证类型错误'
         }
@@ -175,6 +210,57 @@
 
   .excitedaboutok {
     height: 100%;
+
+    strong {
+      width: 30%;
+      height: 40px;
+
+      text-align: center;
+      font-size: 20px;
+      p {
+        display: inline-block;
+        width: 90%;
+        background: #d4dbdd;
+        vertical-align: middle;
+        height: 3px;
+      }
+    }
+
+    .title1 {
+      padding-top: 10px;
+      width: 100%;
+      height: 80px;
+      background: #fff;
+      .title1-ul1 {
+        width: 80%;
+        margin: 0 auto 0 auto;
+        display: flex;
+        justify-content: space-between;
+        .titleo {
+          background: #67cd57;
+        }
+        li {
+          text-align: center;
+          line-height: 40px;
+          width: 40px;
+          height: 40px;
+          background: 	#d4dbdd;
+          border-radius: 50%;
+          color: #fff;
+          font-size: 26px;
+        }
+      }
+      .title2-ul2 {
+        width: 87%;
+        margin: 5px auto;
+        display: flex;
+        justify-content: space-between;
+        color: 	#d4dbdd;
+        .titleo {
+          color: #67cd57;
+        }
+      }
+    }
     .d1, .d2, .d3 {
       P {
         width: 100%;

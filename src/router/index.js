@@ -12,6 +12,7 @@ import audito from '../components/auditO'
 import audit from '../components/audit'
 import  visitorSubmitSucceed from '../components/visitorSubmitSucceed'
 import detailsAudit from '../components/detailsAudit'
+import interviewee from '../components/interviewee'
 
 
 
@@ -74,7 +75,7 @@ export default new Router({
     },
     {
       path: '/audito',
-      // name: 'audito',
+      name: 'audito',
       component: audito
     },
     {
@@ -91,6 +92,11 @@ export default new Router({
       path:'/detailsAudit',
       name:'detailsAudit',
       component:detailsAudit
-    }
+    },
+    {
+      path:'/interviewee',
+      name:'interviewee',
+      component:interviewee
+    },
    ]//,mode:'history'
 })

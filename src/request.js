@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-
-
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
@@ -18,7 +16,6 @@ const service = axios.create({
     return ret
   }],
 })
-
 
 service.interceptors.request.use(config => {
 

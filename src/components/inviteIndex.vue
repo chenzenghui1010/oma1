@@ -1,5 +1,25 @@
 <template>
   <div class="excitedo">
+    <div class="title1">
+      <ul class="title1-ul1">
+        <li class="titleo">✓</li>
+        <strong>
+          <p class="titleo"/>
+        </strong>
+        <li class="titleo">2</li>
+        <strong>
+          <p/>
+        </strong>
+        <li>3</li>
+      </ul>
+
+      <ul class="title2-ul2">
+        <li class="titleo">受访人信息</li>
+        <li class="titleo">来访人信息</li>
+        <li>确定信息</li>
+      </ul>
+    </div>
+
     <div class="company">
       <p class="title1"><span>来访人信息</span></p>
       <x-input title=" <span>*</span> 姓名：" required="required" v-model="iName" placeholder="请输入" is-type="china-name">
@@ -9,15 +29,15 @@
                is-type="china-mobile"></x-input>
 
 
-      <popup-picker title=" <span>*</span> 证件号：" :data="list" v-model="iLicense" maxlenth="18"
-                    required="required"></popup-picker>
-      <x-input  title=" " required="required" placeholder="请输入" v-model="iLicenseNumber">
+      <popup-picker title=" <span>*</span> 证件号：" :data="list" v-model="iLicense"
+                    required="required" ></popup-picker>
+      <x-input title=" " required="required" placeholder="请输入" v-model="iLicenseNumber">
         is-type="china-name">
       </x-input>
 
 
       <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>
-      <x-input id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
+      <x-input style="border: none !important;" id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
 
 
       <x-input title=" <span>*</span> 公司：" required="required" v-model="iCompany" placeholder="请输入"
@@ -28,7 +48,7 @@
                 placeholder="2018-05-10 10:00"></datetime>
 
       <span>*</span>
-      <datetime v-model="iEnd" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc='预计离开：'
+      <datetime v-model="iEnd" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc='离开时间：'
                 placeholder="2018-05-10 10:00"></datetime>
       <x-input title=" <span>*</span> 来访事由：" required="required" v-model="iCause" placeholder="请输入"></x-input>
 
@@ -99,8 +119,8 @@
     data() {
       return {
         ifollower: [],
-        list:[['证件类型', '二代身份证', '港澳通行证','驾驶证','军官证','护照','学生证','其他']],
-        Car:[['', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼','港','奥','新']],
+        list: [['证件类型', '二代身份证', '护照', '港澳通行证', '驾驶证', '军官证', '学生证', '其他']],
+        Car: [['', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼', '港', '奥', '新']],
         iName: '',
         iPoints: '',
         iLicense: ['请选择'],
@@ -109,15 +129,26 @@
         iCarNumber: '',
         iCompany: '',
         iStart: '',
-        iEnd:'',
+        iEnd: '',
+
         iCause: '',
         showExcitedO: true,
 
         alert: '',
       }
     },
+
+    watch: {
+
+      iCarNumber: function (val) {
+
+        this.iCarNumber = val.toUpperCase()
+
+      }
+    },
+
     created() {
-     document.getElementById("titleId").innerHTML='来访邀请'
+      document.title = '来访邀请'
       this.ifollower = this.$store.state.ifollower;
 
     },
@@ -129,7 +160,7 @@
           'name': this.$store.state.ifollower.name,
           'identityNo': this.$store.state.ifollower.identityNo,
           'identityType': ['证件类型'],
-          'title': [['证件类型', '二代身份证', '港澳通行证','驾驶证','军官证','护照','学生证','其他']],
+          'title': [['证件类型', '二代身份证', '港澳通行证', '驾驶证', '军官证', '护照', '学生证', '其他']],
           'shows': false
         })
       },
@@ -174,51 +205,50 @@
           }
         }
 
-        if(this.iLicense =='港澳通行证'){
+        if (this.iLicense == '港澳通行证') {
           let HKMAKAO = /^[HMhm]{1}([0-9]{10}|[0-9]{8})$/;
-          if( !(HKMAKAO .test(this.iLicenseNumber))){
+          if (!(HKMAKAO.test(this.iLicenseNumber))) {
             AlertModule.show({title: this.alert = '港澳通行证不正确'})
             return
           }
         }
 
-        if(this.iLicense =='护照'){
-          let PASSPORT= "/^[a-zA-Z0-9]{5,17}$/";
-          if(!(PASSPORT .test(this.iLicenseNumber))){
+        if (this.iLicense == '护照') {
+          let PASSPORT = "/^[a-zA-Z0-9]{5,17}$/";
+          if (!(PASSPORT.test(this.iLicenseNumber))) {
             AlertModule.show({title: this.alert = '护照不正确'})
             return
           }
         }
 
-        if(this.iLicense == '驾驶证'){
-          let  DRIVINGLICENCE=/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
-          if(!(DRIVINGLICENCE .test(this.iLicenseNumber))){
+        if (this.iLicense == '驾驶证') {
+          let DRIVINGLICENCE = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+          if (!(DRIVINGLICENCE.test(this.iLicenseNumber))) {
             AlertModule.show({title: this.alert = '驾驶证不正确'})
             return
           }
         }
 
 
-        if(this.iLicense == '军官证'){
-          let WARDROOM=/^\d{7}$/
-          if(!(WARDROOM.test(this.iLicenseNumber))){
+        if (this.iLicense == '军官证') {
+
+          let WARDROOM = /^\d{7}$/
+
+          if (!(WARDROOM.test(this.iLicenseNumber))) {
+
             AlertModule.show({title: this.alert = '军官证不正确'})
+
             return
           }
 
         }
 
-        if(this.iLicense == '学生证'){
-          if(this.eLicenseNumber.length <6){
+        if (this.iLicense == '学生证') {
+          if (this.iLicenseNumber.length < 6) {
             AlertModule.show({title: this.alert = '学生证不正确'})
             return
           }
         }
-
-
-
-
-
 
         if (this.iCompany == '') {
           AlertModule.show({title: this.alert = '请填写公司'})
@@ -233,13 +263,11 @@
         let startTimes = new Date(start).getTime()
 
 
-        let timestamp =new Date().getTime()//当前时间
-        if(timestamp > startTimes ){
-          AlertModule.show({title: this.alert = '请填写来访时间要等于当前时间'})
+        let timestamp = new Date().getTime()//当前时间
+        if (timestamp > startTimes) {
+          AlertModule.show({title: this.alert = '请填写来访时间要大于当前时间'})
           return
         }
-
-
 
 
         if (this.iEnd == '') {
@@ -248,8 +276,6 @@
         }
         let end = this.iEnd.replace(/-/g, '/')
         let endTimes = new Date(end).getTime()
-
-
 
 
         if (endTimes < startTimes) {
@@ -264,7 +290,6 @@
         }
 
         if (this.ifollower.length > 0) {
-
 
           for (let i = 0; i < this.ifollower.length; i++) {
             if (this.ifollower[i].name == '' || this.ifollower[i].name == undefined) {
@@ -281,42 +306,42 @@
             }
 
 
-            if(this.ifollower[i].identityType =='港澳通行证'){
+            if (this.ifollower[i].identityType == '港澳通行证') {
               let HKMAKAO = "/^[HMhm]{1}([0-9]{10}|[0-9]{8})$/";
-              if( !(HKMAKAO .test(this.ifollower[i].identityNo))){
+              if (!(HKMAKAO.test(this.ifollower[i].identityNo))) {
                 AlertModule.show({title: this.alert = '随行人港澳通行证不正确'})
                 return
               }
             }
 
-            if(this.ifollower[i].identityType =='护照'){
-              let PASSPORT= "/^[a-zA-Z0-9]{5,17}$/";
-              if(!(PASSPORT .test(this.ifollower[i].identityNo))){
+            if (this.ifollower[i].identityType == '护照') {
+              let PASSPORT = "/^[a-zA-Z0-9]{5,17}$/";
+              if (!(PASSPORT.test(this.ifollower[i].identityNo))) {
                 AlertModule.show({title: this.alert = '随行人护照不正确'})
                 return
               }
             }
 
-            if(this.ifollower[i].identityType == '驾驶证'){
-              let  DRIVINGLICENCE=/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
-              if(!(DRIVINGLICENCE .test(this.ifollower[i].identityNo))){
+            if (this.ifollower[i].identityType == '驾驶证') {
+              let DRIVINGLICENCE = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
+              if (!(DRIVINGLICENCE.test(this.ifollower[i].identityNo))) {
                 AlertModule.show({title: this.alert = '随行人驾驶证不正确'})
                 return
               }
             }
 
 
-            if(this.ifollower[i].identityType == '军官证'){
-              let WARDROOM= /^\d{7}$/
-              if(!(WARDROOM .test(this.ifollower[i].identityNo))){
+            if (this.ifollower[i].identityType == '军官证') {
+              let WARDROOM = /^\d{7}$/
+              if (!(WARDROOM.test(this.ifollower[i].identityNo))) {
                 AlertModule.show({title: this.alert = '随行人军官证不正确'})
                 return
               }
 
             }
 
-            if(this.ifollower[i].identityType == '学生证'){
-              if(this.ifollower[i].identityNo.length <6){
+            if (this.ifollower[i].identityType == '学生证') {
+              if (this.ifollower[i].identityNo.length < 6) {
                 AlertModule.show({title: this.alert = '随行人学生证不正确'})
                 return
               }
@@ -346,6 +371,57 @@
     margin: 0;
   }
 
+  strong {
+    width: 30%;
+    height: 40px;
+
+    text-align: center;
+    font-size: 20px;
+    p {
+      display: inline-block;
+      width: 90%;
+      background: #d4dbdd;
+      vertical-align: middle;
+      height: 3px;
+    }
+  }
+
+  .title1 {
+    padding-top: 10px;
+    width: 100%;
+    height: 80px;
+    background: #fff;
+    .title1-ul1 {
+      width: 80%;
+      margin: 0 auto 0 auto;
+      display: flex;
+      justify-content: space-between;
+      .titleo {
+        background: #67cd57;
+      }
+      li {
+        text-align: center;
+        line-height: 40px;
+        width: 40px;
+        height: 40px;
+        background: #d4dbdd;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 26px;
+      }
+    }
+    .title2-ul2 {
+      width: 87%;
+      margin: 5px auto;
+      display: flex;
+      justify-content: space-between;
+      color: #d4dbdd;
+      .titleo {
+        color: #67cd57;
+      }
+    }
+  }
+
   span {
     margin: 8px 10px 0 15px;
     position: absolute;
@@ -361,13 +437,19 @@
     height: 20px;
     padding: 10px 15px;
   }
-  #none{
+
+  #none {
     margin-left: 15%;
     position: absolute;
     margin-top: -44px;
     width: 50%;
-    background: rgba(0,0,0,0);
+    border: 1px solid red !important;
+    background: rgba(0, 0, 0, 0);
+    .weui-cell:before{
+      border: none !important;
+    }
   }
+
   .addk {
     width: 100%;
     height: 10px;
@@ -376,7 +458,6 @@
   }
 
   .excitedo {
-    /*position: absolute;*/
     height: 100px;
     .company, .suixing {
       p {
