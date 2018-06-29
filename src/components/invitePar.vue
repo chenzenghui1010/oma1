@@ -9,7 +9,7 @@
           </strong>
           <li class="titleo">✓</li>
           <strong>
-            <p/>
+            <p class="titleo"/>
           </strong>
           <li class="titleo">3</li>
         </ul>
@@ -38,7 +38,7 @@
         <li><span>姓名：</span>{{ this.$store.state.iName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.iPoints }}</li>
         <li><span>证件号：</span> {{ this.$store.state.iLicense}} {{ this.$store.state.iLicenseNumber}}</li>
-        <li><span>车牌号：</span>{{ this.$store.state.iCar}} {{ this.$store.state.iCarNumber}}</li>
+        <li><span>车牌号：</span>{{ this.$store.state.iCar == '请选择'?'':this.$store.state.iCar }} {{ this.$store.state.iCarNumber}}</li>
         <li><span>公司：</span>{{ this.$store.state.iCompany }}</li>
         <li><span>来访时间：</span>{{ this.$store.state.iStart }}</li>
         <li><span>预计离开：</span>{{ this.$store.state.iEnd}}</li>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="footer">
-      <p>*在提交访客上去信息前，请确保信息准确无误</p>
+      <p>*在提交访客申请信息前，请确保信息准确无误</p>
       <p>
         <button @click="last">上一步</button>
         <button @click="submit">确定提交</button>
@@ -65,7 +65,6 @@
 <script>
   import {AlertModule} from 'vux'
   import {invite} from "../parking";
-
   export default {
     name: 'invitepar',
     components: {AlertModule},
@@ -80,31 +79,37 @@
 
     methods: {
       last() {
-        this.ifollower.length = 0
         history.back()
       },
       submit() {
-
-        for (let i = 0; i < this.ifollower.length; i++) {
-          if (this.ifollower[i].identityType == '二代身份证') {
-            this.ifollower[i].identityType = '0'
-          }else if (this.ifollower[i].identityType == '护照') {
-            this.ifollower[i].identityType = '1'
-          } else if (this.ifollower[i].identityType == '港澳通行证') {
-            this.ifollower[i].identityType = '2'
-          } else if (this.ifollower[i].identityType == '驾驶证') {
-            this.ifollower[i].identityType = '3'
-          } else if (this.ifollower[i].identityType == '军官证') {
-            this.ifollower[i].identityType = '4'
-          }  else if (this.ifollower[i].identityType == '学生证') {
-            this.ifollower[i].identityType = '5'
-          } else if (this.ifollower[i].identityType == '其他') {
-            this.ifollower[i].identityType = '6'
+        let follower = JSON.stringify(this.ifollower)
+        let followerNo = JSON.parse(follower)
+        for (let i = 0; i < followerNo.length; i++) {
+          if (followerNo[i].identityType == '二代身份证') {
+            followerNo[i].identityType = '0'
+          } else if (followerNo[i].identityType == '护照') {
+            followerNo[i].identityType = '1'
+          } else if (followerNo[i].identityType == '港澳通行证') {
+            followerNo[i].identityType = '2'
+          } else if (followerNo[i].identityType == '驾驶证') {
+            followerNo[i].identityType = '3'
+          } else if (followerNo[i].identityType == '军官证') {
+            followerNo[i].identityType = '4'
+          } else if (followerNo[i].identityType == '学生证') {
+            followerNo[i].identityType = '5'
+          } else if (followerNo[i].identityType == '其他') {
+            followerNo[i].identityType = '6'
           }
         }
 
 
         invite({
+
+          personName: this.$store.state.inName,
+          phone: this.$store.state.inPoints,
+          company: this.$store.state.inCompany,
+          dep: this.$store.state.inDep,
+          carNo: this.carType,
           visitorPhone: this.$store.state.iPoints,
           visitorName: this.$store.state.iName,
           identityNo: this.$store.state.iLicenseNumber,
@@ -113,7 +118,7 @@
           scheduledInTime: this.$store.state.iStart,
           scheduledOutTime: this.$store.state.iEnd,
           subject: this.$store.state.iCause,
-          follower: JSON.stringify(this.$store.state.ifollower)
+          follower: JSON.stringify(followerNo)
         })
 
           .then(data => {
@@ -121,25 +126,27 @@
             this.$router.push({path: 'visitorSubmitSucceed'});
           })
           .catch(message => {
-
-            if (message == '没有权限') {
+            if (message == '1500') {
               this.$router.push({path: '/'})
               return
             }
-            AlertModule.show({title: this.alert = '您填写的信息已过期请重新登录'})
-            this.$router.push({path:'/'})
+            AlertModule.show({title: this.alert = message})
           })
-
       }
     },
 
     computed: {
+      carType:function(){
+        return   this.$store.state.iCar  == '请选择' ? '': this.$store.state.iCar + this.$store.state.iCarNumber
+
+      },
+
       identityNo: function () {
         if (this.$store.state.iLicense == '二代身份证') {
           return '0'
-        }else if (this.$store.state.iLicense == '护照') {
+        } else if (this.$store.state.iLicense == '护照') {
           return '1'
-        }  else if (this.$store.state.iLicense == '港澳通行证') {
+        } else if (this.$store.state.iLicense == '港澳通行证') {
           return '2'
         } else if (this.$store.state.iLicense == '驾驶证') {
           return '3'
@@ -161,11 +168,9 @@
     padding: 0;
     margin: 0;
   }
-
   strong {
     width: 30%;
     height: 40px;
-
     text-align: center;
     font-size: 20px;
     p {
@@ -210,11 +215,9 @@
 
   .excitedaboutok {
     height: 100%;
-
     strong {
       width: 30%;
       height: 40px;
-
       text-align: center;
       font-size: 20px;
       p {
@@ -244,7 +247,7 @@
           line-height: 40px;
           width: 40px;
           height: 40px;
-          background: 	#d4dbdd;
+          background: #d4dbdd;
           border-radius: 50%;
           color: #fff;
           font-size: 26px;
@@ -255,7 +258,7 @@
         margin: 5px auto;
         display: flex;
         justify-content: space-between;
-        color: 	#d4dbdd;
+        color: #d4dbdd;
         .titleo {
           color: #67cd57;
         }
@@ -299,7 +302,6 @@
         color: #ea6f6f;
         font-size: 10px;
         padding: 0 10px;
-
         button {
           font-size: 16px;
           background-color: #1d83c5;

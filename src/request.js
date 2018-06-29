@@ -44,6 +44,12 @@ service.interceptors.response.use(
       return response.data
     }
 
+    if(resultCode == '1500'){
+
+      return Promise.reject("1500")
+
+    }
+
     return Promise.reject(message)
   },
   error => {

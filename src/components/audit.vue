@@ -18,7 +18,7 @@
     </div>
     <div class="alert" v-if="shade">
       <p>填写拒绝原因</p>
-      <textarea v-model="reason" cols="37" rows="5" placeholder="30字以内">
+      <textarea v-model="reason" cols="37" rows="5"  maxlength="20" placeholder="20字以内">
       </textarea>
       <p class="btn">
         <button class="button" @click="cancel">取消</button>
@@ -99,8 +99,7 @@
     },
     watch: {
       reason: function (val) {
-
-        val.trim().length > 0 ? this.disabled = false : this.disabled = true;
+        val.trim().length > 0 && val.trim().length < 21 ? this.disabled = false : this.disabled = true;
 
       }
     },
@@ -128,7 +127,7 @@
 
       //详情
       details(index) {
-        // this.$router.push({path: 'audito', query: {visitid: index, userType: this.$route.query.userType}})
+         this.$router.push({path: 'audito', query: {visitid: index, userType: this.$route.query.userType}})
       },
       //拒绝
       repulse(index) {
@@ -191,7 +190,6 @@
             reason: this.reason
           })
             .then(data => {
-
               console.log(data.data)
               // this.$router.push({path:'reject'})
               this.$router.push({path: 'makethree', query: {auditResult: 0}})
@@ -232,7 +230,7 @@
 
   .shade {
     z-index: 9;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     left: 0px;

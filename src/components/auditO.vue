@@ -35,11 +35,11 @@
     </footer>
     <div class="alert" v-if="shade">
       <p>填写拒绝原因</p>
-      <textarea v-model="reason" cols="37" rows="5" placeholder="30字以内">
+      <textarea v-model="reason" maxlength="20" cols="37" rows="5" placeholder="20字以内">
       </textarea>
       <p class="btn">
         <button @click="cancel">取消</button>
-        <button :disabled="disabled"  :class="disabled ?  'disabled':'btn2' " @click="confirm">确定</button>
+        <button :disabled="disabled" :class="disabled ?  'disabled':'btn2' " @click="confirm">确定</button>
       </p>
     </div>
   </div>
@@ -48,7 +48,6 @@
   import moment from 'moment'
   import {AlertModule} from 'vux'
   import {getVisitInfoById, auditVisitReserveByInterviewee, auditVisitReserveByManager} from "../parking";
-
 
   export default {
     name: 'audito',
@@ -61,10 +60,8 @@
         detailsId: this.$route.query.visitid.toString(),
         userType: this.$route.query.userType,
         disabled: true,
-
       }
     },
-
     created() {
       getVisitInfoById({
         visitId: this.detailsId
@@ -79,9 +76,9 @@
         })
     },
 
-    watch:{
-      reason:function(){
-        this.reason.trim().length > 0 ? this.disabled=false : this.disabled = true
+    watch: {
+      reason: function (val) {
+        (val.trim().length > 0 && val.trim().length < 21 ) ? this.disabled = false : this.disabled = true
       }
     },
     methods: {
@@ -103,7 +100,9 @@
             })
             .catch(message => {
               AlertModule.show({title: message})
-              if(message == '没有权限'){this.$router.push({path:'/'})}
+              if (message == '没有权限') {
+                this.$router.push({path: '/'})
+              }
             })
         }
         else if (this.userType == '1') {
@@ -120,7 +119,9 @@
             })
             .catch(message => {
               AlertModule.show({title: message})
-              if(message == '没有权限'){this.$router.push({path:'/'})}
+              if (message == '没有权限') {
+                this.$router.push({path: '/'})
+              }
             })
         }
       },
@@ -144,21 +145,23 @@
           auditVisitReserveByInterviewee({
             visitId: this.detailsId,
             auditValue: 0,
-            reason:this.reason
+            reason: this.reason
           })
             .then(data => {
-              this.$router.push({path: 'detailsAudit',query:{auditResult:0}})
+              this.$router.push({path: 'detailsAudit', query: {auditResult: 0}})
             })
             .catch(message => {
               AlertModule.show({title: message})
-              if(message == '没有权限'){this.$router.push({path:'/'})}
+              if (message == '没有权限') {
+                this.$router.push({path: '/'})
+              }
             })
         }
         else if (this.userType == '1') {
           auditVisitReserveByManager({
             visitId: this.detailsId,
             auditValue: 0,
-            reason:this.reason
+            reason: this.reason
           })
             .then(data => {
               this.$router.push({path: 'detailsAudit', query: {auditResult: 0}})
@@ -166,18 +169,16 @@
             })
             .catch(message => {
               AlertModule.show({title: message})
-              if(message == '没有权限'){this.$router.push({path:'/'})}
+              if (message == '没有权限') {
+                this.$router.push({path: '/'})
+              }
             })
         }
       }
     },
 
 
-    computed: {
-
-
-
-    },
+    computed: {},
 
     //转换时间插件
     filters: {

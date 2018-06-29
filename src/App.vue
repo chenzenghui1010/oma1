@@ -53,8 +53,8 @@
   .el-checkbox__label{
     color:#999;
   }
-  .el-input--small .el-input__inner {
-    border: none;
+  .cat{
+    display: inline-block !important;
   }
 
   input, button, textarea {

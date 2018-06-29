@@ -21,9 +21,9 @@ export default new vuex.Store({
     // 来访人信息
     eName: '',
     ePoints: '',
-    eLicense: '证件类型',
+    eLicense: '请选择',
     eLicenseNumber: '',
-    eCar: '',
+    eCar: '请选择',
     eCarNumber: '',
     eCompany: '',
     eStart: '',

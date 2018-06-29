@@ -45,12 +45,12 @@
     data() {
       return {
         title: '受访人信息',
-        mName: '',
-        mPoints: '',
-        mCompany: '',
-        mDepartment: '',
-
+        mName: this.$store.state.mName,
+        mPoints:this.$store.state.mPoints,
+        mCompany:this.$store.state.mCompany,
+        mDepartment: this.$store.state.mDepartment,
         alert: '',
+        a:1
       }
     },
     created(){
@@ -65,8 +65,9 @@
     methods: {
       last: function () {
 
-        history.go(-1);
+         history.go(-1);
       },
+
       next: function () {
         this.$store.commit('mName', this.mName);
         this.$store.commit('mPoints', this.mPoints);
@@ -74,6 +75,10 @@
         this.$store.commit('mDepartment', this.mDepartment)
         if (this.mName == '') {
           AlertModule.show({title: this.alert = '请填写姓名'})
+          return
+        }
+        if (this.mName.length < 1) {
+          AlertModule.show({title: this.alert = '姓名格式不正确'})
           return
         }
         if (this.mPoints == '') {

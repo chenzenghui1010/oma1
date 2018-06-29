@@ -4,10 +4,9 @@
       <input type="number" pattern="\d*" ref="input" v-model='points' maxlength="11"
              placeholder="请输入手机号">
     </div>
-    <div><input type="text" maxlength="6" v-model="verification" placeholder="请输入验证码"> <span
-      @click="send">
-      {{content}}
-    </span>
+    <div><input type="text" maxlength="6" v-model="verification" placeholder="请输入验证码">
+     <p></p>
+      <span @click="send">{{content}}</span>
     </div>
     <button @click="login">登 录</button>
 
@@ -44,7 +43,6 @@
 
     },
 
-
     mounted() {
       //定焦点
       this.$refs['input'].focus();
@@ -62,7 +60,7 @@
 
         let clock = window.setInterval(() => {
 
-          qthis.totalTime--
+          this.totalTime--
 
           this.content = '重新发送(' + this.totalTime + ')'
           if (this.totalTime < 0) {
@@ -108,15 +106,17 @@
         }
 
         phoneLogin({phone: this.points, verifyCode: this.verification})
-
           .then(data => {
-
+            if( data.data.redirectUrl  !=''){
+              window.location.href=data.data.redirectUrl
+              return;
+            }
             if (data.data.roleType == 1) {
               this.$router.push({path: 'makeo'})
             }
             if (data.data.roleType == 2) {
 
-              this.$router.push({path: 'audit', query: {userType: '0'}})
+             this.$router.push({path: 'audit', query: {userType: '0'}})
 
             }
             if (data.data.roleType == 3) {
@@ -189,19 +189,30 @@
         background-color: #ffffff00;
         outline: none;
         font-size: 20px;
-      }
-      input:nth-child(2) {
 
       }
-      span {
-
-        position: relative;
-        float: right;
+      input[type='text']{
+        float: left;
         display: inline-block;
-        width: 45%;
+        margin-top: 5px;
+        margin-left: 15px;
+
+      }
+
+      span {
+        display: inline-block;
+        float: right;
+        width: 40%;
         height: 40px;
+        line-height: 50px;
         color: #1d83c5;
         text-align: center;
+      }
+      P{
+        border-right: 1px solid #a4a4a4;
+        display: inline-block;
+        height: 30px;
+        margin-top: 10px;
       }
     }
     div:nth-child(1) {

@@ -30,14 +30,14 @@
 
 
       <popup-picker title=" <span>*</span> 证件号：" :data="list" v-model="iLicense"
-                    required="required" ></popup-picker>
+                    required="required"></popup-picker>
       <x-input title=" " required="required" placeholder="请输入" v-model="iLicenseNumber">
         is-type="china-name">
       </x-input>
 
 
       <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>
-      <x-input style="border: none !important;" id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
+      <x-input style="border: none; !important;" id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
 
 
       <x-input title=" <span>*</span> 公司：" required="required" v-model="iCompany" placeholder="请输入"
@@ -69,20 +69,22 @@
           </div>
         </div>
         <div>
-          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model='item.identityType'></popup-picker>
+          <popup-picker title=" <span>*</span>  证件号：" :data="list" v-model='item.identityType'></popup-picker>
           <x-input title=" " v-model="item.identityNo" placeholder="请输入"></x-input>
         </div>
         <div class="addk">
         </div>
       </div>
-
     </div>
     <div class="add">
       <ul>
         <li @click="addfollower"><img class="addimg" src="../assets/添加@2x.png" alt=""></li>
         <li>添加随行人员</li>
       </ul>
-      <button @click="excited">预 览</button>
+      <div class="footer">
+        <button @click="last">上一步</button>
+        <button @click="excited">预 览</button>
+      </div>
     </div>
   </div>
 </template>
@@ -119,8 +121,8 @@
     data() {
       return {
         ifollower: [],
-        list: [['证件类型', '二代身份证', '护照', '港澳通行证', '驾驶证', '军官证', '学生证', '其他']],
-        Car: [['', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼', '港', '奥', '新']],
+        list: [['请选择', '二代身份证', '护照', '港澳通行证', '驾驶证', '军官证', '学生证', '其他']],
+        Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼', '港', '奥', '新']],
         iName: '',
         iPoints: '',
         iLicense: ['请选择'],
@@ -130,7 +132,6 @@
         iCompany: '',
         iStart: '',
         iEnd: '',
-
         iCause: '',
         showExcitedO: true,
 
@@ -159,11 +160,14 @@
         this.ifollower.push({
           'name': this.$store.state.ifollower.name,
           'identityNo': this.$store.state.ifollower.identityNo,
-          'identityType': ['证件类型'],
-          'title': [['证件类型', '二代身份证', '港澳通行证', '驾驶证', '军官证', '护照', '学生证', '其他']],
+          'identityType': ['请选择'],
           'shows': false
         })
       },
+      last: function () {
+        history.go(-1)
+      },
+
       excited: function () {
         let _this = this.$store.dispatch
         _this('iName', this.iName),
@@ -185,14 +189,16 @@
           AlertModule.show({title: this.alert = '请填写姓名'})
           return
         }
-
+        if (this.iName.length < 1) {
+          AlertModule.show({title: this.alert = '姓名格式不正确'})
+        }
         if (this.iPoints == '') {
           AlertModule.show({title: this.alert = '请填写手机号'})
           return
         }
 
 
-        if (this.iLicense == '证件类型') {
+        if (this.iLicense == '请选择') {
           AlertModule.show({title: this.alert = '请填写证件类型'})
           return
         }
@@ -294,6 +300,14 @@
           for (let i = 0; i < this.ifollower.length; i++) {
             if (this.ifollower[i].name == '' || this.ifollower[i].name == undefined) {
               AlertModule.show({title: this.alert = '请填写随行人姓名'})
+              return
+            }
+            if (this.ifollower[i].name.length < 1) {
+              AlertModule.show({title: this.alert = '随行人姓名格式不正确'})
+              return
+            }
+            if (this.ifollower[i].identityType == '请选择') {
+              AlertModule.show({title: this.alert = '请选择证件类型'})
               return
             }
 
@@ -442,10 +456,10 @@
     margin-left: 15%;
     position: absolute;
     margin-top: -44px;
-    width: 50%;
+    width: 55%;
     border: 1px solid red !important;
     background: rgba(0, 0, 0, 0);
-    .weui-cell:before{
+    .weui-cell:before {
       border: none !important;
     }
   }
@@ -537,7 +551,7 @@
     }
 
     .add {
-      padding: 0px 4% 20% 4%;
+      padding-bottom: 30px;
       width: 100%;
       bottom: 0;
       background: #edf1f3;
@@ -558,16 +572,39 @@
           }
         }
       }
-      button {
-        width: 92%;
-        height: 50px;
-        background-color: #1d83c5;
-        color: #FAFAFA;
-        border: none;
-        font-size: 16px;
-        border-radius: 4px;
-        outline: none;
+      .footer {
+        display: flex;
+        justify-content: space-around;
+        button {
+          justify-content: center;
+          width: 40%;
+          height: 45px;
+          background-color: #1d83c5;
+          color: #FAFAFA;
+          border: none;
+          font-size: 16px;
+          border-radius: 4px;
+          outline: none;
+        }
       }
+      button:nth-child(1) {
+        background: #fff;
+        color: #1d83c5;
+
+      }
+      /*button {*/
+        /*width: 40%;*/
+        /*height: 50px;*/
+        /*background-color: #1d83c5;*/
+        /*color: #FAFAFA;*/
+        /*border: none;*/
+        /*font-size: 16px;*/
+        /*border-radius: 4px;*/
+        /*outline: none;*/
+      /*}*/
+      /*button:last-child {*/
+        /*float: right;*/
+      /*}*/
     }
   }
 </style>

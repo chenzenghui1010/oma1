@@ -13,12 +13,10 @@
 
       <popup-picker title=" <span>*</span> 证件号：" :data="list1" v-model="eLicense" maxlenth="18"
                     required="required"></popup-picker>
-      <x-input title=" " required="required" placeholder="请输入" v-model="eLicenseNumber">
-        is-type="china-name">
-      </x-input>
+      <x-input title=" " required="required"   style="border: none; !important;" placeholder="请输入" v-model="eLicenseNumber">is-type="china-name"></x-input>
 
-      <popup-picker class="car" title=" &nbsp 车牌号：" :data="Car" v-model="eCar" maxlength="7"></popup-picker>
-      <x-input id="none" @keyup="show($event)" style="border-top: none !important;" title=" " v-model='eCarNumber'
+      <popup-picker  class="car" title=" &nbsp 车牌号：" :data="Car" v-model="eCar" maxlength="7"></popup-picker>
+      <x-input id="none" @keyup="show($event)" style="position:static !important;" title=" " v-model='eCarNumber'
                placeholder="请输入"></x-input>
 
 
@@ -51,7 +49,7 @@
           </div>
         </div>
         <div>
-          <popup-picker title=" <span>*</span>  证件号：" :data="item.title" v-model="item.identityType"></popup-picker>
+          <popup-picker title=" <span>*</span>  证件号：" :data="list1" v-model="item.identityType"></popup-picker>
           <x-input title=" " v-model="item.identityNo" placeholder="请输入"></x-input>
         </div>
         <div class="addk">
@@ -105,20 +103,21 @@
     data() {
       return {
         follower: [],
-        list1: [['证件类型', '二代身份证', '港澳通行证', '驾驶证', '军官证', '护照', '学生证', '其他']],
-        Car: [['', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼', '港', '奥', '新']],
+        // [['请选择', '二代身份证','护照', '港澳通行证', '驾驶证', '军官证',  '学生证', '其他']],
+        list1:[['请选择', '二代身份证','护照', '港澳通行证', '驾驶证', '军官证',  '学生证', '其他']],
+        Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼', '港', '奥', '新']],
         // this.$store.state.eName,
-        eName: '',
-        ePoints: '',
+        eName: this.$store.state.eName,
+        ePoints: this.$store.state.ePoints,
         // this.$store.state.eLicense.toString()
-        eLicense: ['请选择'],
-        eLicenseNumber: '',
-        eCar: ['请选择'],
-        eCarNumber: '',
-        eCompany: '',
-        eStart: '',
-        eEnd: '',
-        eCause: '',
+        eLicense: [this.$store.state.eLicense.toString()],
+        eLicenseNumber: this.$store.state.eLicenseNumber,
+        eCar: [this.$store.state.eCar.toString()],
+        eCarNumber: this.$store.state.eCarNumber,
+        eCompany:this.$store.state.eCompany,
+        eStart: this.$store.state.eStart,
+        eEnd: this.$store.state.eEnd,
+        eCause: this.$store.state.eCause,
         showExcitedO: true,
 
         alert: '',
@@ -128,7 +127,9 @@
     created() {
       this.follower = this.$store.state.follower;
     },
-    computed: {},
+    computed: {
+
+    },
 
     watch: {
       eCarNumber: function (val, oldval) {
@@ -138,13 +139,15 @@
     },
 
     methods: {
+      followerTypeNo:function(){
+        this.follower.title = [['请选择', '二代身份证','护照', '港澳通行证', '驾驶证', '军官证',  '学生证', '其他']]
 
+      },
       addfollower: function () {
         this.follower.push({
           'name': this.$store.state.follower.name,
           'identityNo': this.$store.state.follower.identityNo,
-          'identityType': ['证据类型'],
-          'title': [['证件类型', '二代身份证','护照', '港澳通行证', '驾驶证', '军官证',  '学生证', '其他']],
+          'identityType': ['请选择'],
           'shows': false
         })
       },
@@ -176,6 +179,7 @@
           return
         }
         if (this.eName.length < 1) {
+          AlertModule.show({title:this.alert='姓名格式不正确'})
           return
         }
         if (this.ePoints == '') {
@@ -205,7 +209,7 @@
         }
 
         if (this.eLicense == '护照') {
-          let PASSPORT = "/^[a-zA-Z0-9]{5,17}$/";
+          let PASSPORT = /^[a-zA-Z0-9]{5,17}$/;
           if (!(PASSPORT.test(this.eLicenseNumber))) {
             AlertModule.show({title: this.alert = '护照不正确'})
             return
@@ -219,7 +223,6 @@
             return
           }
         }
-
 
         if (this.eLicense == '军官证') {
           let WARDROOM = /^\d{7}$/
@@ -237,7 +240,6 @@
           }
         }
 
-
         if (this.eCompany == '') {
           AlertModule.show({title: this.alert = '请填写公司'})
           return
@@ -248,10 +250,8 @@
           return
         }
 
-
         let start = this.eStart.replace(/-/g, '/')
         let startTimes = new Date(start).getTime()
-
 
         let timestamp = new Date().getTime()//当前时间
         if (timestamp > startTimes) {
@@ -270,7 +270,6 @@
           AlertModule.show({title: this.alert = '填写的时间不合格'})
           return
         }
-
 
         if (endTimes < startTimes) {
           AlertModule.show({title: this.alert = '填写的时间不合格'})
@@ -296,7 +295,11 @@
               AlertModule.show({title: this.alert = '请填写随行人姓名'})
               return
             }
-            if (this.follower[i].identityType == '证件类型') {
+            if (this.follower[i].identityNo == '' ) {
+              AlertModule.show({title: this.alert = '请填写证件号'})
+              return
+            }
+            if (this.follower[i].identityType == '请选择') {
               AlertModule.show({title: this.alert = '请填写随行人证件类型'})
               return
             }
@@ -311,7 +314,7 @@
 
 
             if (this.follower[i].identityType == '港澳通行证') {
-              let HKMAKAO = "/^[HMhm]{1}([0-9]{10}|[0-9]{8})$/";
+              let HKMAKAO = /^[HMhm]{1}([0-9]{10}|[0-9]{8})$/;
               if (!(HKMAKAO.test(this.follower[i].identityNo))) {
                 AlertModule.show({title: this.alert = '随行人港澳通行证不正确'})
                 return
@@ -319,7 +322,7 @@
             }
 
             if (this.follower[i].identityType == '护照') {
-              let PASSPORT = "/^[a-zA-Z0-9]{5,17}$/";
+              let PASSPORT = /^[a-zA-Z0-9]{5,17}$/;
               if (!(PASSPORT.test(this.follower[i].identityNo))) {
                 AlertModule.show({title: this.alert = '随行人护照不正确'})
                 return
@@ -372,7 +375,9 @@
     padding: 0;
     margin: 0;
   }
-
+x-input ::-webkit-input-placeholder{
+  color: #000!important; ;
+}
   span {
     margin: 8px 10px 0 15px;
     position: absolute;
@@ -389,6 +394,7 @@
     padding: 10px 15px;
   }
 
+
   .addk {
     width: 100%;
     height: 10px;
@@ -403,7 +409,7 @@
   #none {
     margin-left: 15%;
     position: absolute;
-    margin-top: -41px;
+    margin-top: -44px;
     width: 55%;
     background: rgba(0, 0, 0, 0);
   }

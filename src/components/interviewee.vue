@@ -26,7 +26,6 @@
                is-type="china-name"></x-input>
 
       <x-input title="  <span>*</span> 手机号：" required="required" mask="99999999999" v-model="inPoints" placeholder="请输入"
-               :max="11"
                is-type="china-mobile"></x-input>
 
       <x-input title="  <span>*</span> 公司：" required="required" v-model="inCompany" placeholder="请输入"></x-input>
@@ -38,12 +37,12 @@
     <div class="footer">
       <button @click='next'>下一步</button>
     </div>
-
-
   </div>
 </template>
 
 <script>
+
+  import {reserveForInterviewee} from "../parking";
   import {XInput, Group, XButton, Cell, Flexbox, AlertModule} from 'vux'
   import {getMyInfo} from "../parking";
 
@@ -53,53 +52,74 @@
     name: 'interviewee',
     data() {
       return {
-        inName: '',
-        inPoints: '',
-        inCompany: '',
-        inDep: '',
-        alert:''
+        inName: this.$store.state.inName,
+        inPoints: this.$store.state.inPoints,
+        inCompany: this.$store.state.inCompany,
+        inDep: this.$store.state.inDep,
+        alert: '',
       }
     },
     created() {
-
       document.title = '来访邀约'
-
       getMyInfo().then(data => {
-
-          this.inName = data.data.personName
-          this.inPoints = data.data.phone
-          this.inCompany = data.data.company
-          this.inDep = data.data.dep
+        this.inName = data.data.personName
+        this.inPoints = data.data.phone
+        this.inCompany = data.data.company
+        this.inDep = data.data.dep
       }).catch(message => {
-        AlertModule.show({title: this.alert =message })
+        if(message == '1500'){
+          this.$router.push({path:'/'})
+        }else{ AlertModule.show({title: this.alert = message})}
+
       })
     },
     methods: {
       next() {
         let _this = this.$store.dispatch
-          _this('inName', this.inName),
+        _this('inName', this.inName),
           _this('inPoints', this.inPoints),
           _this('inCompany', this.inCompany),
           _this('inDep', this.inDep)
-
         if (this.inName == '') {
           AlertModule.show({title: this.alert = '请填写姓名'})
           return
         }
         if (this.inName.length < 1) {
-          AlertModule.show({title: this.alert = '您填写的姓名不合格'})
+          AlertModule.show({title: this.alert = '姓名合格不正确'})
           return
         }
         if (this.inPoints == '') {
           AlertModule.show({title: this.alert = '请填写手机号'})
           return
         }
+        if (this.inPoints.length != 11) {
+          AlertModule.show({title: this.alert = '手机号码格式不正确'})
+          return
+        }
         if (this.inCompany == '') {
           AlertModule.show({title: this.alert = '请填写公司名称'})
           return
         }
+        reserveForInterviewee({
+          intervieweeName: this.inName,
+          intervieweeTel: this.inPoints,
+          company: this.inCompany,
+          department: this.inDep
+        }).then(data => {
+          this.$router.push({path: 'inviteindex'})
+        }).catch(message => {
+          if (message == '1500') {
+            this.$router.push({path: '/'})
+            return
+          } else if (message == '没有权限') {
+            AlertModule.show({title: this.alert = '没有权限'})
+            this.$router.push({path: '/'})
+            return
+          } else {
+           AlertModule.show ({title: this.alert = message})
+          }
 
-        this.$router.push({path:'inviteindex'})
+        })
       }
     }
 
