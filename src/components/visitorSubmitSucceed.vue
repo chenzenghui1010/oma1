@@ -2,7 +2,7 @@
   <div class="visitorSubmitSucceed">
     <div class="img">
       <img src="../assets/成功@3x.png"/>
-      <p class="add">提交成功</p>
+      <p class="add"><strong>提交成功</strong></p>
       <p class="left">您的来访预约申请已提交成功，我们会尽快审核,请耐心等候 &nbsp;  &nbsp;</p>
     </div>
     <button class="ok" @click="ok">确定</button>
@@ -33,13 +33,15 @@
       margin-top: 50px;
       padding: 0 20%;
       img {
+        width: 85px ;
+        height: 85px;
         text-align: content;
         display: inline-block;
       }
       .add {
-        color: #32CD32;
+        color: #67CB57;
         margin: 20px auto 10% auto;
-        font-size: 28px;
+        font-size: 18px;
       }
       .left {
         float: left;
@@ -49,12 +51,8 @@
     .ok {
       margin-top: 20%;
       width: 90%;
-      height: 60px;
-      background-color: #1d83c5;
-      color: #FAFAFA;
-      font-size: 20px;
+      color: #fff;
       border: none;
-      border-radius: 6px;
       outline: none;
     }
   }

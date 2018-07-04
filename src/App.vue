@@ -16,6 +16,14 @@
   html{
     height: 100%;
   }
+  button{
+    outline: none;
+    font-size: 16px;
+    background-color: #1D83C5;
+    height: 45px;
+    border-radius: 4px;
+  }
+  
   .weui-dialog__btn_primary{
     color:#1d83c5!important;
   }

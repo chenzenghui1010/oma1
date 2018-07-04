@@ -208,7 +208,7 @@
         margin-bottom: 20px;
         span {
           display: inline-block;
-          font-size: 18px;
+          font-size: 16px;
           color: #333;
         }
       }
@@ -217,8 +217,9 @@
         margin-bottom: 15px;
         height: 100%;
         li {
+          font-size: 14px;
           height: 40px;
-          color: #8c939d;
+          color: #999;
           span {
             display: inline-block;
             width: 100px;
@@ -227,8 +228,6 @@
         }
       }
       ul:last-child {
-        /*margin: 10px 0;*/
-        /*border-top: 1px solid #8c939d;*/
       }
 
     }
@@ -239,15 +238,18 @@
         }
         .title {
           margin-bottom: 10px;
-          height: 36px;
+          height: 30px;
+          margin-top: -10px;
           span {
-            width: 4.5rem;
+            
+            width: 60px;
             display: inline-block;
-            line-height: 36px;
+            line-height: 18px;
             text-align: center;
             background: #e4edf4;
             border-radius: 18px;
             color: #1d83c5;
+            font-size: 12px;
           }
         }
       }
@@ -255,11 +257,11 @@
     footer {
       background-color: #edf1f3;
       width: 100%;
-      height: 50px;
-      /*position: absolute;*/
+      height: 45px;
       bottom: 0;
       button {
         border: none;
+        border-radius: 0;
         width: 50%;
         height: 100%;
         background-color: #fff;

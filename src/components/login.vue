@@ -188,7 +188,7 @@
         border: none;
         background-color: #ffffff00;
         outline: none;
-        font-size: 20px;
+        font-size:16px;
 
       }
       input[type='text']{
@@ -207,9 +207,10 @@
         line-height: 50px;
         color: #1d83c5;
         text-align: center;
+        font-size: 14px;
       }
       P{
-        border-right: 1px solid #a4a4a4;
+        border-right: 1px solid  #E4E4E4;
         display: inline-block;
         height: 30px;
         margin-top: 10px;
@@ -227,14 +228,11 @@
     }
     button {
       width: 80%;
-      height: 50px;
-      border: 1px solid grey;
       align-items: center;
       padding: 0 auto 0 auto;
-      border-radius: 5px;
       color: #f0f2f5;
-      background-color: dodgerblue;
-      font-size: 20px;
+      background-color: #1D83C5;
+      font-size: 16px;
     }
   }
 </style>

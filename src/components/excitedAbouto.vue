@@ -12,18 +12,23 @@
                placeholder="请输入"
                :max="13"
                is-type="china-mobile"></x-input>
-      <span style="border-top: 1px solid rgba(217,217,217,.5);display: inline-block;width: 96%; margin-bottom: 3px"></span>
+      
+      
+      <span style="border-top: 1px solid rgba(217,217,217,.5);display: inline-block;width: 96%; margin-top: 5px "></span>
       <div style="margin-top: 5px">
         <popup-picker title=" <span>*</span>  证件号：" :data="list1" v-model="eLicense"></popup-picker>
         <x-input title=" " v-model="eLicenseNumber" placeholder="请输入"></x-input>
       </div>
 
 
-
-      <div @click="deleteCarNo"   >
-       <span></span>
-      <x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>
+      <div id="carno"  @click="deleteCarNo">
+        
+        <p style="background: #fff;">&nbsp;&nbsp;车牌号：</p> <small   v-if="carno.length == 0" style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;" >请输入</small> {{ carno}}
       </div>
+      <!--<div @click="deleteCarNo"   >-->
+       <!--<span></span>-->
+      <!--<x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>-->
+      <!--</div>-->
 
 
       <x-input title=" <span>*</span> 公司：" v-model="eCompany" placeholder="请输入"
@@ -34,7 +39,7 @@
                 placeholder="2018-05-10 10:00"></datetime>
 
       <span>* </span>
-      <datetime v-model="eEnd" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc='离开时间：'
+      <datetime v-model="eEnd" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc="离开时间："
                 placeholder="2018-05-10 10:00"></datetime>
       <x-input title=" <span>*</span> 来访事由：" required="required" v-model="eCause" placeholder="请输入"></x-input>
 
@@ -158,6 +163,7 @@
 
             return 3
 
+            
           }
           if (this.inputindex == 8) {
             this.shade= false
@@ -495,6 +501,20 @@
     /*align-items: center;*/
   }
 
+  #carno {
+    border-top: 1px solid #EBEBEB;
+    background: #FFF;
+    width: 96.5%;
+    height: 40px;
+    line-height: 40px;
+    float:right;
+  }
+  #carno p{
+    display: inline-block;
+    height: 40px;
+    width: 6.8rem;
+  }
+  
   .chunk {
     border: 1px solid #979797;
     border-left: 0px;
@@ -566,12 +586,9 @@
           margin: 12px 0 0 4%;
           color: #999;
         }
-        .adds {
-        }
       }
     }
     .company {
-      margin-bottom: 20px;
       ul {
         padding: 0 4%;
         li {
@@ -652,7 +669,7 @@
         li {
           margin-top: 20px;
           height: 24px;
-          color: #5aa0ce;
+          color: #5AA0CE;
           img {
             margin-right: 8px;
             display: inline-block;
@@ -665,19 +682,14 @@
         button {
           justify-content: center;
           width: 40%;
-          height: 45px;
-          background-color: #1d83c5;
           color: #FAFAFA;
           border: none;
-          font-size: 16px;
-          border-radius: 4px;
           outline: none;
         }
       }
       button:nth-child(1) {
         background: #fff;
         color: #1d83c5;
-
       }
     }
   }

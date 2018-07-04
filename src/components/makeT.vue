@@ -152,16 +152,13 @@
       button {
         background-color: #fff;
         display: inline-block;
-        color: #1E90FF;
-        height: 50px;
+        color: #1D83C5;
         width: 45%;
-        font-size: 16px;
-        border-radius: 3px;
         border: none;
         outline: none;
       }
       button:nth-child(2) {
-        background: #1d83c5;
+        background: #1D83C5;
         color: #fff;
       }
     }

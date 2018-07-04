@@ -132,7 +132,7 @@
   }
 
   .keyboard {
-    position: absolute;
+    position: fixed;
     text-align: center;
     background-color: #d1d5de;
     bottom: 0;
@@ -159,10 +159,10 @@
     box-shadow: 0 2px 0 0 #686A6E;
     border-radius: 0.8rem;
     height: 2rem;
-    width: 1.5rem;
+    width: 8%;
     line-height: 2rem;
     border-radius: 6px;
-    margin: 0.8rem 0.4rem;
+    margin: 0.8rem 1%;
   }
 
   .delete {
@@ -171,7 +171,7 @@
     width: 10%;
     height: 2rem;
     font-size: 1rem;
-    margin-left: 41.5%;
+    margin-left: 44%;
     background: #AFB3BE;
     box-shadow: 0 2px 0 0 #686A6E;
     border-radius: 10px;

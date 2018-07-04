@@ -2,15 +2,15 @@
   <div class="excitedo">
     <div class="title1">
       <ul class="title1-ul1">
-        <li class="titleo">✓</li>
+        <li class="titleo"><img src="../assets/ok.png" height="50" width="50"/></li>
         <strong>
-          <p class="titleo"/>
+          <p class="ptitleo"/>
         </strong>
-        <li class="titleo">2</li>
+        <li class="titleo"><img src="../assets/2x.png" height="50" width="50"/></li>
         <strong>
           <p/>
         </strong>
-        <li>3</li>
+        <li><img src="../assets/3.png" height="50" width="50"/></li>
       </ul>
 
       <ul class="title2-ul2">
@@ -21,14 +21,14 @@
     </div>
     <div :class="{shade:shade} " @click="isShow"></div>
     <div class="company">
-      <p class="title1"><span>来访人信息</span></p>
+      <p class=""><span>来访人信息</span></p>
       <x-input title=" <span>*</span> 姓名：" required="required" v-model="iName" placeholder="请输入" is-type="china-name">
         <span>*</span></x-input>
       <x-input title=" <span>*</span> 手机号：" required="required" mask="99999999999" v-model="iPoints" placeholder="请输入"
                :max="11"
                is-type="china-mobile"></x-input>
 
-      <span style="border-top: 1px solid rgba(217,217,217,.5);display: inline-block;width: 96%; margin-bottom: 3px"></span>
+      <span style="border-top: 1px solid rgba(217,217,217,.5);display: inline-block;width: 96%; margin-top: 5px "></span>
       <div style="margin-top: 5px">
         <popup-picker title=" <span>*</span> 证件号：" :data="list" v-model="iLicense"
                       required="required"></popup-picker>
@@ -39,9 +39,12 @@
 
       <!--<popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>-->
       <!--<x-input style="border: none; !important;" id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>-->
-      <div @click="deleteCarNo"   >
-        <span></span>
-        <x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>
+      <!--<div @click="deleteCarNo"   >-->
+        <!--<span></span>-->
+        <!--<x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>-->
+      <!--</div>-->
+      <div id="carno"  @click="deleteCarNo">
+        <p style="background: #fff;">&nbsp;&nbsp;车牌号：</p> <small v-if="carno.length == 0" style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入</small> {{ carno}}
       </div>
 
 
@@ -497,7 +500,19 @@
     padding: 0;
     margin: 0;
   }
-
+  #carno {
+    border-top: 1px solid #EBEBEB;
+    background: #FFF;
+    width: 96.5%;
+    height: 40px;
+    line-height: 40px;
+    float:right;
+  }
+  #carno p{
+    display: inline-block;
+    height: 40px;
+    width: 6.8rem;
+  }
 
   .shade {
     -webkit-tap-highlight-color:transparent;
@@ -519,10 +534,12 @@
     font-size: 20px;
     p {
       display: inline-block;
-      width: 90%;
+      width: 95%;
       background: #d4dbdd;
-      vertical-align: middle;
       height: 3px;
+    }
+    .ptitleo{
+      background: #67CB57;
     }
   }
 
@@ -536,28 +553,19 @@
       margin: 0 auto 0 auto;
       display: flex;
       justify-content: space-between;
-      .titleo {
-        background: #67cd57;
-      }
-      li {
-        text-align: center;
-        line-height: 40px;
-        width: 40px;
-        height: 40px;
-        background: #d4dbdd;
-        border-radius: 50%;
-        color: #fff;
-        font-size: 26px;
-      }
+    
     }
     .title2-ul2 {
-      width: 87%;
-      margin: 5px auto;
+      font-size: 12px;
+      width: 80%;
+      margin: -8px auto;
       display: flex;
       justify-content: space-between;
-      color: #d4dbdd;
+      color: 	#d4dbdd;
       .titleo {
-        color: #67cd57;
+        color: #67CB57;
+        margin-left: -2%;
+       
       }
     }
   }
@@ -603,7 +611,6 @@
       }
     }
     .company {
-      margin-bottom: 20px;
       ul {
         padding: 0 4%;
         li {
@@ -672,14 +679,14 @@
         display: flex;
         justify-content: center;
         margin-bottom: 30px;
-        padding-top: 10px;
+        padding-top: 0px;
         li {
+          margin-top: 20px;
           height: 24px;
-          color: #5aa0ce;
+          color: #5AA0CE;
           img {
             margin-right: 8px;
             display: inline-block;
-
           }
         }
       }
@@ -689,12 +696,9 @@
         button {
           justify-content: center;
           width: 40%;
-          height: 45px;
           background-color: #1d83c5;
           color: #FAFAFA;
           border: none;
-          font-size: 16px;
-          border-radius: 4px;
           outline: none;
         }
       }
@@ -703,19 +707,6 @@
         color: #1d83c5;
 
       }
-      /*button {*/
-      /*width: 40%;*/
-      /*height: 50px;*/
-      /*background-color: #1d83c5;*/
-      /*color: #FAFAFA;*/
-      /*border: none;*/
-      /*font-size: 16px;*/
-      /*border-radius: 4px;*/
-      /*outline: none;*/
-      /*}*/
-      /*button:last-child {*/
-      /*float: right;*/
-      /*}*/
     }
   }
 </style>

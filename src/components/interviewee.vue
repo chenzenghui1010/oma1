@@ -2,15 +2,15 @@
   <div class="maket">
     <div class="title1">
       <ul class="title1-ul1">
-        <li class="titleo">1</li>
-        <strong>
-          <p class="titleo"/>
-        </strong>
-        <li class="">2</li>
+        <li class="titleo"><img src="../assets/1x.png" height="50" width="50"/></li>
         <strong>
           <p/>
         </strong>
-        <li>3</li>
+        <li><img src="../assets/2.png" height="50" width="50"/></li>
+        <strong>
+          <p/>
+        </strong>
+        <li><img src="../assets/3.png" height="50" width="50"/></li>
       </ul>
 
       <ul class="title2-ul2">
@@ -149,7 +149,6 @@
       display: inline-block;
       width: 90%;
       background: #d4dbdd;
-      vertical-align: middle;
       height: 3px;
     }
   }
@@ -164,28 +163,17 @@
       margin: 0 auto 0 auto;
       display: flex;
       justify-content: space-between;
-      .titleo {
-        background: #67cd57;
-      }
-      li {
-        text-align: center;
-        line-height: 40px;
-        width: 40px;
-        height: 40px;
-        background: #d4dbdd;
-        border-radius: 50%;
-        color: #fff;
-        font-size: 26px;
-      }
+    
     }
     .title2-ul2 {
-      width: 87%;
-      margin: 5px auto;
+      font-size: 12px;
+      width: 80%;
+      margin: -8px auto;
       display: flex;
       justify-content: space-between;
-      color: #d4dbdd;
+      color: 	#d4dbdd;
       .titleo {
-        color: #67cd57;
+        color: #67CB57;
       }
     }
   }
@@ -219,13 +207,9 @@
       justify-content: center;
       button {
         justify-items: center;
-        background: #1d83c5;
         display: inline-block;
         color: #fff;
-        height: 50px;
         width: 45%;
-        font-size: 16px;
-        border-radius: 3px;
         border: none;
         outline: none;
       }

@@ -2,7 +2,7 @@
   <div class="makethree">
     <div class="img">
       <img src="../assets/成功@3x.png"/>
-      <p class="add">提交成功</p>
+      <p class="add"><strong>提交成功</strong></p>
       <p class="left">{{ auditResult }}</p>
     </div>
     <button class="ok" @click="ok">确定</button>
@@ -37,13 +37,15 @@
       margin-top: 50px;
       padding: 0 26%;
       img {
+        width: 85px;
+        height: 85px;
         text-align: content;
         display: inline-block;
       }
       .add {
-        color: #32CD32;
+        color: #67CB57;
         margin: 20px auto 20px auto;
-        font-size: 28px;
+        font-size: 18px;
       }
       .left {
         color: #999;
@@ -52,12 +54,11 @@
     .ok {
       margin-top: 88px;
       width: 90%;
-      height: 60px;
-      background-color: #1d83c5;
+      
       color: #FAFAFA;
-      font-size: 20px;
+     
       border: none;
-      border-radius: 6px;
+     
       outline: none;
     }
   }

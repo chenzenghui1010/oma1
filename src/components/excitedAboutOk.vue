@@ -3,15 +3,15 @@
 
     <div class="title1">
       <ul class="title1-ul1">
-        <li>✓</li>
+        <li><img src="../assets/ok.png" height="50" width="50"/></li>
         <strong>
           <p/>
         </strong>
-        <li>✓</li>
+        <li><img src="../assets/ok.png" height="50" width="50"/></li>
         <strong>
           <p/>
         </strong>
-        <li>✓</li>
+        <li><img src="../assets/ok.png" height="50" width="50"/></li>
       </ul>
 
       <ul class="title2-ul2">
@@ -198,9 +198,8 @@
     font-size: 20px;
     p {
       display: inline-block;
-      width: 90%;
+      width: 95%;
       background: #67cd57;
-      vertical-align: middle;
       height: 3px;
     }
   }
@@ -215,24 +214,18 @@
       margin: 0 auto 0 auto;
       display: flex;
       justify-content: space-between;
-
-      li {
-        text-align: center;
-        line-height: 40px;
-        width: 40px;
-        height: 40px;
-        background: #67cd57;
-        border-radius: 50%;
-        color: #fff;
-        font-size: 28px;
-      }
+    
     }
     .title2-ul2 {
-      width: 87%;
-      margin: 5px auto;
+      font-size: 12px;
+      width: 80%;
+      margin: -8px auto;
       display: flex;
       justify-content: space-between;
-      color: #67cd57;
+      color: 	#d4dbdd;
+      li {
+        color: #67CB57;
+      }
     }
   }
 
@@ -241,7 +234,7 @@
     .d1, .d2, .d3 {
       P {
         width: 100%;
-        height: 43px;
+        height: 44px;
         background-color: #edf1f3;
         span {
           display: inline-block;
@@ -254,8 +247,9 @@
         margin-top: 20px;
         li {
           padding: 0 0 0 20px;
-          color: #8c939d;
-          margin-bottom: 18px;
+          color: #999;
+          margin-bottom: 16px;
+          margin-top: 20px;
           span {
             display: inline-block;
             width: 25%;
@@ -274,18 +268,14 @@
       P {
         margin-top: 20px;
         color: #ea6f6f;
-        font-size: 10px;
+        font-size: 12px;
         padding: 0 10px;
 
         button {
-          font-size: 16px;
-          background-color: #1d83c5;
           color: #fff;
           width: 45%;
-          height: 45px;
           float: right;
           border: none;
-          border-radius: 4px;
           display: inline-block;
           margin-bottom: 30px;
         }

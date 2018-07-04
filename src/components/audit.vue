@@ -3,7 +3,7 @@
     <div v-if="dataList.length == 0"><p>没有你要审核的数据</p></div>
     <div :class="{shade:shade}"></div>
     <div v-for=" item  in  dataList" class="con">
-      <p>{{item.createTime | dateFrm }}</p>
+      <p class="item"><span>{{item.createTime | dateFrm }}</span></p>
       <ul>
         <li><strong>受访人：{{ item.intervieweeName}}</strong><span @click="details(item.id)">详情</span></li>
         <li>来访人：<span>{{ item.name}}</span></li>
@@ -227,7 +227,6 @@
   }
 </script>
 <style scoped lang="less">
-
   .shade {
     z-index: 9;
     position: fixed;
@@ -250,11 +249,12 @@
     right: 0;
     width: 90%;
     height: 200px;
-    background: #fff;
+    background: #fff ;
     p:nth-child(1) {
       margin: 15px 0 19px 0;
       font-size: 16px;
       color: #333 !important;
+      background: #fff !important;
     }
     textarea {
       padding: 11px 0 0 10px;
@@ -264,7 +264,6 @@
       margin-bottom: 20px;
     }
     .btn {
-      /*margin-top: 20px;*/
       width: 100%;
       height: 29%;
       border-top: 1px solid gainsboro;
@@ -277,25 +276,32 @@
         float: left;
         background: #fff;
         color: gray;
-        font-size: 20px;
       }
       button:nth-child(2) {
         float: right;
         border-left: 1px solid gainsboro;
-        color: #1E90FF;
+        color: #edf1f3 ;
       }
 
     }
   }
-
   .audit {
     position: relative;
     background-color: #edf1f3;
     width: 100%;
+    height: 100%;
     p:nth-child(1) {
-      line-height: 50px;
+      line-height: 34px;
       text-align: center;
-      color: #b3b3b3;
+      background: #edf1f3;
+      span{
+       
+        color: #b3b3b3;
+        display: inline-block;
+        margin-top:10PX;
+        font-size: 12PX;
+      
+      }
     }
     div {
       ul {
@@ -304,13 +310,14 @@
           padding: 0 5%;
           height: 40px;
           line-height: 40px;
+          color: #333;
           strong {
-            font-size: 18px;
+            font-size: 16px;
           }
           span {
             display: inline-block;
             float: right;
-            color: gray;
+            color: #999;
           }
         }
         li:nth-child(1) {
@@ -324,17 +331,20 @@
         }
       }
       p:last-child {
-        height: 50px;
-        border-top: 1px solid #ededed;
+        height: 45px;
+        border-top: 1px solid #EBEBEB;
         button {
-          border: none;
-          height: 60px;
+          border: none ;
           width: 50%;
           float: left;
-          font-size: 18px;
           background: #fff;
-          color: #8c939d;
-          border-bottom: 1px solid #edf1f3;
+          color: #999;
+          border-radius: 0;
+          
+        }
+        button:last-child{
+          color: #1D83C5;
+          border-left: 1px solid  #edf1f3 ;
         }
         .disabled {
           color: #8c939d;

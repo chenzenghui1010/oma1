@@ -2,15 +2,15 @@
   <div class="makeo">
     <div class="title1">
       <ul class="title1-ul1">
-        <li class="titleo">1</li>
+        <li class="titleo"><img src="../assets/1x.png" height="50" width="50"/></li>
         <strong>
           <p/>
         </strong>
-        <li>2</li>
+        <li><img src="../assets/2.png" height="50" width="50"/></li>
         <strong>
           <p/>
         </strong>
-        <li>3</li>
+        <li><img src="../assets/3.png" height="50" width="50"/></li>
       </ul>
 
       <ul class="title2-ul2">
@@ -64,22 +64,18 @@
     margin: 0px;
     padding: 0px;
   }
-
   strong {
     width: 30%;
     height: 40px;
-
     text-align: center;
     font-size: 20px;
     p {
       display: inline-block;
-      width: 90%;
+      width: 95%;
       background: #edf1f3;
-      vertical-align: middle;
       height: 3px;
     }
   }
-
   .title1 {
     padding-top: 10px;
     width: 100%;
@@ -90,28 +86,17 @@
       margin: 0 auto 0 auto;
       display: flex;
       justify-content: space-between;
-      .titleo {
-        background: #67cd57;
-      }
-      li {
-        text-align: center;
-        line-height: 40px;
-        width: 40px;
-        height: 40px;
-        background: 	#d4dbdd;
-        border-radius: 50%;
-        color: #fff;
-        font-size: 26px;
-      }
+    
     }
     .title2-ul2 {
-      width: 87%;
-      margin: 5px auto;
+      font-size: 12px;
+      width: 80%;
+      margin: -8px auto;
       display: flex;
       justify-content: space-between;
       color: 	#d4dbdd;
       .titleo {
-        color: #67cd57;
+        color: #67CB57;
       }
     }
   }
@@ -142,14 +127,10 @@
       button {
         margin-top: 30px;
         width: 100%;
-        height: 50px;
-        /*display: bloch;*/
-        border-radius: 3px;
         border: none;
         color: #FAFAFA;
-        background-color: #1d83c5;
         outline: none;
-        font-size: 20px;
+        font-size: 16px;
       }
     }
   }
