@@ -38,18 +38,18 @@
         <li><span>姓名：</span>{{ this.$store.state.iName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.iPoints }}</li>
         <li><span>证件号：</span> {{ this.$store.state.iLicense}} {{ this.$store.state.iLicenseNumber}}</li>
-        <li><span>车牌号：</span>{{ this.$store.state.iCar == '请选择'?'':this.$store.state.iCar }} {{ this.$store.state.iCarNumber}}</li>
+        <li><span>车牌号：</span>{{ this.$store.state.iCarNumber == '请选择'?'': this.$store.state.iCarNumber}}</li>
         <li><span>公司：</span>{{ this.$store.state.iCompany }}</li>
         <li><span>来访时间：</span>{{ this.$store.state.iStart }}</li>
         <li><span>预计离开：</span>{{ this.$store.state.iEnd}}</li>
         <li><span>来访事由：</span>{{ this.$store.state.iCause }}</li>
       </ul>
     </div>
-    <div class="d3">
+    <div v-if="ifollower.length > 0" class="d3">
       <p><span>随行人信息</span></p>
       <ul v-for=" item in ifollower ">
         <li><span>姓名：</span>{{ item.name}}</li>
-        <li><span>证件号：</span>{{ item.identityType.toString()}} {{ item.identityNo.toString() }}</li>
+        <li><span>证件号：</span>{{ item.identityType.toString()}} {{ item.identityNo }}</li>
       </ul>
     </div>
 
@@ -65,6 +65,7 @@
 <script>
   import {AlertModule} from 'vux'
   import {invite} from "../parking";
+
   export default {
     name: 'invitepar',
     components: {AlertModule},
@@ -105,10 +106,11 @@
 
         invite({
 
-          personName: this.$store.state.inName,
-          phone: this.$store.state.inPoints,
-          company: this.$store.state.inCompany,
-          dep: this.$store.state.inDep,
+          intervieweeName: this.$store.state.inName,
+          intervieweeTel: this.$store.state.inPoints,
+          intervieweeCompany: this.$store.state.inCompany,
+          intervieweeDepartment: this.$store.state.inDep,
+
           carNo: this.carType,
           visitorPhone: this.$store.state.iPoints,
           visitorName: this.$store.state.iName,
@@ -136,8 +138,8 @@
     },
 
     computed: {
-      carType:function(){
-        return   this.$store.state.iCar  == '请选择' ? '': this.$store.state.iCar + this.$store.state.iCarNumber
+      carType: function () {
+        return this.$store.state.iCarNumber == '请选择' ? '' : this.$store.state.iCarNumber
 
       },
 
@@ -168,6 +170,7 @@
     padding: 0;
     margin: 0;
   }
+
   strong {
     width: 30%;
     height: 40px;
@@ -284,7 +287,7 @@
           margin-bottom: 18px;
           span {
             display: inline-block;
-            width: 25%;
+            width: 28%;
             height: 30px;
             color: #333;
           }

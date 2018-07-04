@@ -103,8 +103,8 @@
         reserveForInterviewee({
           intervieweeName: this.inName,
           intervieweeTel: this.inPoints,
-          company: this.inCompany,
-          department: this.inDep
+          intervieweeCompany: this.inCompany,
+          intervieweeDepartment: this.inDep
         }).then(data => {
           this.$router.push({path: 'inviteindex'})
         }).catch(message => {

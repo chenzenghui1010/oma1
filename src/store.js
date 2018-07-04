@@ -23,7 +23,6 @@ export default new vuex.Store({
     ePoints: '',
     eLicense: '请选择',
     eLicenseNumber: '',
-    eCar: '请选择',
     eCarNumber: '',
     eCompany: '',
     eStart: '',
@@ -42,9 +41,8 @@ export default new vuex.Store({
     //来访邀约 来访者
     iName: '',
     iPoints: '',
-    iLicense: '证件类型',
+    iLicense: '请选择',
     iLicenseNumber: '',
-    iCar: '',
     iCarNumber: '',
     iCompany: '',
     iStart: '',

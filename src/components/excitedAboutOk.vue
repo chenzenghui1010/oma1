@@ -37,10 +37,8 @@
       <ul>
         <li><span>姓名：</span>{{ this.$store.state.eName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.ePoints }}</li>
-        <li><span>证件号：</span>{{ this.$store.state.eLicense}} {{ this.$store.state.eLicenseNumber}}</li>
-        <li><span>车牌号：</span>{{ this.$store.state.eCar =='请选择' ? '':this.$store.state.eCar }} {{
-          this.$store.state.eCarNumber}}
-        </li>
+        <li><span>证件号：</span>{{ this.$store.state.eLicense == '请选择' ? '' : this.$store.state.eLicense}} {{ this.$store.state.eLicenseNumber}}</li>
+        <li><span>车牌号：</span>{{ this.$store.state.eCarNumber =='请选择' ? '': this.$store.state.eCarNumber}}</li>
         <li><span>公司：</span>{{ this.$store.state.eCompany }}</li>
         <li><span>来访时间：</span>{{ this.$store.state.eStart }}</li>
         <li><span>预计离开：</span>{{ this.$store.state.eEnd}}</li>
@@ -51,9 +49,7 @@
       <ul v-for=" (item, index)  in  followers ">
         <p><span>随行人{{ index +1}}信息</span></p>
         <li><span>姓名：</span>{{ item.name}}</li>
-        <li><span>证件号：</span>{{ item.identityType.toString() }}
-
-          {{item.identityNo}}
+        <li><span>证件号：</span>{{ item.identityType.toString() }} {{item.identityNo}}
         </li>
       </ul>
     </div>
@@ -143,7 +139,7 @@
     computed: {
 
       carType:function(){
-     return   this.$store.state.eCar  == '请选择' ? '': this.$store.state.eCar + this.$store.state.eCarNumber
+     return   this.$store.state.eCar  == '请选择' ? '':  this.$store.state.eCarNumber
 
       },
       identityNo: function () {

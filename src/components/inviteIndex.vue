@@ -19,7 +19,7 @@
         <li>确定信息</li>
       </ul>
     </div>
-
+    <div :class="{shade:shade} " @click="isShow"></div>
     <div class="company">
       <p class="title1"><span>来访人信息</span></p>
       <x-input title=" <span>*</span> 姓名：" required="required" v-model="iName" placeholder="请输入" is-type="china-name">
@@ -28,27 +28,32 @@
                :max="11"
                is-type="china-mobile"></x-input>
 
+      <span style="border-top: 1px solid rgba(217,217,217,.5);display: inline-block;width: 96%; margin-bottom: 3px"></span>
+      <div style="margin-top: 5px">
+        <popup-picker title=" <span>*</span> 证件号：" :data="list" v-model="iLicense"
+                      required="required"></popup-picker>
+        <x-input   title=" " required="required" placeholder="请输入" v-model="iLicenseNumber">
+          is-type="china-name">
+        </x-input>
+      </div>
 
-      <popup-picker title=" <span>*</span> 证件号：" :data="list" v-model="iLicense"
-                    required="required"></popup-picker>
-      <x-input title=" " required="required" placeholder="请输入" v-model="iLicenseNumber">
-        is-type="china-name">
-      </x-input>
-
-
-      <popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>
-      <x-input style="border: none; !important;" id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>
+      <!--<popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>-->
+      <!--<x-input style="border: none; !important;" id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>-->
+      <div @click="deleteCarNo"   >
+        <span></span>
+        <x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>
+      </div>
 
 
       <x-input title=" <span>*</span> 公司：" required="required" v-model="iCompany" placeholder="请输入"
       ></x-input>
 
       <span>*</span>
-      <datetime v-model="iStart" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc=' 来访时间：'
+      <datetime v-model="iStart" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc=' 来访时间：'
                 placeholder="2018-05-10 10:00"></datetime>
 
       <span>*</span>
-      <datetime v-model="iEnd" format="YYYY-MM-DD HH:mm" :min-hour=9 :max-hour=18 inline-desc='离开时间：'
+      <datetime v-model="iEnd" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc='离开时间：'
                 placeholder="2018-05-10 10:00"></datetime>
       <x-input title=" <span>*</span> 来访事由：" required="required" v-model="iCause" placeholder="请输入"></x-input>
 
@@ -86,6 +91,9 @@
         <button @click="excited">预 览</button>
       </div>
     </div>
+
+    <carnokeyboard v-on:select="selectletter" v-on:delete="deleteletter" v-show="begininput"
+                   v-bind:inputtype="inputtype"></carnokeyboard>
   </div>
 </template>
 <script>
@@ -105,6 +113,7 @@
     XSwitch, AlertModule
   } from 'vux'
   import mtitle from './mTitle'
+  import Carnokeyboard from "./keyboard.vue"
 
   export default {
     name: 'inviteindex',
@@ -116,23 +125,32 @@
       XButton,
       Group,
       Cell,
-      Flexbox
+      Flexbox,
+      Carnokeyboard
     },
     data() {
       return {
+        enable: false,
+        begininput: false,//键盘
+        count: 7,
+        newresourcecar: false,
+        inputindex: 0,
+        shade: false,
+
+
+
+
         ifollower: [],
         list: [['请选择', '二代身份证', '护照', '港澳通行证', '驾驶证', '军官证', '学生证', '其他']],
-        Car: [['请选择', '京', '津', '沪', '渝', '冀', '豫', '云', '辽', '黑', '湘', '皖', '鲁', '新', '苏', '浙', '赣', '鄂', '桂', '甘', '晋', '蒙', '陕', '吉', '闽', '贵', '粤', '青', '藏', '川', '宁', '琼', '港', '奥', '新']],
-        iName: '',
-        iPoints: '',
-        iLicense: ['请选择'],
-        iLicenseNumber: '',
-        iCar: ['请选择'],
-        iCarNumber: '',
-        iCompany: '',
-        iStart: '',
-        iEnd: '',
-        iCause: '',
+        iName: this.$store.state.iName,
+        iPoints: this.$store.state.iPoints,
+        iLicense:[ this.$store.state.iLicense.toString()],
+        iLicenseNumber: this.$store.state.iLicenseNumber,
+        carno: this.$store.state.iCarNumber,
+        iCompany: this.$store.state.iCompany,
+        iStart: this.$store.state.iStart,
+        iEnd: this.$store.state.iEnd,
+        iCause: this.$store.state.iCause,
         showExcitedO: true,
 
         alert: '',
@@ -153,9 +171,104 @@
       this.ifollower = this.$store.state.ifollower;
 
     },
-    computed: {},
+    computed: {
+
+      inputtype: function () {
+        if (this.inputindex == 0) {
+
+          return 0
+        }
+        if (this.inputindex == 1) {
+
+          return 1
+        }
+        if (this.newresourcecar == false) {
+
+          if (this.inputindex == 6) {
+
+            return 3
+
+          }
+          if (this.inputindex == 8) {
+            this.shade= false
+            this.disabled = false
+
+            this.begininput = false
+
+          }
+
+        }
+        if (this.inputindex == 7) {
+
+          return 3
+        }
+        if (this.inputindex == 8) {
+          this.disabled = false
+          this.shade= false
+          this.begininput = false
+
+        }
+        return 2
+      },
+    },
 
     methods: {
+      deleteCarNo: function () {
+        this.begininput = true
+        this.shade = true
+      },
+      getchunkstyle: function (index) {
+
+        if (!this.newresourcecar) {
+
+          if (index == 0 && this.carno.length >= 1) {
+
+            return 'chunk bluecolor'
+          }
+
+          return 'chunk noe'
+        }
+        else {
+
+          if (index == 0 && this.carno.length >= 1) {
+
+            return 'chunk deepgreencolor'
+          }
+
+          return 'chunk greencolor'
+        }
+      },
+      isShow: function () {
+        this.shade = false
+        this.begininput = false
+      },
+
+      getLetter: function (index) {
+        if (index >= this.carno.length) {
+          return ''
+        }
+        return this.carno[index]
+      },
+      selectletter: function (value) {
+
+        this.carno = this.carno + value
+
+        this.inputindex += 1
+      },
+      deleteletter: function () {
+
+        this.inputindex = Math.max(0, this.inputindex - 1)
+
+        this.carno = this.carno.substr(0, this.inputindex)
+        // this.carNo =this.carNo.substring(0,this.carNo.length-1)
+        //  alert(this.carNo)
+      },
+
+
+
+
+
+
       addfollower: function () {
         this.ifollower.push({
           'name': this.$store.state.ifollower.name,
@@ -174,8 +287,7 @@
           _this('iPoints', this.iPoints),
           _this('iLicense', this.iLicense.toString()),
           _this('iLicenseNumber', this.iLicenseNumber),
-          _this('iCar', this.iCar.toString()),
-          _this('iCarNumber', this.iCarNumber),
+          _this('iCarNumber', this.carno),
           _this('iCompany', this.iCompany),
           _this('iStart', this.iStart),
           _this('iEnd', this.iEnd),
@@ -189,8 +301,9 @@
           AlertModule.show({title: this.alert = '请填写姓名'})
           return
         }
-        if (this.iName.length < 1) {
+        if (this.iName.length < 2) {
           AlertModule.show({title: this.alert = '姓名格式不正确'})
+          return
         }
         if (this.iPoints == '') {
           AlertModule.show({title: this.alert = '请填写手机号'})
@@ -302,7 +415,7 @@
               AlertModule.show({title: this.alert = '请填写随行人姓名'})
               return
             }
-            if (this.ifollower[i].name.length < 1) {
+            if (this.ifollower[i].name.length < 2) {
               AlertModule.show({title: this.alert = '随行人姓名格式不正确'})
               return
             }
@@ -385,6 +498,19 @@
     margin: 0;
   }
 
+
+  .shade {
+    -webkit-tap-highlight-color:transparent;
+    z-index: 9;
+    position: absolute;
+    width: 100%;
+    height: 120%;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+
   strong {
     width: 30%;
     height: 40px;
@@ -450,18 +576,6 @@
   .weui-cell {
     height: 20px;
     padding: 10px 15px;
-  }
-
-  #none {
-    margin-left: 15%;
-    position: absolute;
-    margin-top: -44px;
-    width: 55%;
-    border: 1px solid red !important;
-    background: rgba(0, 0, 0, 0);
-    .weui-cell:before {
-      border: none !important;
-    }
   }
 
   .addk {
@@ -540,10 +654,7 @@
       i {
         position: absolute;
         margin-left: 92%;
-        /*display: inline-block;*/
-        /*border: 1px solid red;*/
         img {
-
           margin-top: 10px;
         }
       }
@@ -593,17 +704,17 @@
 
       }
       /*button {*/
-        /*width: 40%;*/
-        /*height: 50px;*/
-        /*background-color: #1d83c5;*/
-        /*color: #FAFAFA;*/
-        /*border: none;*/
-        /*font-size: 16px;*/
-        /*border-radius: 4px;*/
-        /*outline: none;*/
+      /*width: 40%;*/
+      /*height: 50px;*/
+      /*background-color: #1d83c5;*/
+      /*color: #FAFAFA;*/
+      /*border: none;*/
+      /*font-size: 16px;*/
+      /*border-radius: 4px;*/
+      /*outline: none;*/
       /*}*/
       /*button:last-child {*/
-        /*float: right;*/
+      /*float: right;*/
       /*}*/
     }
   }
