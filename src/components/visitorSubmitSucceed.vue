@@ -16,7 +16,6 @@
     },
     methods: {
       ok: function () {
-
         wx.closeWindow()
       }
     }

@@ -146,11 +146,13 @@
   }
 
   .line {
-    /*margin-left: -2%;*/
     display: flex;
-    width: 100%;
-    margin-right: 10px;
+    display:  -webkit-flex;
     justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-content: center;
+  
   }
 
   .item {
@@ -167,15 +169,14 @@
 
   .delete {
     position: absolute;
-    margin-top: 0.8rem;
+    bottom: 0.7rem;
     width: 10%;
-    height: 2rem;
+    height: 2.2rem;
     font-size: 1rem;
-    margin-left: 44%;
+    right: 0.2rem;
     background: #AFB3BE;
-    box-shadow: 0 2px 0 0 #686A6E;
     border-radius: 10px;
-    background: #AFB3BE url("../assets/return.png") no-repeat center/ 25px;
+    background: #AFB3BE url("../assets/return.png") no-repeat center/ 20px;
 
   }
 </style>

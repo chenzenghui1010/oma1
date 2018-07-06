@@ -14,35 +14,41 @@
                is-type="china-mobile"></x-input>
       
       
-      <span style="border-top: 1px solid rgba(217,217,217,.5);display: inline-block;width: 96%; margin-top: 5px "></span>
+      <span
+        style="border-top: 1px solid rgba(217,217,217,.5);display: inline-block;width: 96%; margin-top: 5px "></span>
       <div style="margin-top: 5px">
         <popup-picker title=" <span>*</span>  证件号：" :data="list1" v-model="eLicense"></popup-picker>
         <x-input title=" " v-model="eLicenseNumber" placeholder="请输入"></x-input>
       </div>
-
-
-      <div id="carno"  @click="deleteCarNo">
+      
+      
+      <div id="carno" @click="deleteCarNo">
         
-        <p style="background: #fff;">&nbsp;&nbsp;车牌号：</p> <small   v-if="carno.length == 0" style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;" >请输入</small> {{ carno}}
+        <p style="background: #fff;margin-left:6px">&nbsp;&nbsp;车牌号：</p>
+        <small v-if="carno.length == 0"
+               style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入
+        </small>
+        {{ carno}}
       </div>
       <!--<div @click="deleteCarNo"   >-->
-       <!--<span></span>-->
+      <!--<span></span>-->
       <!--<x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>-->
       <!--</div>-->
-
-
-      <x-input title=" <span>*</span> 公司：" v-model="eCompany" placeholder="请输入"
-      ></x-input>
-
+      
+      
+      <x-input title=" <span>*</span> 公司：" v-model="eCompany" placeholder="请输入"></x-input>
+      
       <span>* </span>
-      <datetime v-model="eStart" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc=' 来访时间：'
+      <datetime v-model="eStart" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc='来访时间：'
                 placeholder="2018-05-10 10:00"></datetime>
-
+      
       <span>* </span>
       <datetime v-model="eEnd" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc="离开时间："
                 placeholder="2018-05-10 10:00"></datetime>
+      
+      
       <x-input title=" <span>*</span> 来访事由：" required="required" v-model="eCause" placeholder="请输入"></x-input>
-
+    
     </div>
     <div class="suixing">
       <p><span v-if="follower.length>0">随行人员信息</span></p>
@@ -66,7 +72,7 @@
         </div>
       </div>
     </div>
-
+    
     <div class="add">
       <ul @click="addfollower">
         <li><img class="addimg" src="../assets/添加@2x.png" alt=""></li>
@@ -100,7 +106,7 @@
   } from 'vux'
   import mtitle from './mTitle'
   import Carnokeyboard from "./keyboard.vue"
-
+  
   export default {
     name: 'excitedabouto',
     components: {
@@ -116,15 +122,15 @@
     },
     data() {
       return {
-
+        
         enable: false,
         begininput: false,//键盘
         count: 7,
         newresourcecar: false,
         inputindex: 0,
         shade: false,
-
-
+        
+        
         follower: [],
         list1: [['请选择', '二代身份证', '护照', '港澳通行证', '驾驶证', '军官证', '学生证', '其他']],
         // this.$store.state.eName,
@@ -138,83 +144,83 @@
         eEnd: this.$store.state.eEnd,
         eCause: this.$store.state.eCause,
         showExcitedO: true,
-
+        
         alert: '',
-
+        
       }
     },
     created() {
       this.follower = this.$store.state.follower;
-
+      
     },
     computed: {
       inputtype: function () {
         if (this.inputindex == 0) {
-
+          
           return 0
         }
         if (this.inputindex == 1) {
-
+          
           return 1
         }
         if (this.newresourcecar == false) {
-
+          
           if (this.inputindex == 6) {
-
+            
             return 3
-
+            
             
           }
           if (this.inputindex == 8) {
-            this.shade= false
+            this.shade = false
             this.disabled = false
-
+            
             this.begininput = false
-
+            
           }
-
+          
         }
         if (this.inputindex == 7) {
-
+          
           return 3
         }
         if (this.inputindex == 8) {
           this.disabled = false
-          this.shade= false
+          this.shade = false
           this.begininput = false
-
+          
         }
         return 2
       },
     },
-
+    
     watch: {
       eCarNumber: function (val, oldval) {
         this.eCarNumber = val.toUpperCase();
       }
-
+      
     },
-
+    
     methods: {
-
+      
       getchunkstyle: function (index) {
-
+        
         if (!this.newresourcecar) {
-
+          
           if (index == 0 && this.carno.length >= 1) {
-
+            
             return 'chunk bluecolor'
           }
-
+          
           return 'chunk noe'
         }
         else {
-
+          
           if (index == 0 && this.carno.length >= 1) {
-
+            
             return 'chunk deepgreencolor'
           }
-
+          
           return 'chunk greencolor'
         }
       },
@@ -222,12 +228,12 @@
         this.begininput = true
         this.shade = true
       },
-
+      
       isShow: function () {
         this.shade = false
         this.begininput = false
       },
-
+      
       getLetter: function (index) {
         if (index >= this.carno.length) {
           return ''
@@ -235,20 +241,20 @@
         return this.carno[index]
       },
       selectletter: function (value) {
-
+        
         this.carno = this.carno + value
-
+        
         this.inputindex += 1
       },
       deleteletter: function () {
-
+        
         this.inputindex = Math.max(0, this.inputindex - 1)
-
+        
         this.carno = this.carno.substr(0, this.inputindex)
         // this.carNo =this.carNo.substring(0,this.carNo.length-1)
         //  alert(this.carNo)
       },
-
+      
       addfollower: function () {
         this.follower.push({
           'name': this.$store.state.follower.name,
@@ -257,10 +263,10 @@
           'shows': false
         })
       },
-
+      
       //上一步
       last: function () {
-
+        
         history.go(-1);
       },
       //预 览
@@ -275,10 +281,10 @@
           _this('eStart', this.eStart),
           _this('eEnd', this.eEnd),
           _this('eCause', this.eCause),
-
+          
           //随行人
           _this('follower', this.follower);
-
+        
         if (this.eName == '') {
           AlertModule.show({title: this.alert = '请填写姓名'})
           return
@@ -291,12 +297,12 @@
           AlertModule.show({title: this.alert = '请填写手机号'})
           return
         }
-
+        
         if (this.eLicense == '证件类型') {
           AlertModule.show({title: this.alert = '请选择证件类型'})
           return
         }
-
+        
         if (this.eLicense == '二代身份证') {
           let isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
           if (!(isIDCard2.test(this.eLicenseNumber))) {
@@ -304,7 +310,7 @@
             return
           }
         }
-
+        
         if (this.eLicense == '港澳通行证') {
           let HKMAKAO = /^[HMhm]{1}([0-9]{10}|[0-9]{8})$/;
           if (!(HKMAKAO.test(this.eLicenseNumber))) {
@@ -312,7 +318,7 @@
             return
           }
         }
-
+        
         if (this.eLicense == '护照') {
           let PASSPORT = /^[a-zA-Z0-9]{5,17}$/;
           if (!(PASSPORT.test(this.eLicenseNumber))) {
@@ -320,7 +326,7 @@
             return
           }
         }
-
+        
         if (this.eLicense == '驾驶证') {
           let DRIVINGLICENCE = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
           if (!(DRIVINGLICENCE.test(this.eLicenseNumber))) {
@@ -328,76 +334,75 @@
             return
           }
         }
-
+        
         if (this.eLicense == '军官证') {
           let WARDROOM = /^\d{7}$/
           if (!(WARDROOM.test(this.eLicenseNumber))) {
             AlertModule.show({title: this.alert = '军官证不正确'})
             return
           }
-
+          
         }
-
+        
         if (this.eLicense == '学生证') {
           if (this.eLicenseNumber.length < 6) {
             AlertModule.show({title: this.alert = '学生证不正确'})
             return
           }
         }
-
+        
         if (this.eCompany == '') {
           AlertModule.show({title: this.alert = '请填写公司'})
           return
         }
-
+        
         if (this.eStart == '') {
           AlertModule.show({title: this.alert = '请填写来访时间'})
           return
         }
-
+        
         let start = this.eStart.replace(/-/g, '/')
         let startTimes = new Date(start).getTime()
-
+        
         let timestamp = new Date().getTime()//当前时间
         if (timestamp > startTimes) {
           AlertModule.show({title: this.alert = '填写来访时间要大于当前时间'})
           return
         }
-
+        
         if (this.eEnd == '') {
           AlertModule.show({title: this.alert = '请填写离开时间'})
           return
         }
         let end = this.eEnd.replace(/-/g, '/')
         let endTimes = new Date(end).getTime()
-
+        
         if (endTimes < startTimes) {
           AlertModule.show({title: this.alert = '填写离开时间要大于来访时间'})
           return
         }
-
-
-
+        
+        
         if (this.eCause == '') {
           AlertModule.show({title: this.alert = '请填写来访事由'})
           return
         }
-
+        
         if (this.eCause.length > 30) {
           AlertModule.show({title: this.alert = '事由超出最大长度30'})
           return
-
+          
         }
-
+        
         if (this.follower.length > 0) {
-
+          
           for (let i = 0; i < this.follower.length; i++) {
-
+            
             if (this.follower[i].name == '' || this.follower[i].name == undefined) {
               AlertModule.show({title: this.alert = '请填写随行人姓名'})
               return
             }
-            if (this.follower[i].name.length  < 2) {
+            if (this.follower[i].name.length < 2) {
               AlertModule.show({title: this.alert = '随行人姓名格式不正确'})
               return
             }
@@ -409,7 +414,7 @@
               AlertModule.show({title: this.alert = '请填写随行人证件类型'})
               return
             }
-
+            
             if (this.follower[i].identityType == '二代身份证') {
               let isIDCard2 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
               if (!(isIDCard2.test(this.follower[i].identityNo))) {
@@ -417,8 +422,8 @@
                 return
               }
             }
-
-
+            
+            
             if (this.follower[i].identityType == '港澳通行证') {
               let HKMAKAO = /^[HMhm]{1}([0-9]{10}|[0-9]{8})$/;
               if (!(HKMAKAO.test(this.follower[i].identityNo))) {
@@ -426,7 +431,7 @@
                 return
               }
             }
-
+            
             if (this.follower[i].identityType == '护照') {
               let PASSPORT = /^[a-zA-Z0-9]{5,17}$/;
               if (!(PASSPORT.test(this.follower[i].identityNo))) {
@@ -434,7 +439,7 @@
                 return
               }
             }
-
+            
             if (this.follower[i].identityType == '驾驶证') {
               let DRIVINGLICENCE = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|x|X)$/
               if (!(DRIVINGLICENCE.test(this.follower[i].identityNo))) {
@@ -442,17 +447,17 @@
                 return
               }
             }
-
-
+            
+            
             if (this.follower[i].identityType == '军官证') {
               let WARDROOM = /^\d{7}$/
               if (!(WARDROOM.test(this.follower[i].identityNo))) {
                 AlertModule.show({title: this.alert = '随行人军官证不正确'})
                 return
               }
-
+              
             }
-
+            
             if (this.follower[i].identityType == '学生证') {
               if (this.follower[i].identityNo.length < 6) {
                 AlertModule.show({title: this.alert = '随行人学生证不正确'})
@@ -477,10 +482,10 @@
   }
 </script>
 <style scoped lang="less">
-
-
+  
+  
   .shade {
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color: transparent;
     z-index: 9;
     position: absolute;
     width: 100%;
@@ -489,7 +494,7 @@
     top: 0px;
     background-color: rgba(255, 255, 255, 0.1);
   }
-
+  
   .inputitem {
     display: flex;
     height: 4rem;
@@ -500,19 +505,58 @@
     -webkit-box-align: center;
     /*align-items: center;*/
   }
-
+  
+  @media screen and (min-width: 300px) {
+    #carno {
+      width: 97%;
+    }
+    #carno p{
+      width: 6.6rem;
+    }
+  }
+  @media screen and (min-width: 600px) {
+    #carno {
+      width: 99%;
+    }
+    
+    #carno p{
+      width:6.5rem;
+    }
+  }
+  
+  @media screen and(min-width: 900px) {
+    #carno {
+      width: 99%;
+    }
+    
+    #carno p {
+      
+      width: 6.3rem;
+    }
+  }
+  
+  @media screen and (min-width: 1200px) {
+    #carno {
+      width: 99.5%;
+    }
+    
+    #carno p {
+      
+      width: 6.8rem;
+    }
+  }
+  
   #carno {
     border-top: 1px solid #EBEBEB;
     background: #FFF;
-    width: 96.5%;
     height: 40px;
     line-height: 40px;
-    float:right;
+    float: right;
   }
-  #carno p{
+  
+  #carno p {
     display: inline-block;
     height: 40px;
-    width: 6.8rem;
   }
   
   .chunk {
@@ -528,43 +572,43 @@
     font-size: 1.8rem;
     font-family: "Microsoft Yahei", "Arial", "Helvetica";
   }
-
+  
   * {
     padding: 0;
     margin: 0;
   }
-
+  
   x-input ::-webkit-input-placeholder {
     color: #000 !important;;
   }
-
+  
   span {
     margin: 8px 10px 0 15px;
     position: absolute;
     color: red;
   }
-
+  
   //弹出背景颜色
   .weui-dialog__bd p {
     background: #fff !important;
   }
-
+  
   .weui-cell {
     height: 20px;
     padding: 10px 15px;
   }
-
+  
   .addk {
     width: 100%;
     height: 10px;
     background: #edf1f3;
-
+    
   }
-
+  
   .car div div {
     color: red !important;
   }
-
+  
   #none {
     margin-left: 15%;
     position: absolute;
@@ -572,9 +616,9 @@
     width: 55%;
     background: rgba(0, 0, 0, 0);
   }
-
+  
   .excitedo {
-
+    
     height: 100px;
     .company, .suixing {
       p {
@@ -599,7 +643,7 @@
           small {
             display: inline-block;
             width: 25%;
-
+            
           }
           .datebegin, .dateend {
             display: inline-block;
@@ -632,7 +676,7 @@
         }
       }
     }
-
+    
     .add-name {
       display: flex;
       position: revert;
@@ -647,13 +691,13 @@
           width: 20px;
           margin-top: 10px;
           margin-left: 60px;
-
+          
         }
-
+        
       }
-
+      
     }
-
+    
     .add {
       padding-bottom: 30px;
       width: 100%;

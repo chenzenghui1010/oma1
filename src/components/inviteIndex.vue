@@ -500,10 +500,39 @@
     padding: 0;
     margin: 0;
   }
+  @media screen and (min-width: 300px) {
+    #carno {
+      width: 96%;
+    }
+    #carno p{
+      width: 6.6rem;
+    }
+  }
+  @media screen and (min-width: 600px) {
+    #carno {
+      width: 98%;
+      
+    }
+  
+    #carno p{
+      width:6.7rem;
+    }
+  }
+
+  @media screen and(min-width: 900px) {
+    #carno {
+      width: 99%;
+    }
+  
+    #carno p {
+    
+      width: 6.7rem;
+    }
+  }
+  
   #carno {
     border-top: 1px solid #EBEBEB;
     background: #FFF;
-    width: 96.5%;
     height: 40px;
     line-height: 40px;
     float:right;
@@ -511,7 +540,7 @@
   #carno p{
     display: inline-block;
     height: 40px;
-    width: 6.8rem;
+   
   }
 
   .shade {
@@ -569,7 +598,8 @@
       }
     }
   }
-
+  
+  
   span {
     margin: 8px 10px 0 15px;
     position: absolute;
