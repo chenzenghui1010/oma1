@@ -24,7 +24,7 @@
       
       <div id="carno" @click="deleteCarNo">
         
-        <p style="background: #fff;margin-left:6px">&nbsp;&nbsp;车牌号：</p>
+        <strong style="margin-left:6px;font-weight: 400">&nbsp;&nbsp;车牌号：</strong>
         <small v-if="carno.length == 0"
                style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入
         </small>
@@ -503,14 +503,13 @@
     display: flex;
     display: -webkit-flex;
     -webkit-box-align: center;
-    /*align-items: center;*/
   }
   
   @media screen and (min-width: 300px) {
     #carno {
       width: 97%;
     }
-    #carno p{
+    #carno strong{
       width: 6.6rem;
     }
   }
@@ -519,7 +518,7 @@
       width: 99%;
     }
     
-    #carno p{
+    #carno strong{
       width:6.5rem;
     }
   }
@@ -529,7 +528,7 @@
       width: 99%;
     }
     
-    #carno p {
+    #carno strong {
       
       width: 6.3rem;
     }
@@ -540,7 +539,7 @@
       width: 99.5%;
     }
     
-    #carno p {
+    #carno strong {
       
       width: 6.8rem;
     }
@@ -548,13 +547,13 @@
   
   #carno {
     border-top: 1px solid #EBEBEB;
-    background: #FFF;
+
     height: 40px;
     line-height: 40px;
     float: right;
   }
   
-  #carno p {
+  #carno strong {
     display: inline-block;
     height: 40px;
   }

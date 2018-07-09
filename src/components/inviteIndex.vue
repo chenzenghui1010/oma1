@@ -170,7 +170,7 @@
     },
 
     created() {
-      document.title = '来访邀请'
+      document.title = '来访邀约'
       this.ifollower = this.$store.state.ifollower;
 
     },
@@ -685,19 +685,46 @@
       }
     }
 
+    /*.add-name {*/
+      /*display: flex;*/
+      /*!*position: revert;*!*/
+      /*!*justify-content: space-between;*!*/
+      /*i {*/
+        /*display: inline-block;*/
+        /*img {*/
+          /*display: inline-block;*/
+          /*margin-top: 10px;*/
+          /*margin-left: 70px;*/
+        /**/
+          /*right: 10px;*/
+          /*left: 0;*/
+          /*bottom: 0;*/
+          /*margin-left: -60px;*/
+        /**/
+        /*}*/
+      /*}*/
+    
+    /*}*/
     .add-name {
       display: flex;
+      position: revert;
       justify-content: space-between;
       i {
-        position: absolute;
-        margin-left: 92%;
+        display: inline-block;
+        /*border: 1px solid red;*/
+        margin-right: 10%;
         img {
+          display: inline-block;
+          height: 20px;
+          width: 20px;
           margin-top: 10px;
+          margin-left: 60px;
+        
         }
+      
       }
-
+    
     }
-
     .add {
       padding-bottom: 30px;
       width: 100%;
