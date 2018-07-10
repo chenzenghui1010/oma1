@@ -47,7 +47,7 @@
                 placeholder="2018-05-10 10:00"></datetime>
       
       
-      <x-input title=" <span>*</span> 来访事由：" required="required" v-model="eCause" placeholder="请输入"></x-input>
+      <x-input title=" <span>*</span> 来访事由：" maxlength="20" required="required" v-model="eCause" placeholder="请输入"></x-input>
     
     </div>
     <div class="suixing">
@@ -298,7 +298,7 @@
           return
         }
         
-        if (this.eLicense == '证件类型') {
+        if (this.eLicense == '请选择') {
           AlertModule.show({title: this.alert = '请选择证件类型'})
           return
         }
@@ -388,8 +388,8 @@
           return
         }
         
-        if (this.eCause.length > 30) {
-          AlertModule.show({title: this.alert = '事由超出最大长度30'})
+        if (this.eCause.length > 21) {
+          AlertModule.show({title: this.alert = '事由超出最大长度20'})
           return
           
         }

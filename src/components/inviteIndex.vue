@@ -58,7 +58,7 @@
       <span>*</span>
       <datetime v-model="iEnd" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc='离开时间：'
                 placeholder="2018-05-10 10:00"></datetime>
-      <x-input title=" <span>*</span> 来访事由：" required="required" v-model="iCause" placeholder="请输入"></x-input>
+      <x-input title=" <span>*</span> 来访事由："   required="required" v-model="iCause" placeholder="请输入"></x-input>
 
     </div>
     <div class="suixing">
@@ -409,6 +409,11 @@
         if (this.iCause == '') {
           AlertModule.show({title: this.alert = '请填写来访事由'})
           return
+        }
+        if (this.iCause.length > 21) {
+          AlertModule.show({title: this.alert = '事由超出最大长度20'})
+          return
+    
         }
 
         if (this.ifollower.length > 0) {
