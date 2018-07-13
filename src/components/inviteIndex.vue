@@ -43,10 +43,15 @@
         <!--<span></span>-->
         <!--<x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>-->
       <!--</div>-->
-      <div id="carno"  @click="deleteCarNo">
+      <div id="carno"  v-if="isShowCar" @click="deleteCarNo">
         <p style="background: #fff;">&nbsp;&nbsp;车牌号：</p> <small v-if="carno.length == 0" style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入</small> {{ carno}}
       </div>
-
+  
+      <x-input v-if="inputcar"    title=" <span> &nbsp;</span> 车牌号：" v-model="carno"
+               placeholder="请输入"></x-input>
+      
+      
+      
 
       <x-input title=" <span>*</span> 公司：" required="required" v-model="iCompany" placeholder="请输入"
       ></x-input>
@@ -139,8 +144,8 @@
         newresourcecar: false,
         inputindex: 0,
         shade: false,
-
-
+        isShowCar:true,
+        inputcar:false,
 
 
         ifollower: [],
@@ -166,6 +171,19 @@
 
         this.iCarNumber = val.toUpperCase()
 
+      },
+      carno: function (carval) {
+     
+        if (carval == 'WJ') {
+          this.shade = false
+          this.begininput = false
+          this.isShowCar = false
+          this.inputcar = true
+          this.shade = false
+        }
+        
+        
+        
       }
     },
 
@@ -411,7 +429,7 @@
           return
         }
         if (this.iCause.length > 21) {
-          AlertModule.show({title: this.alert = '事由超出最大长度20'})
+          AlertModule.show({title: this.alert = '来访事由不能超过20个字符'})
           return
     
         }
@@ -585,8 +603,10 @@
     .title1-ul1 {
       width: 80%;
       margin: 0 auto 0 auto;
-      display: flex;
+      display:flex;
+      display: -webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
     
     }
     .title2-ul2 {
@@ -594,7 +614,9 @@
       width: 80%;
       margin: -8px auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       color: 	#d4dbdd;
       .titleo {
         color: #67CB57;
@@ -689,31 +711,13 @@
         }
       }
     }
-
-    /*.add-name {*/
-      /*display: flex;*/
-      /*!*position: revert;*!*/
-      /*!*justify-content: space-between;*!*/
-      /*i {*/
-        /*display: inline-block;*/
-        /*img {*/
-          /*display: inline-block;*/
-          /*margin-top: 10px;*/
-          /*margin-left: 70px;*/
-        /**/
-          /*right: 10px;*/
-          /*left: 0;*/
-          /*bottom: 0;*/
-          /*margin-left: -60px;*/
-        /**/
-        /*}*/
-      /*}*/
     
-    /*}*/
     .add-name {
       display: flex;
+      display: -webkit-flex;
       position: revert;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       i {
         display: inline-block;
         /*border: 1px solid red;*/
@@ -739,7 +743,9 @@
       ul {
         /*border: 1px solid red;*/
         display: flex;
+        display: -webkit-flex;
         justify-content: center;
+        -webkit-justify-content: center;
         margin-bottom: 30px;
         padding-top: 0px;
         li {
@@ -754,9 +760,13 @@
       }
       .footer {
         display: flex;
+        display:-webkit-flex;
         justify-content: space-around;
+        -webkit-justify-content: space-between;
+        
         button {
           justify-content: center;
+          -webkit-justify-content: center;
           width: 40%;
           background-color: #1d83c5;
           color: #FAFAFA;

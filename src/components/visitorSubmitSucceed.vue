@@ -3,7 +3,7 @@
     <div class="img">
       <img src="../assets/成功@3x.png"/>
       <p class="add"><strong>提交成功</strong></p>
-      <p class="left">您的来访预约申请已提交成功，我们会尽快审核,请耐心等候 &nbsp;  &nbsp;</p>
+      <p class="left">{{ auditResult }} &nbsp; &nbsp;</p>
     </div>
     <button class="ok" @click="ok">确定</button>
   </div>
@@ -12,8 +12,28 @@
   export default {
     name: 'visitorSubmitSucceed',
     data() {
-      return {}
+      return {
+        auditResult: '',
+      }
     },
+    created() {
+      let auditResult = this.$route.query.auditResult
+      
+      if (auditResult == 1) {
+        
+        this.auditResult = '您的邀访申请提交成功，请等候管理员审核'
+        
+      }else if(auditResult == 0){
+        
+        this.auditResult = '您的来访申请提交成功，我们会尽快审核'
+      }
+      else {
+        
+        this.auditResult = '邀访成功，请等待访客来访'
+      }
+      
+    },
+    
     methods: {
       ok: function () {
         wx.closeWindow()
@@ -32,7 +52,7 @@
       margin-top: 50px;
       padding: 0 20%;
       img {
-        width: 85px ;
+        width: 85px;
         height: 85px;
         text-align: content;
         display: inline-block;
@@ -43,7 +63,7 @@
         font-size: 18px;
       }
       .left {
-        float: left;
+        text-align: center;
         color: #999;
       }
     }

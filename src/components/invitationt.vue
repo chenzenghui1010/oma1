@@ -15,7 +15,7 @@
       return {}
     },
     created() {
-      document.getElementById('titleId').innerHTML = '访客邀请函'
+      document.title = '访客邀请函'
       getVisitPassInfo({visitId:this.$route.query.visitId})
     .
       then(data => {

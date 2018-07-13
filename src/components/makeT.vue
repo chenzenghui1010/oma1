@@ -1,38 +1,38 @@
 <template>
   <div class="maket">
-
+    
     <mtitle></mtitle>
-
+    
     <p class="title"><span>{{title}}</span></p>
     <div class="form">
       <x-input title=" <span>*</span>  姓名：" required="required" v-model="mName" placeholder="请输入"
                is-type="china-name"></x-input>
-
+      
       <x-input title="  <span>*</span> 手机号：" required="required" mask="99999999999" v-model="mPoints" placeholder="请输入"
                :max="11"
                is-type="china-mobile"></x-input>
-
-      <x-input title="  <span>*</span> 公司：" required="required" v-model="mCompany" placeholder="请输入"></x-input>
-
-      <x-input title="  <span> &nbsp;</span> 部门：" v-model="mDepartment" placeholder="请输入"></x-input>
+      
+      <!--<x-input @click="isAndroid" title="  <span>*</span> 公司：" required="required" v-model="mCompany" placeholder="请输入"></x-input>-->
+      <!---->
+      <!--<x-input title="  <span> &nbsp;</span> 部门：" v-model="mDepartment" placeholder="请输入"></x-input>-->
     </div>
-
-
+    
+    
     <div class="footer">
       <button @click="last">上一步</button>
       <button @click='next'>下一步</button>
     </div>
-
-
+  
+  
   </div>
 </template>
 <script>
   import {XInput, Group, XButton, Cell, Flexbox, AlertModule} from 'vux'
   import mtitle from './mTitle'
   import {reserveForInterviewee} from "../parking";
-
+  
   export default {
-
+    
     components: {
       AlertModule,
       mtitle,
@@ -46,33 +46,48 @@
       return {
         title: '受访人信息',
         mName: this.$store.state.mName,
-        mPoints:this.$store.state.mPoints,
-        mCompany:this.$store.state.mCompany,
-        mDepartment: this.$store.state.mDepartment,
+        mPoints: this.$store.state.mPoints,
+        // mCompany: this.$store.state.mCompany,
+        // mDepartment: this.$store.state.mDepartment,
         alert: '',
-        a:1
       }
     },
-    created(){
-      document.title='来访预约'
+    created() {
+      document.title = '来访预约'
+      
     },
-
+    
     computed: {
       ename() {
         return this.$store.state.mName;
       }
     },
     methods: {
-      last: function () {
-
-         history.go(-1);
+  
+      isAndroid:function(){if(/Android [4-6]/.test(navigator.appVersion)) {
+        window.addEventListener("resize", function() {
+          if(document.activeElement.tagName=="INPUT" || document.activeElement.tagName=="TEXTAREA") {
+            window.setTimeout(function() {
+              document.activeElement.scrollIntoViewIfNeeded();
+            },0);
+          }
+        })
+      }
       },
-
+      
+      
+      
+      
+      last: function () {
+        
+        history.go(-1);
+      },
+      
       next: function () {
         this.$store.commit('mName', this.mName);
         this.$store.commit('mPoints', this.mPoints);
-        this.$store.commit('mCompany', this.mCompany)
-        this.$store.commit('mDepartment', this.mDepartment)
+        // this.$store.commit('mCompany', this.mCompany)
+        // this.$store.commit('mDepartment', this.mDepartment)
         if (this.mName == '') {
           AlertModule.show({title: this.alert = '请填写姓名'})
           return
@@ -85,47 +100,55 @@
           AlertModule.show({title: this.alert = '请填写手机号码'})
           return
         }
-        if (this.mCompany == '') {
-          AlertModule.show({title: this.alert = '请填写公司'})
-          return
-        }
-
+        // if (this.mCompany == '') {
+        //   AlertModule.show({title: this.alert = '请填写公司'})
+        //   return
+        // }
+        
         reserveForInterviewee({
           intervieweeName: this.mName,
           intervieweeTel: this.mPoints,
-          company: this.mCompany,
-          department: this.mDepartment
+          // company: this.mCompany,
+          // department: this.mDepartment
         })
-
+          
           .then(data => {
             console.log(data)
             this.$router.push({path: 'excitedabouto'})
           })
           .catch(message => {
+            if (message == '1500') {
+              this.$router.push({path: '/'})
+              return
+            }
             AlertModule.show({title: this.alert = message})
           })
       }
+    },
+    mounted() {
+    
     }
   }
 </script>
 
 <style scoped lang="less">
-
-
+  
+  
   * {
     margin: 0px;
     padding: 0px;
   }
-
+  
   .weui-cell {
     height: 45px;
     padding: 10px 15px;
   }
-
+  
   .maket {
     width: 100%;
-    position: fixed;
     height: 100%;
+    position: fixed;
+   
     .btn {
       background-color: #f0f7ff;
       position: fixed;
@@ -148,7 +171,9 @@
       width: 92%;
       height: 100%;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       button {
         background-color: #fff;
         display: inline-block;
@@ -162,7 +187,7 @@
         color: #fff;
       }
     }
-
+    
   }
 
 </style>

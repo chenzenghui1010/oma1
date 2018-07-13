@@ -111,11 +111,7 @@
           if (message == '1500') {
             this.$router.push({path: '/'})
             return
-          } else if (message == '没有权限') {
-            AlertModule.show({title: this.alert = '没有权限'})
-            this.$router.push({path: '/'})
-            return
-          } else {
+          }  else {
            AlertModule.show ({title: this.alert = message})
           }
 
@@ -162,7 +158,9 @@
       width: 80%;
       margin: 0 auto 0 auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
     
     }
     .title2-ul2 {
@@ -170,7 +168,9 @@
       width: 80%;
       margin: -8px auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       color: 	#d4dbdd;
       .titleo {
         color: #67CB57;
@@ -180,8 +180,8 @@
 
   .maket {
     width: 100%;
-    position: fixed;
-    height: 100%;
+    position: absolute;
+    height: 50%;
     .btn {
       background-color: #f0f7ff;
       position: fixed;
@@ -204,9 +204,12 @@
       width: 92%;
       height: 100%;
       display: flex;
+      display:-webkit-flex;
       justify-content: center;
+      -webkit-justify-content: center;
       button {
         justify-items: center;
+        -webkit-justify-content: center;
         display: inline-block;
         color: #fff;
         width: 45%;

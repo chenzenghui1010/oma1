@@ -28,8 +28,8 @@
       <ul>
         <li><span>姓名：</span>{{ this.$store.state.mName }}</li>
         <li><span>手机号：</span>{{ this.$store.state.mPoints }}</li>
-        <li><span>公司：</span>{{ this.$store.state.mCompany }}</li>
-        <li><span>部门：</span>{{ this.$store.state.mDepartment }}</li>
+        <!--<li><span>公司：</span>{{ this.$store.state.mCompany }}</li>-->
+        <!--<li><span>部门：</span>{{ this.$store.state.mDepartment }}</li>-->
       </ul>
     </div>
     <div class="d2">
@@ -121,10 +121,8 @@
         })
 
           .then(data => {
-            if (data.resultCode == '1500') {
-              this.$router.push({path: '/'})
-            }
-            this.$router.push({path: 'visitorSubmitSucceed'});
+          
+            this.$router.push({path: 'visitorSubmitSucceed',query:{auditResult : 0}});
           })
           .catch(message => {
             if (message == '1500') {
@@ -213,7 +211,9 @@
       width: 80%;
       margin: 0 auto 0 auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
     
     }
     .title2-ul2 {
@@ -221,7 +221,9 @@
       width: 80%;
       margin: -8px auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       color: 	#d4dbdd;
       li {
         color: #67CB57;

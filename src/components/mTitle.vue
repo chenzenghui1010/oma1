@@ -65,7 +65,9 @@
       width: 80%;
       margin: 0 auto 0 auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
     
     }
     .title2-ul2 {
@@ -73,7 +75,9 @@
       width: 80%;
       margin: -8px auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       color: 	#d4dbdd;
       .titleo {
         color: #67CB57;

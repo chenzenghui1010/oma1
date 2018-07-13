@@ -22,7 +22,7 @@
       </div>
       
       
-      <div id="carno" @click="deleteCarNo">
+      <div v-if="isShowCar" id="carno" @click="deleteCarNo">
         
         <strong style="margin-left:6px;font-weight: 400">&nbsp;&nbsp;车牌号：</strong>
         <small v-if="carno.length == 0"
@@ -30,13 +30,13 @@
         </small>
         {{ carno}}
       </div>
-      <!--<div @click="deleteCarNo"   >-->
-      <!--<span></span>-->
-      <!--<x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>-->
-      <!--</div>-->
       
       
-      <x-input title=" <span>*</span> 公司：" v-model="eCompany" placeholder="请输入"></x-input>
+      <x-input v-if="inputcar"    title=" <span> &nbsp;</span> 车牌号：" v-model="carno"
+               placeholder="请输入"></x-input>
+      
+      
+      <x-input title=" <span>*</span> 公司：" v-model="eCompany"   required="required" placeholder="请输入"></x-input>
       
       <span>* </span>
       <datetime v-model="eStart" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc='来访时间：'
@@ -47,7 +47,8 @@
                 placeholder="2018-05-10 10:00"></datetime>
       
       
-      <x-input title=" <span>*</span> 来访事由：" maxlength="20" required="required" v-model="eCause" placeholder="请输入"></x-input>
+      <x-input title=" <span>*</span> 来访事由：" maxlength="20" required="required" v-model="eCause"
+               placeholder="请输入"></x-input>
     
     </div>
     <div class="suixing">
@@ -108,6 +109,16 @@
   import Carnokeyboard from "./keyboard.vue"
   
   export default {
+  
+    directives: {
+      focus: {
+        inserted: function (el) {
+          el.focus()
+        }
+      }
+      },
+    
+    
     name: 'excitedabouto',
     components: {
       Confirm, TransferDomDirective, TransferDom,
@@ -129,7 +140,8 @@
         newresourcecar: false,
         inputindex: 0,
         shade: false,
-        
+        isShowCar: true,
+        inputcar: false,
         
         follower: [],
         list1: [['请选择', '二代身份证', '护照', '港澳通行证', '驾驶证', '军官证', '学生证', '其他']],
@@ -151,7 +163,6 @@
     },
     created() {
       this.follower = this.$store.state.follower;
-      
     },
     computed: {
       inputtype: function () {
@@ -197,9 +208,21 @@
     watch: {
       eCarNumber: function (val, oldval) {
         this.eCarNumber = val.toUpperCase();
+      },
+      carno: function (varval) {
+        if (varval == 'WJ') {
+          this.begininput = false
+          this.isShowCar = false
+          this.inputcar = true
+          
+        //   var idObj = document.getElementsByClassName('weui-input')[3];
+        // idObj.setAttribute('v-focus')
+        
+        
+        }
       }
-      
     },
+    
     
     methods: {
       
@@ -383,13 +406,13 @@
         }
         
         
-        if (this.eCause == '') {
+        if (this.eCause.trim() == '') {
           AlertModule.show({title: this.alert = '请填写来访事由'})
           return
         }
         
         if (this.eCause.length > 21) {
-          AlertModule.show({title: this.alert = '事由超出最大长度20'})
+          AlertModule.show({title: this.alert = '来访事由不能超过20个字符'})
           return
           
         }
@@ -479,6 +502,10 @@
         this.follower.splice(this.follower.length - 1, 1)
       },
     },
+    
+    mounted() {
+    
+    }
   }
 </script>
 <style scoped lang="less">
@@ -509,17 +536,19 @@
     #carno {
       width: 97%;
     }
-    #carno strong{
+    
+    #carno strong {
       width: 6.6rem;
     }
   }
+  
   @media screen and (min-width: 600px) {
     #carno {
       width: 99%;
     }
     
-    #carno strong{
-      width:6.5rem;
+    #carno strong {
+      width: 6.5rem;
     }
   }
   
@@ -547,7 +576,7 @@
   
   #carno {
     border-top: 1px solid #EBEBEB;
-
+    
     height: 40px;
     line-height: 40px;
     float: right;
@@ -721,9 +750,12 @@
       }
       .footer {
         display: flex;
+        display: -webkit-flex;
         justify-content: space-around;
+        -webkit-justify-content: space-around;
         button {
           justify-content: center;
+          -webkit-justify-content: center;
           width: 40%;
           color: #FAFAFA;
           border: none;

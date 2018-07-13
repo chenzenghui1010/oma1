@@ -71,6 +71,10 @@
           console.log(this.dataList)
         })
         .catch(message => {
+          if (message == '1500') {
+            this.$router.push({path: '/'})
+            return
+          }
           AlertModule.show({title: message})
 
         })
@@ -95,14 +99,16 @@
               console.log(data.data)
 
 
-              this.$router.push({path: 'detailsAudit', query: {auditResult: 1}})
-
+              // this.$router.push({path: 'detailsAudit', query: {auditResult: 1}})
+              data.data.status  == '1' ? this.$router.push({path: 'makethree', query: {auditResult: 1}})  : this.$router.push({path: 'makethree', query: {auditResult: 2}})
             })
             .catch(message => {
-              AlertModule.show({title: message})
-              if (message == '没有权限') {
+            
+              if (message == '1500') {
                 this.$router.push({path: '/'})
+                return
               }
+              AlertModule.show({title: message})
             })
         }
         else if (this.userType == '1') {
@@ -113,9 +119,8 @@
             .then(data => {
 
               console.log(data.data)
-
-              this.$router.push({path: 'detailsAudit', query: {auditResult: 1}})
-
+              
+                this.$router.push({path: 'makethree', query: {auditResult: 2}})
             })
             .catch(message => {
               AlertModule.show({title: message})
@@ -148,13 +153,19 @@
             reason: this.reason
           })
             .then(data => {
-              this.$router.push({path: 'detailsAudit', query: {auditResult: 0}})
+              
+              this.$router.push({path: 'makethree', query: {auditResult: 0}})
             })
             .catch(message => {
-              AlertModule.show({title: message})
-              if (message == '没有权限') {
+             
+              if (message == '1500') {
+                
                 this.$router.push({path: '/'})
+                
+                return
               }
+              
+              AlertModule.show({title: message})
             })
         }
         else if (this.userType == '1') {
@@ -164,14 +175,16 @@
             reason: this.reason
           })
             .then(data => {
-              this.$router.push({path: 'detailsAudit', query: {auditResult: 0}})
+              this.$router.push({path: 'makethree', query: {auditResult: 0}})
 
             })
             .catch(message => {
-              AlertModule.show({title: message})
-              if (message == '没有权限') {
+              if (message == '1500') {
                 this.$router.push({path: '/'})
+                return
               }
+              AlertModule.show({title: message})
+              
             })
         }
       }

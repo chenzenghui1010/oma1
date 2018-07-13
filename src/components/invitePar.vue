@@ -124,23 +124,28 @@
         })
 
           .then(data => {
-
-            this.$router.push({path: 'visitorSubmitSucceed'});
+         
+           data.data.status ==1 ? this.$router.push({path: 'visitorSubmitSucceed', query: {auditResult: 1}}) : this.$router.push({path: 'visitorSubmitSucceed', query: {auditResult: 2}})
           })
           .catch(message => {
+            
             if (message == '1500') {
+              
               this.$router.push({path: '/'})
+              
               return
             }
+            
             AlertModule.show({title: this.alert = message})
           })
       }
     },
 
     computed: {
+      
       carType: function () {
+        
         return this.$store.state.iCarNumber == '请选择' ? '' : this.$store.state.iCarNumber
-
       },
 
       identityNo: function () {
@@ -193,14 +198,18 @@
       width: 80%;
       margin: 0 auto 0 auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       
     }
     .title2-ul2 {
       width: 87%;
       margin: 5px auto;
       display: flex;
+      display:-webkit-flex;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       color: #67cd57;
     }
   }
@@ -229,7 +238,9 @@
         width: 80%;
         margin: 0 auto 0 auto;
         display: flex;
+        display:-webkit-flex;
         justify-content: space-between;
+        -webkit-justify-content: space-between;
       
       }
       .title2-ul2 {
@@ -237,7 +248,9 @@
         width: 80%;
         margin: -8px auto;
         display: flex;
+        display:-webkit-flex;
         justify-content: space-between;
+        -webkit-justify-content: space-between;
         color: 	#d4dbdd;
         li {
           color: #67CB57;

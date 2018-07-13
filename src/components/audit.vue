@@ -71,28 +71,30 @@
         visitInfoListForInterviewee({status: userType})
           .then(data => {
             this.dataList = data.data.visitInfoList
-            // console.log(this.dataList);
-            // console.log(data.resultCode)
-            // console.log(data.message)
+           
           })
           .catch(message => {
+            if (message == '1500') {
+              this.$router.push({path: '/'})
+              return
+            }
             AlertModule.show({title: message})
           })
       } else if (userType == '1') {
         visitInfoListForManager({status: userType})
           .then(data => {
             this.dataList = data.data.visitInfoList
-            console.log(this.dataList);
-            console.log(data.resultCode)
-            console.log(data.message)
+            
           })
           .catch(message => {
+            if (message == '1500') {
+              this.$router.push({path: '/'})
+              return
+            }
             AlertModule.show({
               title: message,
             })
-            if (message == '没有权限') {
-              this.$router.push({path: '/'})
-            }
+           
           })
       }
 
@@ -108,21 +110,21 @@
 
     },
     methods: {
-      startTimer() {
-        clearTimeout(this.timeOut)
-        this.timeOut = setTimeout(() => {
-          AlertModule.show({title: '您太长时间没操作请重新登录'})
-          this.$router.push({path: '/'})
-
-        }, 5000)
-      },
-      isTimeOut() {
-        document.body.onclick = this.startTimer;
-        // document.body.onmouseup = this.startTimer();
-        // document.body.onmousemove = this.startTimer();
-        // document.body.onkeyup = this.startTimer();
-        // document.body.ontouchend = this.startTimer();
-      },
+      // startTimer() {
+      //   clearTimeout(this.timeOut)
+      //   this.timeOut = setTimeout(() => {
+      //     AlertModule.show({title: '您太长时间没操作请重新登录'})
+      //     this.$router.push({path: '/'})
+      //
+      //   }, 5000)
+      // },
+      // isTimeOut() {
+      //   document.body.onclick = this.startTimer;
+      //    document.body.onmouseup = this.startTimer();
+      //   document.body.onmousemove = this.startTimer();
+      //   document.body.onkeyup = this.startTimer();
+      //   document.body.ontouchend = this.startTimer();
+      // },
 
 
       //详情
@@ -144,13 +146,14 @@
           })
             .then(data => {
 
-              console.log(data.data)
-
-
-              this.$router.push({path: 'makethree', query: {auditResult: 1}})
-
+              data.data.status  == '1' ? this.$router.push({path: 'makethree', query: {auditResult: 1}})  : this.$router.push({path: 'makethree', query: {auditResult: 2}})
+             
             })
             .catch(message => {
+              if (message == '1500') {
+                this.$router.push({path: '/'})
+                return
+              }
               AlertModule.show({title: message})
             })
         }
@@ -162,12 +165,16 @@
             .then(data => {
 
               console.log(data.data)
-
-              this.$router.push({path: 'makethree', query: {auditResult: 1}})
+  
+              // data.data.status  == '1' ? this.$router.push({path: 'makethree', query: {auditResult: 1}})  :
+                this.$router.push({path: 'makethree', query: {auditResult: 2}})
 
             })
             .catch(message => {
-
+              if (message == '1500') {
+                this.$router.push({path: '/'})
+                return
+              }
               AlertModule.show({title: message})
 
             })
@@ -195,6 +202,10 @@
               this.$router.push({path: 'makethree', query: {auditResult: 0}})
             })
             .catch(message => {
+              if (message == '1500') {
+                this.$router.push({path: '/'})
+                return
+              }
               AlertModule.show({title: message})
             })
         }
@@ -210,6 +221,10 @@
 
             })
             .catch(message => {
+              if (message == '1500') {
+                this.$router.push({path: '/'})
+                return
+              }
               AlertModule.show({title: message})
             })
         }

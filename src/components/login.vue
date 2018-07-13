@@ -125,6 +125,10 @@
             }
           })
           .catch(message => {
+            if (message == '1500') {
+              this.$router.push({path: '/'})
+              return
+            }
             AlertModule.show({
               title: message,
             })

@@ -13,11 +13,28 @@
     name: 'makethree',
     data() {
       return {
-        auditResult:''
+        auditResult: ''
       }
     },
-    created(){
-      this.$route.query.auditResult == 1 ? this.auditResult ='您已审核通过来访申请 请耐心等候来访':this.auditResult=' 您已拒绝来访申请'
+    created() {
+      
+      
+      let auditResult = this.$route.query.auditResult
+      
+      if (auditResult == 1 ) {
+  
+        this.auditResult = '您已审核通过来访申请, 请等候管理员审核'
+      }
+      else if (auditResult == 2 ) {
+  
+        this.auditResult = '您已审核通过来访申请, 请耐心等候来访'
+        
+      }else if (auditResult == 0){
+        
+        this.auditResult = ' 您已拒绝来访申请'
+      }
+      
+      // this.$route.query.auditResult == 1 ? this.auditResult ='您已审核通过来访申请 请耐心等候来访':this.auditResult=' 您已拒绝来访申请'
     },
     methods: {
       ok: function () {
@@ -56,9 +73,9 @@
       width: 90%;
       
       color: #FAFAFA;
-     
+      
       border: none;
-     
+      
       outline: none;
     }
   }
