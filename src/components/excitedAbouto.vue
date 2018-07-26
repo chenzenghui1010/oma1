@@ -5,7 +5,7 @@
     </div>
     <div class="company">
       <p class="title1"><span>来访人信息</span></p>
-      <x-input title=" <span>*</span> 姓名：" required="required" v-model="eName" placeholder="请输入"
+      <x-input title=" <span>*</span> 姓名：" required="required"  v-model="eName" placeholder="请输入"
                is-type="china-name">
         <span>*</span></x-input>
       <x-input title=" <span>*</span> 手机号：" required="required" mask="99999999999" v-model="ePoints"
@@ -24,22 +24,21 @@
       
       <div v-if="isShowCar" id="carno" @click="deleteCarNo">
         
-        <strong style="margin-left:6px;font-weight: 400">&nbsp;&nbsp;车牌号：</strong>
+        <strong style="margin-left:4px;font-weight: 400">&nbsp;&nbsp;车牌号：</strong>
         <small v-if="carno.length == 0"
-               style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入
+               style="display: inline-block;height: 38px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入
         </small>
         {{ carno}}
       </div>
       
       
-      <x-input v-if="inputcar"    title=" <span> &nbsp;</span> 车牌号：" v-model="carno"
-               placeholder="请输入"></x-input>
-      
+      <x-input v-show="inputcar"     title=" <span> &nbsp;</span> 车牌号：" v-model="carno"
+               placeholder="请输入"  ></x-input>
       
       <x-input title=" <span>*</span> 公司：" v-model="eCompany"   required="required" placeholder="请输入"></x-input>
       
       <span>* </span>
-      <datetime v-model="eStart" format="YYYY-MM-DD HH:mm" :min-hour=0 :max-hour=23 inline-desc='来访时间：'
+      <datetime v-model="eStart" format="YYYY-MM-DD HH:mm" :min-hour=0  :max-hour=23 inline-desc='来访时间： '
                 placeholder="2018-05-10 10:00"></datetime>
       
       <span>* </span>
@@ -109,15 +108,6 @@
   import Carnokeyboard from "./keyboard.vue"
   
   export default {
-  
-    directives: {
-      focus: {
-        inserted: function (el) {
-          el.focus()
-        }
-      }
-      },
-    
     
     name: 'excitedabouto',
     components: {
@@ -210,15 +200,16 @@
         this.eCarNumber = val.toUpperCase();
       },
       carno: function (varval) {
+        if(varval == ''|| varval == null){
+          this.isShowCar = true
+          this.inputcar = false
+          this.inputindex = 0
+        }
         if (varval == 'WJ') {
+          this.shade = false
           this.begininput = false
           this.isShowCar = false
           this.inputcar = true
-          
-        //   var idObj = document.getElementsByClassName('weui-input')[3];
-        // idObj.setAttribute('v-focus')
-        
-        
         }
       }
     },
@@ -513,7 +504,7 @@
   
   .shade {
     -webkit-tap-highlight-color: transparent;
-    z-index: 9;
+    z-index: 999;
     position: absolute;
     width: 100%;
     height: 120%;
@@ -577,14 +568,14 @@
   #carno {
     border-top: 1px solid #EBEBEB;
     
-    height: 40px;
-    line-height: 40px;
+    height: 39px;
+    line-height: 39px;
     float: right;
   }
   
   #carno strong {
     display: inline-block;
-    height: 40px;
+    height: 39px;
   }
   
   .chunk {

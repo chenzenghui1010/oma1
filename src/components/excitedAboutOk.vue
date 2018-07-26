@@ -108,6 +108,8 @@
           }
         }
         reserve({
+          intervieweeName:this.$store.state.mName,
+          intervieweeTel:this.$store.state.mPoints,
           phone: this.$store.state.ePoints,
           name: this.$store.state.eName,
           identityNo: this.$store.state.eLicenseNumber,

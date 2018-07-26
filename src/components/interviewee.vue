@@ -28,9 +28,9 @@
       <x-input title="  <span>*</span> 手机号：" required="required" mask="99999999999" v-model="inPoints" placeholder="请输入"
                is-type="china-mobile"></x-input>
 
-      <x-input title="  <span>*</span> 公司：" required="required" v-model="inCompany" placeholder="请输入"></x-input>
+      <!--<x-input title="  <span>*</span> 公司：" required="required" v-model="inCompany" placeholder="请输入"></x-input>-->
 
-      <x-input title="  <span> &nbsp;</span> 部门：" v-model="inDep" placeholder="请输入"></x-input>
+      <!--<x-input title="  <span> &nbsp;</span> 部门：" v-model="inDep" placeholder="请输入"></x-input>-->
     </div>
 
 
@@ -96,10 +96,10 @@
           AlertModule.show({title: this.alert = '手机号码格式不正确'})
           return
         }
-        if (this.inCompany == '') {
-          AlertModule.show({title: this.alert = '请填写公司名称'})
-          return
-        }
+        // if (this.inCompany == '') {
+        //   AlertModule.show({title: this.alert = '请填写公司名称'})
+        //   return
+        // }
         reserveForInterviewee({
           intervieweeName: this.inName,
           intervieweeTel: this.inPoints,

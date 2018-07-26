@@ -36,23 +36,14 @@
           is-type="china-name">
         </x-input>
       </div>
-
-      <!--<popup-picker title=" &nbsp 车牌号：" :data="Car" v-model="iCar"></popup-picker>-->
-      <!--<x-input style="border: none; !important;" id="none" title=" " v-model="iCarNumber" placeholder="请输入"></x-input>-->
-      <!--<div @click="deleteCarNo"   >-->
-        <!--<span></span>-->
-        <!--<x-input readonly="readonly" id="datePicker" title=" <span> &nbsp;</span> 车牌号：" v-model="carno" placeholder="请输入"></x-input>-->
-      <!--</div>-->
+      
       <div id="carno"  v-if="isShowCar" @click="deleteCarNo">
-        <p style="background: #fff;">&nbsp;&nbsp;车牌号：</p> <small v-if="carno.length == 0" style="display: inline-block;height: 40px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入</small> {{ carno}}
+        <p style="background: none;">&nbsp;&nbsp;车牌号：</p> <small v-if="carno.length == 0" style="display: inline-block;height: 38px;line-height: 40px ;color: #D9D9D9; font-size: 16px;">请输入</small> {{ carno}}
       </div>
   
-      <x-input v-if="inputcar"    title=" <span> &nbsp;</span> 车牌号：" v-model="carno"
+      <x-input v-show="inputcar"    title=" <span> &nbsp;</span> 车牌号：" v-model="carno"
                placeholder="请输入"></x-input>
       
-      
-      
-
       <x-input title=" <span>*</span> 公司：" required="required" v-model="iCompany" placeholder="请输入"
       ></x-input>
 
@@ -172,14 +163,18 @@
         this.iCarNumber = val.toUpperCase()
 
       },
-      carno: function (carval) {
-     
-        if (carval == 'WJ') {
+      carno: function (varval) {
+  
+        if(varval == ''|| varval == null){
+          this.isShowCar = true
+          this.inputcar = false
+          this.inputindex = 0
+        }
+        if (varval == 'WJ') {
           this.shade = false
           this.begininput = false
           this.isShowCar = false
           this.inputcar = true
-          this.shade = false
         }
         
         
@@ -555,14 +550,14 @@
   
   #carno {
     border-top: 1px solid #EBEBEB;
-    background: #FFF;
-    height: 40px;
-    line-height: 40px;
+    background: none;
+    height: 39px;
+    line-height: 39px;
     float:right;
   }
   #carno p{
     display: inline-block;
-    height: 40px;
+    height: 39px;
    
   }
 
@@ -587,7 +582,7 @@
     p {
       display: inline-block;
       width: 95%;
-      background: #d4dbdd;
+      /*background: #d4dbdd;*/
       height: 3px;
     }
     .ptitleo{
@@ -762,13 +757,14 @@
         display: flex;
         display:-webkit-flex;
         justify-content: space-around;
-        -webkit-justify-content: space-between;
+        -webkit-justify-content: space-around;
         
         button {
           justify-content: center;
           -webkit-justify-content: center;
           width: 40%;
           background-color: #1d83c5;
+          
           color: #FAFAFA;
           border: none;
           outline: none;
